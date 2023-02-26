@@ -7,6 +7,11 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+struct user {
+    QString firstName;
+    QString lastName;
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -16,9 +21,11 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_lineLastName_cursorPositionChanged(int arg1, int arg2);
+
+    void on_btnEnter_clicked();
 
 private:
     Ui::MainWindow *ui;
+    user currentEmploye;
 };
 #endif // MAINWINDOW_H
