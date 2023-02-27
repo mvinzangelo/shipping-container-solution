@@ -35,8 +35,11 @@ void parseTest()
          s >> std::skipws >> c >> row >> c >> column >> c >> c >> c >> weight >> c >> c >> name;
          if (name == "NAN") std::cout << "ALERT: This slot does not exist! ";
          else if (name == "UNUSED") std::cout << "ALERT: This slot is empty! ";
-         std::cout << "Row: " << row << " Column: " << column << " Weight: " << weight << " Name: " << name;
-         std::cout << '\n';
+         
+         std::cout << "Row: " << row << 
+                      " Column: " << column << 
+                      " Weight: " << weight << 
+                      " Name: " << name << '\n';
       }
       file.close();
    }
