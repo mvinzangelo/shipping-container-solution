@@ -33,6 +33,8 @@ void parseTest()
          // std::cout << line << '\n'; // Debug
          std::stringstream s(line);
          s >> std::skipws >> c >> row >> c >> column >> c >> c >> c >> weight >> c >> c >> name;
+         if (name == "NAN") std::cout << "ALERT: This slot does not exist! ";
+         else if (name == "UNUSED") std::cout << "ALERT: This slot is empty! ";
          std::cout << "Row: " << row << " Column: " << column << " Weight: " << weight << " Name: " << name;
          std::cout << '\n';
       }
