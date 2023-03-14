@@ -2,6 +2,6 @@
 
 int main(int argc, char *argv[])
 {
-   parseTest();
+   populateShip();
    return 0;
 }
