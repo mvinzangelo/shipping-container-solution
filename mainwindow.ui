@@ -30,7 +30,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="1" column="0">
+    <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="maximumSize">
        <size>
@@ -43,11 +43,106 @@
       </property>
       <widget class="QWidget" name="screenSignIn">
        <layout class="QGridLayout" name="gridLayout">
-        <item row="6" column="2">
+        <item row="4" column="2" alignment="Qt::AlignHCenter">
+         <widget class="QLabel" name="labelLastName">
+          <property name="minimumSize">
+           <size>
+            <width>500</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Last name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2" alignment="Qt::AlignHCenter">
+         <widget class="QPushButton" name="btnEnter">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>500</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Enter</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+          <property name="default">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="2">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="2" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+         <widget class="QLabel" name="labelFirstName">
+          <property name="minimumSize">
+           <size>
+            <width>500</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>First name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="6" column="2" alignment="Qt::AlignHCenter">
          <widget class="QLineEdit" name="lineLastName">
           <property name="minimumSize">
            <size>
-            <width>400</width>
+            <width>500</width>
             <height>40</height>
            </size>
           </property>
@@ -85,58 +180,11 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="2">
-         <widget class="QPushButton" name="btnEnter">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Enter</string>
-          </property>
-          <property name="autoDefault">
-           <bool>false</bool>
-          </property>
-          <property name="default">
-           <bool>false</bool>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="8" column="2">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="3" column="2">
+        <item row="3" column="2" alignment="Qt::AlignHCenter">
          <widget class="QLineEdit" name="lineFirstName">
           <property name="minimumSize">
            <size>
-            <width>400</width>
+            <width>500</width>
             <height>40</height>
            </size>
           </property>
@@ -174,27 +222,39 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="QLabel" name="labelFirstName">
+        <item row="0" column="2">
+         <widget class="QLabel" name="labelLogIn">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>1920</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>1920</width>
+            <height>100</height>
+           </size>
+          </property>
           <property name="font">
            <font>
-            <pointsize>14</pointsize>
+            <pointsize>40</pointsize>
            </font>
           </property>
-          <property name="text">
-           <string>First name:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QLabel" name="labelLastName">
-          <property name="font">
-           <font>
-            <pointsize>14</pointsize>
-           </font>
+          <property name="styleSheet">
+           <string notr="true">background: #d6e0f5</string>
           </property>
           <property name="text">
-           <string>Last name:</string>
+           <string>Log In</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -207,9 +267,6 @@
        <layout class="QGridLayout" name="gridLayout_3"/>
       </widget>
      </widget>
-    </item>
-    <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout"/>
     </item>
    </layout>
   </widget>
