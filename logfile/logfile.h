@@ -2,17 +2,19 @@
 #include <fstream>
 #include <string>
 
-void initializeLogFile()
+#define ONLOAD 0
+#define OFFLOAD 1
+
+class LogFile 
 {
-    std::cout << "Initializing new log file...\n";
-    std::ofstream logFile("KeoghLongBeach.txt");
-    if (logFile.is_open())
-    {
-        std::cout << "Log file successfully initialized.\n";
-    }
-    else
-    {
-        std::cout << "ERROR: Could not initialize log file!\n";
-        // handle this potential error somehow
-    }
-}
+    private:
+        std::ofstream logFile /*= "KeoghLongBeach.txt"*/;
+    public:
+        LogFile() : logFile("KeoghLongBeach.txt");
+        void logEmployeeCheckIn(std::string&);
+        void logAtomicMove(std::string&, int);
+        void logManifestOpen();
+        void logManifestClose();
+        void getOperatorMessage();
+        void restartLogFile();
+};
