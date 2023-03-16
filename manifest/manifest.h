@@ -12,12 +12,17 @@ This parse is mainly proof of concept; we can easily parse through a manifest an
 This test simply gets the information from each row, and outputs it.
 */
 
+/*
+Struct defining a container with it's characteristics, with default and parameterized constructor.
+PLEASE NOTE: This struct SHOULD be moved to another file! It is only here for testing purposes.
+*/
+
 struct Container {
    short row;
    short column;
    int weight;
    std::string name;
-   Container() : row(-1), column(-1), weight(-1), name("NAN") {}
+   Container() : row(0), column(0), weight(0), name("NAN") {}
    Container(int row, int column, int weight, std::string& name) : 
    row(row), column(column), weight(weight), name(name) {}
 };
