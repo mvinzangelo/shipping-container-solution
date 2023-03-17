@@ -22,13 +22,24 @@ struct Container {
    short column;
    int weight;
    std::string name;
-   Container() : row(0), column(0), weight(0), name("NAN") {}
+   Container() : row(-1), column(-1), weight(0), name("NAN") {}
    Container(int row, int column, int weight, std::string& name) : 
    row(row), column(column), weight(weight), name(name) {}
 };
 
-Container ship[9][13];
+struct Ship {
+   Container ship[8][12];
+   Container buffer[4][24];
+   std::string manifestName;
+   int numContainers;
+   Ship() : numContainers(0) {}
+   Ship(std::string& name) : manifestName(name), numContainers(0) {}
+};
 
+//Container ship[8][12];
+Ship currentShip;
+
+/*
 void parseTest()
 {
    // Get the manifest name, and open it.
@@ -68,6 +79,7 @@ void parseTest()
 
    std::cout << "Successfully parsed through " << manifest << ".\n";
 }
+*/
 
 void populateShip()
 {
@@ -85,18 +97,20 @@ void populateShip()
       int row, column, weight;
       std::string name, line;
       Container currentContainer;
+      
 
       while (std::getline(file, line))
       {
-         // std::cout << line << '\n'; // Debug
+         std::cout << line << '\n'; // Debug
          std::stringstream s(line);
          s >> std::skipws >> c >> row >> c >> column >> c >> c >> c >> weight >> c >> c >> name;
          // if (name == "NAN") std::cout << "ALERT: This slot does not exist! ";
          // else if (name == "UNUSED") std::cout << "ALERT: This slot is empty! ";
-
+         std::cout << "Row: " << row << "\n" << "Column: " << column << '\n' << "Weight: " << weight << '\n' << "Name: " << name << '\n';
          currentContainer = Container(row, column, weight, name);
 
-         ship[row][column] = currentContainer;
+         currentShip.ship[row - 1][column - 1] = currentContainer;
+         if (name != "NAN" && name != "UNUSED") currentShip.numContainers++;
 
       }
       file.close();
@@ -107,14 +121,14 @@ void populateShip()
       return;
    }
    // Must iterate backwards to print first row on bottom
-   for (int i = 8; i > 0; i--)
+   for (int i = 7; i >= 0; i--)
    {
-      for (int j = 1; j < 13; j++)
+      for (int j = 0; j < 12; j++)
       {
-         std::cout << ship[i][j].name[0] << ' ';
+         std::cout << currentShip.ship[i][j].name[0] << ' ';
       }
       std::cout << '\n';
    }
 
-   std::cout << "Successfully parsed through " << manifest << ".\n";
+   std::cout << "Successfully parsed through " << manifest << ", which has " << currentShip.numContainers << " containers" << ".\n";
 }
