@@ -4,7 +4,10 @@
 int main(int argc, char *argv[])
 {
     LogFile log;
-    log.restartLogFile();
+    //log.restartLogFile();
     std::string name = "Joshua Candelaria";
+    std::string container = "Container";
     log.logEmployeeCheckIn(name);
+    log.logAtomicMove(container, ONLOAD);
+    log.logAtomicMove(container, OFFLOAD);
 }

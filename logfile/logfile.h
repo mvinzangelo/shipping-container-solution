@@ -13,6 +13,7 @@ class LogFile
         std::ofstream logFile;
         std::string currentLogFileName;
         bool validFileName;
+        std::string getTimestampString();
     public:
         LogFile();
         ~LogFile();
@@ -21,7 +22,7 @@ class LogFile
         void logManifestOpen();
         void logManifestClose();
         void getOperatorMessage();
-        void restartLogFile();
+        
 };
 
 LogFile::LogFile()
@@ -40,47 +41,9 @@ LogFile::LogFile()
         validFileName = true;
         configFile.close();
     }
-}
-
-LogFile::~LogFile()
-{
-    logFile.close();
-}
-
-void LogFile::logEmployeeCheckIn(std::string& name)
-{
-    auto now = std::chrono::system_clock::now();
-    std::time_t now_t = std::chrono::system_clock::to_time_t(now);
-    std::tm tm = *std::localtime(&now_t);
-
-    char buffer[80];
-    std::strftime(buffer, 80, "%B %d, %Y: %H:%M:%S", &tm);
-
-    this->logFile << buffer << ": " << name << " has checked in.\n";
-}
-
-void LogFile::logAtomicMove(std::string&, int)
-{
-
-}
-void LogFile::logManifestOpen()
-{
-
-}
-void LogFile::logManifestClose()
-{
-
-}
-void LogFile::getOperatorMessage()
-{
-
-}
-
-void LogFile::restartLogFile()
-{
-    char option;
     if (validFileName) 
     {
+        char option;
         std::cout << "Would you like to start a new logfile? (y/n): ";
         while (option != 'n' && option != 'y')
         {
@@ -104,7 +67,54 @@ void LogFile::restartLogFile()
     std::ofstream saveLogFileName("config.txt");
     saveLogFileName << currentLogFileName;
     logFile.open(logFileName, std::ios::app);
-    
-    //std::rename(const_cast<char*>(oldName.c_str()), const_cast<char*>(newName.c_str()));
-    // CHANGE logFile variable to track new filename! 
 }
+
+LogFile::~LogFile()
+{
+    logFile.close();
+}
+
+// Returns timestamp in format of: Month Day, Year: HH:MM:SS (where HH:MM:SS is in 24 hour time)
+// Example: March 16, 2023: 22:49:38
+std::string LogFile::getTimestampString()
+{
+    auto now = std::chrono::system_clock::now();
+    std::time_t now_t = std::chrono::system_clock::to_time_t(now);
+    std::tm tm = *std::localtime(&now_t);
+
+    char timestamp[100];
+    std::strftime(timestamp, 100, "%B %d, %Y: %H:%M:%S", &tm);
+    return timestamp;
+}
+
+void LogFile::logEmployeeCheckIn(std::string& name)
+{
+    this->logFile << getTimestampString() << ": " << name << " has checked in.\n";
+}
+
+void LogFile::logAtomicMove(std::string& containerName, int loadType)
+{
+    std::string timestamp = getTimestampString();
+
+    if (loadType == ONLOAD)
+    {
+        this->logFile << timestamp << ": \"" << containerName << '\"' << " is onloaded.\n"; 
+    }
+    else if (loadType == OFFLOAD)
+    {
+        this->logFile << timestamp << ": \"" << containerName << '\"' << " is offloaded.\n"; 
+    }
+}
+void LogFile::logManifestOpen()
+{
+
+}
+void LogFile::logManifestClose()
+{
+
+}
+void LogFile::getOperatorMessage()
+{
+
+}
+
