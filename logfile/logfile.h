@@ -10,9 +10,10 @@
 class LogFile
 {
     private:
-        std::ofstream logFile /*= "KeoghLongBeach.txt"*/;
+        std::ofstream logFile/*= "KeoghLongBeach.txt"*/;
     public:
-        LogFile() : logFile("KeoghLongBeach.txt") {};
+        LogFile() : logFile("KeoghLongBeach.txt", std::ios::app) {};
+        ~LogFile();
         void logEmployeeCheckIn(std::string&);
         void logAtomicMove(std::string&, int);
         void logManifestOpen();
@@ -20,6 +21,11 @@ class LogFile
         void getOperatorMessage();
         void restartLogFile();
 };
+
+LogFile::~LogFile()
+{
+    logFile.close();
+}
 
 void LogFile::logEmployeeCheckIn(std::string& name)
 {
@@ -31,4 +37,33 @@ void LogFile::logEmployeeCheckIn(std::string& name)
     std::strftime(buffer, 80, "%B %d, %Y: %H:%M:%S", &tm);
 
     this->logFile << buffer << ": " << name << " has checked in.\n";
+}
+
+void LogFile::logAtomicMove(std::string&, int)
+{
+
+}
+void LogFile::logManifestOpen()
+{
+
+}
+void LogFile::logManifestClose()
+{
+
+}
+void LogFile::getOperatorMessage()
+{
+
+}
+void LogFile::restartLogFile()
+{
+    std::cout << "Would you like to start a new logfile? (y/n)";
+    
+
+    int logicalYear;
+    std::string oldName = "KeoghLongBeach.txt";
+    std::cout << "Saving log file, please enter logical year of current logfile: ";
+    std::cin >> logicalYear;
+    std::string newName = "KeoghLongBeach" + std::to_string(logicalYear) + ".txt";
+    std::rename(const_cast<char*>(oldName.c_str()), const_cast<char*>(newName.c_str()));
 }
