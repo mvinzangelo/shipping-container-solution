@@ -19,10 +19,9 @@ class LogFile
         ~LogFile();
         void logEmployeeCheckIn(std::string&);
         void logAtomicMove(std::string&, int);
-        void logManifestOpen();
-        void logManifestFinish();
+        void logManifestOpen(std::string&);
+        void logManifestFinish(std::string&);
         void getOperatorMessage();
-        
 };
 
 LogFile::LogFile()
@@ -105,11 +104,11 @@ void LogFile::logAtomicMove(std::string& containerName, int loadType)
         this->logFile << timestamp << ": \"" << containerName << '\"' << " is offloaded.\n"; 
     }
 }
-void LogFile::logManifestOpen()
+void LogFile::logManifestOpen(std::string& manifestName)
 {
 
 }
-void LogFile::logManifestFinish()
+void LogFile::logManifestFinish(std::string& manifestName)
 {
 
 }
