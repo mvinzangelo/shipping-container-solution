@@ -17,6 +17,8 @@ Struct defining a container with it's characteristics, with default and paramete
 PLEASE NOTE: This struct SHOULD be moved to another file! It is only here for testing purposes.
 */
 
+// TODO: Move Container and Ship structs to a different file.
+
 struct Container {
    short row;
    short column;
@@ -27,61 +29,65 @@ struct Container {
    row(row), column(column), weight(weight), name(name) {}
 };
 
+/*
+   Design choices:
+   "Why are arrays type Container and not Container*?""
+   Contiguous allocation of literal Container objects will lead to faster speed since they do not have a lot of data (biggest reason)
+   Dynamic allocation is not necessary since we are working with fixed sizes (only one class of ship serviced)
+   Only modifications made to ship are swapping of containers, which would be more complicated with pointers.
+      - Note: might be better to protect the fields of the Container struct to avoid accidental modification, since we do NOT modify the containers.
+*/
+
 struct Ship {
    Container ship[8][12];
    Container buffer[4][24];
    std::string manifestName;
    int numContainers;
    Ship() : numContainers(0) {}
-   Ship(std::string& name) : manifestName(name), numContainers(0) {}
+   Ship(std::string& name);
+   int getPortWeight();
+   int getStarbordWeight();
 };
 
-//Container ship[8][12];
-Ship currentShip;
-
-/*
-void parseTest()
+Ship::Ship(std::string& name)
 {
-   // Get the manifest name, and open it.
-   std::string manifest;
-   std::cout << "Enter name of manifest: ";
-   std::getline(std::cin, manifest);
-   std::cout << "\nParsing " << manifest << "...\n";
-   std::ifstream file(manifest);
-
-   // Parse through the manifest, getting all necessary information.
+   numContainers = 0;
+   std::ifstream file(name);
    if (file.is_open())
    {
       char c;
       int row, column, weight;
       std::string name, line;
-
+      Container currentContainer;
+      char c;
+      int row, column, weight;
+      std::string name, line;
+      Container currentContainer;
       while (std::getline(file, line))
-      {
-         // std::cout << line << '\n'; // Debug
-         std::stringstream s(line);
-         s >> std::skipws >> c >> row >> c >> column >> c >> c >> c >> weight >> c >> c >> name;
-         if (name == "NAN") std::cout << "ALERT: This slot does not exist! ";
-         else if (name == "UNUSED") std::cout << "ALERT: This slot is empty! ";
-         
-         std::cout << "Row: " << row << 
-                      " Column: " << column << 
-                      " Weight: " << weight << 
-                      " Name: " << name << '\n';
-      }
-      file.close();
+         {
+            std::cout << line << '\n'; // Debug
+            std::stringstream s(line);
+            s >> std::skipws >> c >> row >> c >> column >> c >> c >> c >> weight >> c >> c >> name;
+            // if (name == "NAN") std::cout << "ALERT: This slot does not exist! ";
+            // else if (name == "UNUSED") std::cout << "ALERT: This slot is empty! ";
+            std::cout << "Row: " << row << "\n" << "Column: " << column << '\n' << "Weight: " << weight << '\n' << "Name: " << name << '\n';
+            currentContainer = Container(row, column, weight, name);
+
+            ship[row - 1][column - 1] = currentContainer;
+            if (name != "NAN" && name != "UNUSED") numContainers++;
+
+         }
+         file.close();
    }
    else
    {
-      std::cout << "ERROR: Unable to open file.\n";
-      return;
+      std::cout << "ERROR: Unable to open " << name << ".\n";
    }
-
-   std::cout << "Successfully parsed through " << manifest << ".\n";
 }
-*/
 
-void populateShip()
+Ship currentShip;
+
+void populateShip() // test function
 {
    // Get the manifest name, and open it.
    std::string manifest;
