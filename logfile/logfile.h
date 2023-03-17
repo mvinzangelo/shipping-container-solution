@@ -57,13 +57,22 @@ void LogFile::getOperatorMessage()
 }
 void LogFile::restartLogFile()
 {
-    std::cout << "Would you like to start a new logfile? (y/n)";
-    
+    char option;
+    std::cout << "Would you like to start a new logfile? (y/n): ";
+    while (option != 'n' && option != 'y')
+    {
+        std::cin >> option;
+        if (option == 'y' || option == 'n') break;
+        else std::cout << "\nInvalid input, please try again (y/n): ";
+    }
 
+    if (option == 'n') return;
+    
     int logicalYear;
     std::string oldName = "KeoghLongBeach.txt";
     std::cout << "Saving log file, please enter logical year of current logfile: ";
     std::cin >> logicalYear;
     std::string newName = "KeoghLongBeach" + std::to_string(logicalYear) + ".txt";
-    std::rename(const_cast<char*>(oldName.c_str()), const_cast<char*>(newName.c_str()));
+    //std::rename(const_cast<char*>(oldName.c_str()), const_cast<char*>(newName.c_str()));
+    // CHANGE logFile variable to track new filename! 
 }
