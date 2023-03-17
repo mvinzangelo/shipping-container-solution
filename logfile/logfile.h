@@ -20,7 +20,7 @@ class LogFile
         void logEmployeeCheckIn(std::string&);
         void logAtomicMove(std::string&, int);
         void logManifestOpen();
-        void logManifestClose();
+        void logManifestFinish();
         void getOperatorMessage();
         
 };
@@ -109,12 +109,15 @@ void LogFile::logManifestOpen()
 {
 
 }
-void LogFile::logManifestClose()
+void LogFile::logManifestFinish()
 {
 
 }
 void LogFile::getOperatorMessage()
 {
-
+    std::string message;
+    std::cout << "Input your message to the logfile: ";
+    getline(std::cin >> std::ws, message);
+    this->logFile << getTimestampString() << ": " << message << '\n';
 }
 

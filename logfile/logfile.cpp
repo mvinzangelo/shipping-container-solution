@@ -9,5 +9,6 @@ int main(int argc, char *argv[])
     std::string container = "Container";
     log.logEmployeeCheckIn(name);
     log.logAtomicMove(container, ONLOAD);
+    log.getOperatorMessage();
     log.logAtomicMove(container, OFFLOAD);
 }
