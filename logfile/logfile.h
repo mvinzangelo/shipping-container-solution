@@ -29,7 +29,7 @@ LogFile::LogFile()
 {
     validFileName = false;
     std::ifstream configFile("config.txt");
-    if (configFile.peek() == std::ifstream::traits_type::eof()) 
+    if (configFile.peek() == std::ifstream::traits_type::eof())
     {
         std::cout << "ALERT: Configuration file is empty. If this is your first time starting the program, ignore this alert." 
                   << " If not, please contact Shipping Container Solutions tech support immediately.\n";
