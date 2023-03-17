@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[])
 {
-    LogFile log = LogFile();
+    LogFile log;
     log.restartLogFile();
     std::string name = "Joshua Candelaria";
     log.logEmployeeCheckIn(name);
