@@ -2,15 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "currentemployee.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
-
-struct user {
-    QString firstName;
-    QString lastName;
-};
 
 class MainWindow : public QMainWindow
 {
@@ -26,6 +22,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    user currentEmploye;
+    currentEmployee currOperator;
 };
 #endif // MAINWINDOW_H
