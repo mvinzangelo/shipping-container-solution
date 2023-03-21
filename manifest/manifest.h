@@ -17,8 +17,9 @@ Struct defining a container with it's characteristics, with default and paramete
 PLEASE NOTE: This struct SHOULD be moved to another file! It is only here for testing purposes.
 */
 
-// TODO: Move Container and Ship structs to a different file.
+struct Ship;
 
+// TODO: Move Container and Ship structs to a different file.
 struct Container {
    short row;
    short column;
@@ -27,6 +28,7 @@ struct Container {
    Container() : row(-1), column(-1), weight(0), name("NAN") {}
    Container(int row, int column, int weight, std::string& name) : 
    row(row), column(column), weight(weight), name(name) {}
+   short getDepth(Ship&);
 };
 
 /*
@@ -59,18 +61,14 @@ Ship::Ship(std::string& name)
       int row, column, weight;
       std::string name, line;
       Container currentContainer;
-      char c;
-      int row, column, weight;
-      std::string name, line;
-      Container currentContainer;
       while (std::getline(file, line))
          {
-            std::cout << line << '\n'; // Debug
+            //std::cout << line << '\n'; // Debug
             std::stringstream s(line);
             s >> std::skipws >> c >> row >> c >> column >> c >> c >> c >> weight >> c >> c >> name;
             // if (name == "NAN") std::cout << "ALERT: This slot does not exist! ";
             // else if (name == "UNUSED") std::cout << "ALERT: This slot is empty! ";
-            std::cout << "Row: " << row << "\n" << "Column: " << column << '\n' << "Weight: " << weight << '\n' << "Name: " << name << '\n';
+            //std::cout << "Row: " << row << "\n" << "Column: " << column << '\n' << "Weight: " << weight << '\n' << "Name: " << name << '\n';
             currentContainer = Container(row, column, weight, name);
 
             ship[row - 1][column - 1] = currentContainer;
@@ -84,6 +82,38 @@ Ship::Ship(std::string& name)
       std::cout << "ERROR: Unable to open " << name << ".\n";
    }
 }
+
+short Container::getDepth(Ship& ship)
+{
+   try
+   {
+      if (ship.ship[row - 1][column - 1].name != name) 
+      {
+         throw std::invalid_argument("ERROR: getDepth called on incorrect container.\n");
+         
+      }
+      else
+      {
+         short depth = 0;
+         for (int i = column; i < 12; i++)
+         {
+            if (ship.ship[row][i].name != "NAN" && ship.ship[row][i].name != "UNUSED")
+            {
+               depth++;
+            }
+            else break;
+         }
+         return depth;
+      }
+      
+   }
+   catch (const std::exception& e)
+   {
+      std::cout << "Caught an exception: " << e.what() << "\n"; 
+   }
+   return -1;
+}
+
 
 Ship currentShip;
 
