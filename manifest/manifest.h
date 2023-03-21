@@ -100,11 +100,12 @@ short Container::getDepth(Ship& ship)
       {
          for (int i = row; i < 8; i++)
          {
+            if (i - 1 == 0) i = 2;
             // std::cout << ship.ship[i][column].name << '\n';
             if (ship.ship[i - 1][column - 1].name != "NAN" && ship.ship[i - 1][column - 1].name != "UNUSED")
             {
                depth++;
-               //std::cout << "Container Name at " << i << ", " << column << ": " << ship.ship[i - 1][column - 1].name << '\n';
+               // std::cout << "Container Name at " << i << ", " << column << ": " << ship.ship[i - 1][column - 1].name << '\n';
             }
             //else break;
          }
