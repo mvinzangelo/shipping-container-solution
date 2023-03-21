@@ -89,6 +89,8 @@ short Container::getDepth(Ship& ship)
 {
    try
    {
+      short depth = 0;
+      
       if (ship.ship[row - 1][column - 1].name != name) 
       {
          throw std::invalid_argument("ERROR: getDepth called on incorrect container.\n");
@@ -96,14 +98,15 @@ short Container::getDepth(Ship& ship)
       }
       else
       {
-         short depth = 0;
-         for (int i = column; i < 12; i++)
+         for (int i = row; i < 8; i++)
          {
-            if (ship.ship[row][i].name != "NAN" && ship.ship[row][i].name != "UNUSED")
+            // std::cout << ship.ship[i][column].name << '\n';
+            if (ship.ship[i - 1][column - 1].name != "NAN" && ship.ship[i - 1][column - 1].name != "UNUSED")
             {
                depth++;
+               //std::cout << "Container Name at " << i << ", " << column << ": " << ship.ship[i - 1][column - 1].name << '\n';
             }
-            else break;
+            //else break;
          }
          return depth;
       }
