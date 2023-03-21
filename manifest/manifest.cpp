@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
             std::cout << "Depth of " << currentContainer->name << ": " << currentContainer->getDepth(currentShip) << '\n';
          }
       }
-      std::cout << '\n';
    }
    
    return 0;

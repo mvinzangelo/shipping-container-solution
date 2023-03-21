@@ -65,7 +65,9 @@ Ship::Ship(std::string& name)
          {
             //std::cout << line << '\n'; // Debug
             std::stringstream s(line);
-            s >> std::skipws >> c >> row >> c >> column >> c >> c >> c >> weight >> c >> c >> name;
+            s >> std::skipws >> c >> row >> c >> column >> c >> c >> c >> weight >> c >> c;
+            std::getline(s, name);
+            name.erase(0, 1);
             // if (name == "NAN") std::cout << "ALERT: This slot does not exist! ";
             // else if (name == "UNUSED") std::cout << "ALERT: This slot is empty! ";
             //std::cout << "Row: " << row << "\n" << "Column: " << column << '\n' << "Weight: " << weight << '\n' << "Name: " << name << '\n';
@@ -117,6 +119,7 @@ short Container::getDepth(Ship& ship)
 
 Ship currentShip;
 
+/*
 void populateShip() // test function
 {
    // Get the manifest name, and open it.
@@ -168,3 +171,4 @@ void populateShip() // test function
 
    std::cout << "Successfully parsed through " << manifest << ", which has " << currentShip.numContainers << " containers" << ".\n";
 }
+*/
