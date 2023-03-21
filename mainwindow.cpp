@@ -23,3 +23,9 @@ void MainWindow::on_btnEnter_clicked()
     ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
 }
 
+
+void MainWindow::on_backButtonPS_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
+}
+

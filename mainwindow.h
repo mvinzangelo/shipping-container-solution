@@ -20,6 +20,8 @@ private slots:
 
     void on_btnEnter_clicked();
 
+    void on_backButtonPS_clicked();
+
 private:
     Ui::MainWindow *ui;
     currentEmployee currOperator;
