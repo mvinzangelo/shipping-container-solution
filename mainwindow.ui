@@ -259,6 +259,12 @@
          </widget>
         </item>
        </layout>
+       <zorder>btnEnter</zorder>
+       <zorder>labelLastName</zorder>
+       <zorder>labelFirstName</zorder>
+       <zorder>lineLastName</zorder>
+       <zorder>lineFirstName</zorder>
+       <zorder>labelLogIn</zorder>
       </widget>
       <widget class="QWidget" name="screenSetUp">
        <property name="enabled">
@@ -306,6 +312,11 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>lineFirstName</tabstop>
+  <tabstop>lineLastName</tabstop>
+  <tabstop>btnEnter</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
