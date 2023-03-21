@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
 }
 
 MainWindow::~MainWindow()
@@ -19,6 +20,6 @@ void MainWindow::on_btnEnter_clicked()
     currOperator.setFirstName(ui->lineFirstName->text());
     currOperator.setLastName(ui->lineLastName->text());
     qInfo() << currOperator.getFirstName() << currOperator.getLastName();
-//    ui->stackedWidget->setCurrentIndex(1);
+    ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
 }
 
