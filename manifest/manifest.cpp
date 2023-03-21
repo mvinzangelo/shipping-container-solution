@@ -28,6 +28,9 @@ int main(int argc, char *argv[])
          }
       }
    }
+   std::cout << "Port weight: " << currentShip.getPortWeight() << '\n';
+   std::cout << "Starboard weight: " << currentShip.getStarbordWeight() << '\n';
+
    
    return 0;
 }

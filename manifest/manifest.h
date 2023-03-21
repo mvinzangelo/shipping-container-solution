@@ -63,14 +63,14 @@ Ship::Ship(std::string& name)
       Container currentContainer;
       while (std::getline(file, line))
          {
-            //std::cout << line << '\n'; // Debug
+            // std::cout << line << '\n'; // Debug
             std::stringstream s(line);
             s >> std::skipws >> c >> row >> c >> column >> c >> c >> c >> weight >> c >> c;
             std::getline(s, name);
             name.erase(0, 1);
             // if (name == "NAN") std::cout << "ALERT: This slot does not exist! ";
             // else if (name == "UNUSED") std::cout << "ALERT: This slot is empty! ";
-            //std::cout << "Row: " << row << "\n" << "Column: " << column << '\n' << "Weight: " << weight << '\n' << "Name: " << name << '\n';
+            // std::cout << "Row: " << row << "\n" << "Column: " << column << '\n' << "Weight: " << weight << '\n' << "Name: " << name << '\n';
             currentContainer = Container(row, column, weight, name);
 
             ship[row - 1][column - 1] = currentContainer;
@@ -119,6 +119,31 @@ short Container::getDepth(Ship& ship)
    return -1;
 }
 
+int Ship::getPortWeight()
+{
+   int weight = 0;
+   for (int i = 0; i < 8; i++)
+   {
+      for (int j = 0; j < 6; j++)
+      {
+         weight += ship[i][j].weight;
+      }
+   }
+   return weight;
+}
+
+int Ship::getStarbordWeight()
+{
+   int weight = 0;
+   for (int i = 0; i < 8; i++)
+   {
+      for (int j = 6; j < 12; j++)
+      {
+         weight += ship[i][j].weight;
+      }
+   }
+   return weight;
+}
 
 Ship currentShip;
 
