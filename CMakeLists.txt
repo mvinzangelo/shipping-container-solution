@@ -21,6 +21,8 @@ set(PROJECT_SOURCES
         currentemployee.cpp
         shippingcontainergrid.h
         shippingcontainergrid.cpp
+        containercell.h
+        containercell.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

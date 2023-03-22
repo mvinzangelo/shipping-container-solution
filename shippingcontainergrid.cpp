@@ -1,6 +1,7 @@
 #include "shippingcontainergrid.h"
 #include "qgridlayout.h"
 #include "qpushbutton.h"
+#include "containercell.h"
 
 ShippingContainerGrid::ShippingContainerGrid(QWidget *parent)
     : QWidget{parent}
@@ -11,12 +12,12 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent)
     {
         for(int j = 0; j < 8; j++)
         {
-            QPushButton * button = new QPushButton(this);
-            grid->addWidget(button, j, i);
+            QPushButton * cell = new ContainerCell(this);
+            grid->addWidget(cell, j, i);
 
             // Set size text etc. for each button
 
-            connect(button, &QPushButton::clicked, [=](){
+            connect(cell, &QPushButton::clicked, [=](){
                 onCellPressed(i, j);     // Call the function which uses i and j here
             });
         }
