@@ -22,6 +22,8 @@ private slots:
 
     void on_backButtonPS_clicked();
 
+    void on_buttonImport_clicked();
+
 private:
     Ui::MainWindow *ui;
     currentEmployee currOperator;
