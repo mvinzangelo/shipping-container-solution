@@ -7,6 +7,9 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent)
     : QWidget{parent}
 {
     QGridLayout * grid = new QGridLayout(this);
+    grid->setSpacing(0);
+    grid->setContentsMargins(0,0,0,0);
+    grid->setSizeConstraint(QLayout::SetFixedSize);
 
     for(int i = 0; i < 12; i++)
     {
