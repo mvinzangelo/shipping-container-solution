@@ -1,6 +1,12 @@
 #include "mainwindow.h"
+#include "shippingcontainergrid.h"
 #include "./ui_mainwindow.h"
 #include <QFileDialog>
+
+void onCellPressed(int i, int j)
+{
+    // Do stuff with i and j here
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -10,12 +16,15 @@ MainWindow::MainWindow(QWidget *parent)
     // UNCOMMENT TO START AT BEGINNING
     //ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
     ui->cbProblemType->addItems({"Loading / Unloading", "Balancing"});
+    ShippingContainerGrid* grid = new ShippingContainerGrid();
+    ui->gridContainer->addWidget(grid);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 
 
 void MainWindow::on_btnEnter_clicked()
@@ -67,4 +76,3 @@ void MainWindow::on_backButtonLU_clicked()
 {
     ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
 }
-

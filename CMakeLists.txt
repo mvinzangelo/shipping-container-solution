@@ -16,7 +16,11 @@ set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
         mainwindow.h
-        mainwindow.ui currentemployee.h currentemployee.cpp
+        mainwindow.ui
+        currentemployee.h
+        currentemployee.cpp
+        shippingcontainergrid.h
+        shippingcontainergrid.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
