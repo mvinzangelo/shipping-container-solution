@@ -1,12 +1,37 @@
-#include "mainwindow.h"
+//#include "mainwindow.h"
 
-#include <QApplication>
+//#include <QApplication>
+#include <iostream>
+#include "manifest/manifest.h"
 
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-    return a.exec();
+    std::string manifestName = ":ShipCase1.txt";
+   // std::cout << "Input a manifest name: ";
+   // std::getline(std::cin,manifestName);
+   // std::cout << '\n';
+    Ship currentShip(manifestName);
+    Container* currentContainer;
+    for (int i = 7; i >=0; i--)
+    {
+        for (int j = 0; j < 12; j++)
+        {
+            std::cout << currentShip.ship[i][j].name[0] << ' ';
+        }
+        std::cout << '\n';
+    }
+
+    for (int i = 7; i >= 0; i--)
+   {
+      for (int j = 0; j < 12; j++)
+      {
+         if (currentShip.ship[i][j].name != "NAN" && currentShip.ship[i][j].name != "UNUSED")
+         {
+            currentContainer = &currentShip.ship[i][j];
+            std::cout << "Depth of " << currentContainer->name << ": " << currentContainer->getDepth(currentShip) << '\n';
+         }
+      }
+   }
+    return 0;
 }
