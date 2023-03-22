@@ -7,7 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
+    // UNCOMMENT TO START AT BEGINNING
+    //ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
     ui->cbProblemType->addItems({"Loading / Unloading", "Balancing"});
 }
 
@@ -59,5 +60,11 @@ void MainWindow::on_buttonStartProblem_clicked()
             currProblem = BALANCING;
         break;
     }
+}
+
+
+void MainWindow::on_backButtonLU_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
 }
 

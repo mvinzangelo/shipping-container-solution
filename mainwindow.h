@@ -30,6 +30,8 @@ private slots:
 
     void on_buttonStartProblem_clicked();
 
+    void on_backButtonLU_clicked();
+
 private:
     Ui::MainWindow *ui;
     currentEmployee currOperator;
