@@ -48,3 +48,16 @@ void MainWindow::on_buttonImport_clicked()
         }
 }
 
+
+void MainWindow::on_buttonStartProblem_clicked()
+{
+    switch(ui->cbProblemType->currentIndex()) {
+        case 0:
+            currProblem = LOAD_UNLOAD;
+        break;
+        case 1:
+            currProblem = BALANCING;
+        break;
+    }
+}
+
