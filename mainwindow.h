@@ -27,5 +27,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     currentEmployee currOperator;
+    QString currManifestPath;
 };
 #endif // MAINWINDOW_H

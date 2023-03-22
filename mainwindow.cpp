@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
+    ui->cbProblemType->addItems({"Loading / Unloading", "Balancing"});
 }
 
 MainWindow::~MainWindow()
@@ -43,7 +44,7 @@ void MainWindow::on_buttonImport_clicked()
           // display the name of the file
           QStringList pathSplit = manifestPath.split("/");
           ui->textBrowser->setText(pathSplit.at(pathSplit.size()-1));
+          currManifestPath = manifestPath;
         }
-
 }
 
