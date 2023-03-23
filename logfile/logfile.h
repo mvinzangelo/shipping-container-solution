@@ -134,21 +134,22 @@ void LogFile::logManifestFinish(Ship& ship)
     }
 
     std::string homeDir;
+    std::string newManifestPath;
 
     #ifdef _WIN32 // If running on Windows
         const char* userProfile = std::getenv("USERPROFILE");
         if (userProfile != nullptr) {
             homeDir = userProfile;
-            newManifestName = homeDir + "\\" + newManifestName;
+            newManifestPath = homeDir + "\\" + newManifestName;
         }
     #else // If running on Linux or other Unix-based OS
         const char* home = std::getenv("HOME");
         if (home != nullptr) {
             homeDir = home;
-            newManifestName = homeDir + "/" + newManifestName;
+            newManifestPath = homeDir + "/" + newManifestName;
         }
     #endif
-    std::ofstream newManifest(newManifestName);
+    std::ofstream newManifest(newManifestPath);
 
     for (int i = 0; i < 8; i++)
     {
