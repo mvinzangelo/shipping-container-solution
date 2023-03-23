@@ -18,11 +18,13 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent)
         {
             if (i != 0 && j != rows)
             {
-                QPushButton *cell = new ContainerCell(this);
+                ContainerCell *cell = new ContainerCell(this);
                 grid->addWidget(cell, j, i);
-
+                cellWidgets[rows - j - 1][ i - 1] = cell;
                 connect(cell, &QPushButton::clicked, [=]()
-                        { onCellPressed(rows - j, i); });
+                        {
+                            onCellPressed(rows - j, i);
+                        });
             }
             // labels on the left hand side
             else if (i == 0 && j != rows)
@@ -55,17 +57,5 @@ void ShippingContainerGrid::onCellPressed(int i, int j)
 {
     // Do stuff with i and j here
     qInfo() << i << j;
-}
-
-void ShippingContainerGrid::updateInputMode(int newMode)
-{
-    switch (newMode)
-    {
-    // loading
-    case 0:
-        break;
-    // unloading
-    case 1:
-        break;
-    }
+    cellWidgets[i-1][j-1]->setStyleSheet("background: black");
 }
