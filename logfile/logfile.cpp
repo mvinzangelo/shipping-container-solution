@@ -5,7 +5,6 @@
 int main(int argc, char *argv[])
 {
     LogFile log;
-    //log.restartLogFile();
     std::string name = "Joshua Candelaria";
     std::string container = "Container";
     std::string manifestName;
