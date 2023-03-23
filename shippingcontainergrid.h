@@ -18,12 +18,9 @@ public:
     int rows = 8;
     int inputMode = 0;
     ContainerCell *cellWidgets[8][12];
+    void updateInputMode(int newMode);
 
 signals:
-
-private slots:
-    void
-    updateInputMode(int newMode);
 
 private:
     void setHoverColor(QColor newHoverColor);

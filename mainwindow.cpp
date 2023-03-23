@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "shippingcontainergrid.h"
 #include "./ui_mainwindow.h"
 #include <QFileDialog>
 
@@ -15,8 +14,9 @@ MainWindow::MainWindow(QWidget *parent)
     // UNCOMMENT TO START AT BEGINNING
     // ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
     ui->cbProblemType->addItems({"Loading / Unloading", "Balancing"});
-    ShippingContainerGrid *grid = new ShippingContainerGrid();
-    ui->gridContainer->addWidget(grid, 0, 1);
+    ShippingContainerGrid *inputGrid = new ShippingContainerGrid();
+    ui->gridContainer->addWidget(inputGrid, 0, 1);
+    currInputGrid = inputGrid;
 }
 
 MainWindow::~MainWindow()
@@ -88,4 +88,3 @@ void MainWindow::on_btnInputType_clicked()
         ui->btnInputType->setText("Loading");
     }
 }
-tatu

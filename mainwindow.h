@@ -4,13 +4,19 @@
 #include <QMainWindow>
 #include "currentemployee.h"
 #include "loadingunloadinginput.h"
+#include "shippingcontainergrid.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui
+{
+    class MainWindow;
+}
 QT_END_NAMESPACE
 
-enum ProblemType {
-    LOAD_UNLOAD, BALANCING
+enum ProblemType
+{
+    LOAD_UNLOAD,
+    BALANCING
 };
 
 class MainWindow : public QMainWindow
@@ -18,12 +24,9 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    ShippingContainerGrid *currInputGrid;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
-signals:
-    void inputTypeChanged(INPUT_TYPE newInputType);
-
 
 private slots:
 
@@ -45,6 +48,5 @@ private:
     QString currManifestPath;
     ProblemType currProblem;
     LoadingUnloadingInput *currLoadingUnloading;
-
 };
 #endif // MAINWINDOW_H

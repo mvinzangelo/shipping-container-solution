@@ -8,8 +8,6 @@ ContainerCell::ContainerCell(QWidget *parent) : QPushButton(parent)
     QColor hoverColor = Qt::red;
     QString cs1 = QString("QPushButton {"
                           "background-color: %1;"
-                          //   "border: 1px solid black;"
-                        //   "border-radius: 0px;"
                           "}"
                           "QPushButton:hover {"
                           "background-color: %2;"
@@ -18,13 +16,15 @@ ContainerCell::ContainerCell(QWidget *parent) : QPushButton(parent)
     setStyleSheet(cs1);
 }
 
-void ContainerCell::updateInputType(int inputType) {
-    switch(inputType) {
-        case 0:
-            hoverColor = Qt::transparent;
+void ContainerCell::updateInputType(int inputType)
+{
+    switch (inputType)
+    {
+    case 0:
+        hoverColor = Qt::transparent;
         break;
-        case 1:
-            hoverColor = Qt::red;
+    case 1:
+        hoverColor = Qt::red;
         break;
     }
 }

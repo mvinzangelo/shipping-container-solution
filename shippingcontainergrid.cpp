@@ -57,18 +57,14 @@ void ShippingContainerGrid::onCellPressed(int i, int j)
     qInfo() << i << j;
 }
 
-void ShippingContainerGrid::setHoverColor(QColor newColor)
+void ShippingContainerGrid::updateInputMode(int newMode)
 {
     for (unsigned i = 0; i < rows; i++)
     {
         for (unsigned j = 0; j < columns; j++)
         {
-            cellWidgets[i][j]->hoverColor = newColor;
+            cellWidgets[i][j]->updateInputType(newMode);
         }
     }
-}
-
-void ShippingContainerGrid::updateInputMode(int newMode)
-{
     return;
 }
