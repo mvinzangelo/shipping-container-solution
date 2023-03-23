@@ -35,6 +35,10 @@
      <height>1080</height>
     </size>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background: white
+</string>
+   </property>
    <layout class="QGridLayout" name="gridLayout_2">
     <property name="leftMargin">
      <number>0</number>
@@ -690,9 +694,44 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </item>
         <item row="2" column="0">
          <layout class="QGridLayout" name="gridContainer">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinimumSize</enum>
+          </property>
           <property name="spacing">
            <number>0</number>
           </property>
+          <item row="0" column="0">
+           <widget class="QWidget" name="inputWidget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>500</width>
+              <height>800</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>600</width>
+              <height>800</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <widget class="QLabel" name="label">
+             <property name="geometry">
+              <rect>
+               <x>30</x>
+               <y>40</y>
+               <width>491</width>
+               <height>111</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
          </layout>
         </item>
        </layout>
@@ -700,6 +739,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1920</width>
+     <height>19</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <tabstops>

@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
     ui->cbProblemType->addItems({"Loading / Unloading", "Balancing"});
     ShippingContainerGrid* grid = new ShippingContainerGrid();
-    ui->gridContainer->addWidget(grid);
+    ui->gridContainer->addWidget(grid, 0, 1);
 }
 
 MainWindow::~MainWindow()
@@ -47,7 +47,7 @@ void MainWindow::on_buttonImport_clicked()
     QString manifestPath = QFileDialog::getOpenFileName(
               this,
               "Open Document",
-              QDir::currentPath(),
+              QDir::homePath(),
               "Text files (*.txt)");
     if( !manifestPath.isNull() )
         {
