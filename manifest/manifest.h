@@ -98,12 +98,17 @@ short Container::getDepth(Ship& ship)
       }
       else
       {
-         int i = row;
-         while(ship.bay[i][column - 1].name != "UNUSED" || i == 8)
+         for (int i = row; i < 8; i++)
          //for (int i = row; i < 8; i++)
          {  
+            if(ship.bay[i][column - 1].name != "UNUSED")
+            {
             depth++;
-            i++;
+            }
+            else
+            {
+               break;
+            }      
            
          }
          return depth;

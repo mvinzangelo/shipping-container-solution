@@ -15,6 +15,13 @@ int main(int argc, char *argv[])
     Container* currentContainer;
     currentShip.bay[0][0].name = "Walmart";
     currentShip.bay[1][0].name = "Target";
+    currentShip.bay[2][0].name = "Target";
+    currentShip.bay[3][0].name = "Target";
+    currentShip.bay[4][0].name = "Target";
+    currentShip.bay[5][0].name = "Target";
+    currentShip.bay[6][0].name = "Target";
+    currentShip.bay[7][0].name = "Target";
+    
     for (int i = 7; i >=0; i--)
     {
         for (int j = 0; j < 12; j++)
