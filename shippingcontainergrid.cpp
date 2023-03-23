@@ -25,7 +25,7 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent)
 
                 connect(cell, &QPushButton::clicked, [=]()
                         {
-                            onCellPressed(i, j); // Call the function which uses i and j here
+                            onCellPressed(rows - j, i); // Call the function which uses i and j here
                         });
             }
             else if (i == 0 && j != rows)
