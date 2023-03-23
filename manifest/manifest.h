@@ -41,7 +41,7 @@ struct Container {
 */
 
 struct Ship {
-   Container ship[8][12];
+   Container bay[8][12];
    Container buffer[4][24];
    std::string manifestName;
    int numContainers;
@@ -73,7 +73,7 @@ Ship::Ship(std::string& name)
             // std::cout << "Row: " << row << "\n" << "Column: " << column << '\n' << "Weight: " << weight << '\n' << "Name: " << name << '\n';
             currentContainer = Container(row, column, weight, name);
 
-            ship[row - 1][column - 1] = currentContainer;
+            bay[row - 1][column - 1] = currentContainer;
             if (name != "NAN" && name != "UNUSED") numContainers++;
 
          }
@@ -91,7 +91,7 @@ short Container::getDepth(Ship& ship)
    {
       short depth = 0;
       
-      if (ship.ship[row - 1][column - 1].name != name) 
+      if (ship.bay[row - 1][column - 1].name != name || ship.bay[row - 1][column - 1].name == "NAN") 
       {
          throw std::invalid_argument("ERROR: getDepth called on incorrect container.\n");
          
@@ -99,15 +99,10 @@ short Container::getDepth(Ship& ship)
       else
       {
          for (int i = row; i < 8; i++)
-         {
-            if (i - 1 == 0) i = 2;
-            // std::cout << ship.ship[i][column].name << '\n';
-            if (ship.ship[i - 1][column - 1].name != "NAN" && ship.ship[i - 1][column - 1].name != "UNUSED")
-            {
-               depth++;
-               // std::cout << "Container Name at " << i << ", " << column << ": " << ship.ship[i - 1][column - 1].name << '\n';
-            }
-            //else break;
+         //for (int i = row; i < 8; i++)
+         {  
+            if(ship.bay[i][column - 1].name != "UNUSED"){ depth++; }
+            else{ break; }      
          }
          return depth;
       }
@@ -127,7 +122,7 @@ int Ship::getPortWeight()
    {
       for (int j = 0; j < 6; j++)
       {
-         weight += ship[i][j].weight;
+         weight += bay[i][j].weight;
       }
    }
    return weight;
@@ -140,7 +135,7 @@ int Ship::getStarbordWeight()
    {
       for (int j = 6; j < 12; j++)
       {
-         weight += ship[i][j].weight;
+         weight += bay[i][j].weight;
       }
    }
    return weight;

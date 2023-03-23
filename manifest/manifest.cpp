@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
    {
       for (int j = 0; j < 12; j++)
       {
-         std::cout << currentShip.ship[i][j].name[0] << ' ';
+         std::cout << currentShip.bay[i][j].name[0] << ' ';
       }
       std::cout << '\n';
    }
@@ -21,9 +21,9 @@ int main(int argc, char *argv[])
    {
       for (int j = 0; j < 12; j++)
       {
-         if (currentShip.ship[i][j].name != "NAN" && currentShip.ship[i][j].name != "UNUSED")
+         if (currentShip.bay[i][j].name != "NAN" && currentShip.bay[i][j].name != "UNUSED")
          {
-            currentContainer = &currentShip.ship[i][j];
+            currentContainer = &currentShip.bay[i][j];
             std::cout << "Depth of " << currentContainer->name << ": " << currentContainer->getDepth(currentShip) << '\n';
          }
       }
