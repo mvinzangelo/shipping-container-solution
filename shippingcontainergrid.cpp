@@ -21,13 +21,12 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent)
                 QPushButton *cell = new ContainerCell(this);
                 grid->addWidget(cell, j, i);
 
-                // Set size text etc. for each button
-
                 connect(cell, &QPushButton::clicked, [=]()
                         {
-                            onCellPressed(rows - j, i); // Call the function which uses i and j here
+                            onCellPressed(rows - j, i);
                         });
             }
+            // labels on the left hand side
             else if (i == 0 && j != rows)
             {
                 QLabel *label = new QLabel(this);
@@ -39,6 +38,7 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent)
                 label->setText(str.setNum(rows - j));
                 grid->addWidget(label, j, i);
             }
+            // labels on the bottom
             else if (i != 0 && j == rows)
             {
                 QLabel *label = new QLabel(this);

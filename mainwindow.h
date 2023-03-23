@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "currentemployee.h"
+#include "loadingunloadinginput.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -37,5 +38,7 @@ private:
     currentEmployee currOperator;
     QString currManifestPath;
     ProblemType currProblem;
+    LoadingUnloadingInput *currLoadingUnloading;
+
 };
 #endif // MAINWINDOW_H

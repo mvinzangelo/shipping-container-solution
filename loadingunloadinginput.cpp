@@ -2,5 +2,5 @@
 
 LoadingUnloadingInput::LoadingUnloadingInput()
 {
-
+    currInputType = LOADING;
 }
