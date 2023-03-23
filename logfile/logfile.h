@@ -1,5 +1,6 @@
 #ifndef LOGFILE_H
 #define LOGFILE_H
+#include <cstdlib>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -132,6 +133,21 @@ void LogFile::logManifestFinish(Ship& ship)
         newManifestName = oldManifestName + "OUTBOUND";
     }
 
+    std::string homeDir;
+
+    #ifdef _WIN32 // If running on Windows
+        const char* userProfile = std::getenv("USERPROFILE");
+        if (userProfile != nullptr) {
+            homeDir = userProfile;
+            newManifestName = homeDir + "\\" + newManifestName;
+        }
+    #else // If running on Linux or other Unix-based OS
+        const char* home = std::getenv("HOME");
+        if (home != nullptr) {
+            homeDir = home;
+            newManifestName = homeDir + "/" + newManifestName;
+        }
+    #endif
     std::ofstream newManifest(newManifestName);
 
     for (int i = 0; i < 8; i++)
