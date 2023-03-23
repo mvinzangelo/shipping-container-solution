@@ -5,26 +5,49 @@ ContainerCell::ContainerCell(QWidget *parent) : QPushButton(parent)
     setFixedHeight(80);
     setFixedWidth(80);
     cellColor = Qt::white;
-    QColor hoverColor = Qt::red;
-    QString cs1 = QString("QPushButton {"
-                          "background-color: %1;"
-                          "}"
-                          "QPushButton:hover {"
-                          "background-color: %2;"
-                          "}")
-                      .arg(cellColor.name(), hoverColor.name());
-    setStyleSheet(cs1);
+    hoverColor = Qt::red;
+    currStyleSheet = QString("QPushButton {"
+                             "background-color: %1;"
+                             "}")
+                         .arg(cellColor.name());
+    setStyleSheet(currStyleSheet);
 }
 
 void ContainerCell::updateInputType(int inputType)
 {
     switch (inputType)
     {
+    // loading mode
     case 0:
-        hoverColor = Qt::transparent;
+        currStyleSheet = QString("QPushButton {"
+                                 "background-color: %1;"
+                                 "}")
+                             .arg(cellColor.name());
+        setStyleSheet(currStyleSheet);
         break;
+    // unloading mode
     case 1:
-        hoverColor = Qt::red;
+        setStyleSheet("");
+        currStyleSheet = QString("QPushButton {"
+                                 "background-color: %1;"
+                                 "}"
+                                 "QPushButton:hover {"
+                                 "background-color: %2;"
+                                 "}")
+                             .arg(cellColor.name(), hoverColor.name());
+        setStyleSheet(currStyleSheet);
         break;
     }
+}
+
+void ContainerCell::updateStyleSheet()
+{
+    currStyleSheet = QString("QPushButton {"
+                             "background-color: %1;"
+                             "}"
+                             "QPushButton:hover {"
+                             "background-color: %2;"
+                             "}")
+                         .arg(cellColor.name(), hoverColor.name());
+    setStyleSheet(currStyleSheet);
 }

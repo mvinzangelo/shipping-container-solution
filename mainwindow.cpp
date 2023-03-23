@@ -80,11 +80,19 @@ void MainWindow::on_btnInputType_clicked()
         currLoadingUnloading->currInputType = UNLOADING;
         ui->btnInputType->setText("Unloading");
         ui->btnInputType->setStyleSheet("background: rgba(255, 0, 0, 0.8)");
+        if (currInputGrid)
+        {
+            currInputGrid->updateInputMode(1);
+        }
     }
     else
     {
         currLoadingUnloading->currInputType = LOADING;
         ui->btnInputType->setStyleSheet("background: #3657ff");
         ui->btnInputType->setText("Loading");
+        if (currInputGrid)
+        {
+            currInputGrid->updateInputMode(0);
+        }
     }
 }

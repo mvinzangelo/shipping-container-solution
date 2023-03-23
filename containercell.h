@@ -9,10 +9,11 @@ public:
     ContainerCell(QWidget *parent = nullptr);
     QColor cellColor;
     QColor hoverColor;
-public slots:
+    QString currStyleSheet;
     void updateInputType(int inputType);
 
 private:
+    void updateStyleSheet();
 };
 
 #endif // CONTAINERCELL_H
