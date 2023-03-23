@@ -1019,15 +1019,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                      <height>298</height>
                     </rect>
                    </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_3">
-                    <item>
-                     <widget class="QLabel" name="label">
-                      <property name="text">
-                       <string>TextLabel</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
+                   <layout class="QVBoxLayout" name="verticalLayout_3"/>
                   </widget>
                  </widget>
                 </item>

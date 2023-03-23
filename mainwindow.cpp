@@ -17,6 +17,10 @@ MainWindow::MainWindow(QWidget *parent)
     ShippingContainerGrid *inputGrid = new ShippingContainerGrid();
     ui->gridContainer->addWidget(inputGrid, 0, 1);
     currInputGrid = inputGrid;
+    for(int i = 0; i < 20; i++) {
+    QPushButton * temp = new QPushButton();
+    ui->loadingContents->layout()->addWidget(temp);
+    }
 }
 
 MainWindow::~MainWindow()
