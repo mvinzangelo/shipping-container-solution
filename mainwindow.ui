@@ -800,8 +800,25 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  <height>50</height>
                 </size>
                </property>
+               <property name="font">
+                <font>
+                 <pointsize>14</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background: #3657ff</string>
+               </property>
                <property name="text">
-                <string/>
+                <string>Loading</string>
+               </property>
+               <property name="checkable">
+                <bool>false</bool>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="default">
+                <bool>false</bool>
                </property>
               </widget>
              </item>

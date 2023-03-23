@@ -36,6 +36,8 @@ private slots:
 
     void on_backButtonLU_clicked();
 
+    void on_btnInputType_clicked();
+
 private:
     Ui::MainWindow *ui;
     currentEmployee currOperator;
