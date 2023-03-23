@@ -1,6 +1,7 @@
 #ifndef LOGFILE_H
 #define LOGFILE_H
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <chrono>
@@ -69,6 +70,7 @@ LogFile::LogFile()
     std::ofstream saveLogFileName("config.txt");
     saveLogFileName << currentLogFileName;
     logFile.open(logFileName, std::ios::app);
+    saveLogFileName.close();
 }
 
 LogFile::~LogFile()
@@ -129,6 +131,20 @@ void LogFile::logManifestFinish(Ship& ship)
     {
         newManifestName = oldManifestName + "OUTBOUND";
     }
+
+    std::ofstream newManifest(newManifestName);
+
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 12; j++)
+        {
+            newManifest << "[" << std::setw(2) << std::setfill('0') << ship.bay[i][j].row
+                        << "," << std::setw(2) << std::setfill('0') << ship.bay[i][j].column
+                        << "], {" << std::setw(5) << std::setfill('0') << ship.bay[i][j].weight
+                        << "}, " << ship.bay[i][j].name << '\n';
+        }
+    }
+
     this->logFile << timestamp << ": " << "Finished a cycle. Manifest " << newManifestName << " was written to desktop, and a reminder pop-up to operator to send file was displayed.\n";
 }
 void LogFile::getOperatorMessage()
