@@ -21,8 +21,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-//public slots:
-//    void inputTypeChanged();
+signals:
+    void inputTypeChanged(INPUT_TYPE newInputType);
+
 
 private slots:
 

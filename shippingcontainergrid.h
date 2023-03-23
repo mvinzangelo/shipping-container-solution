@@ -11,8 +11,15 @@ public:
     void onCellPressed(int i, int j);
     int columns = 12;
     int rows = 8;
+    int inputMode = 0;
 
 signals:
+
+private slots:
+    void updateInputMode(int newMode);
+
+private:
+    // void setHoverColor(Q)
 };
 
 #endif // SHIPPINGCONTAINERGRID_H

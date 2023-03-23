@@ -86,3 +86,4 @@ void MainWindow::on_btnInputType_clicked()
         ui->btnInputType->setText("Loading");
     }
 }
+
