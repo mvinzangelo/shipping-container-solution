@@ -75,15 +75,17 @@ void MainWindow::on_backButtonLU_clicked()
 
 void MainWindow::on_btnInputType_clicked()
 {
-    if (currLoadingUnloading->currInputType == LOADING) {
+    if (currLoadingUnloading->currInputType == LOADING)
+    {
         currLoadingUnloading->currInputType = UNLOADING;
         ui->btnInputType->setText("Unloading");
         ui->btnInputType->setStyleSheet("background: rgba(255, 0, 0, 0.8)");
     }
-    else {
+    else
+    {
         currLoadingUnloading->currInputType = LOADING;
         ui->btnInputType->setStyleSheet("background: #3657ff");
         ui->btnInputType->setText("Loading");
     }
 }
-
+tatu

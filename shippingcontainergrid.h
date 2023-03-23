@@ -22,11 +22,11 @@ public:
 signals:
 
 private slots:
-//    void
-//    updateInputMode(int newMode);
+    void
+    updateInputMode(int newMode);
 
 private:
-    // void setHoverColor(Q)
+    void setHoverColor(QColor newHoverColor);
 };
 
 #endif // SHIPPINGCONTAINERGRID_H

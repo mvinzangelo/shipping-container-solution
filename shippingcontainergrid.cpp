@@ -20,11 +20,9 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent)
             {
                 ContainerCell *cell = new ContainerCell(this);
                 grid->addWidget(cell, j, i);
-                cellWidgets[rows - j - 1][ i - 1] = cell;
+                cellWidgets[rows - j - 1][i - 1] = cell;
                 connect(cell, &QPushButton::clicked, [=]()
-                        {
-                            onCellPressed(rows - j, i);
-                        });
+                        { onCellPressed(rows - j, i); });
             }
             // labels on the left hand side
             else if (i == 0 && j != rows)
@@ -57,5 +55,20 @@ void ShippingContainerGrid::onCellPressed(int i, int j)
 {
     // Do stuff with i and j here
     qInfo() << i << j;
-    cellWidgets[i-1][j-1]->setStyleSheet("background: black");
+}
+
+void ShippingContainerGrid::setHoverColor(QColor newColor)
+{
+    for (unsigned i = 0; i < rows; i++)
+    {
+        for (unsigned j = 0; j < columns; j++)
+        {
+            cellWidgets[i][j]->hoverColor = newColor;
+        }
+    }
+}
+
+void ShippingContainerGrid::updateInputMode(int newMode)
+{
+    return;
 }
