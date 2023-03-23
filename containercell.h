@@ -7,6 +7,8 @@ class ContainerCell : public QPushButton
 {
 public:
     ContainerCell(QWidget *parent = nullptr);
+public slots:
+    void updateInputType(int inputType);
 private:
     QColor cellColor;
     QColor hoverColor;

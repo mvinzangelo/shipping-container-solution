@@ -60,6 +60,7 @@ void MainWindow::on_buttonStartProblem_clicked()
     case 0:
         currProblem = LOAD_UNLOAD;
         ui->stackedWidget->setCurrentWidget(ui->screenInput);
+        currLoadingUnloading = new LoadingUnloadingInput();
         break;
     case 1:
         currProblem = BALANCING;

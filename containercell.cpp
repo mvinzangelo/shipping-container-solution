@@ -17,3 +17,14 @@ ContainerCell::ContainerCell(QWidget *parent) : QPushButton(parent)
                       .arg(cellColor.name(), hoverColor.name());
     setStyleSheet(cs1);
 }
+
+void ContainerCell::updateInputType(int inputType) {
+    switch(inputType) {
+        case 0:
+            hoverColor = Qt::transparent;
+        break;
+        case 1:
+            hoverColor = Qt::red;
+        break;
+    }
+}

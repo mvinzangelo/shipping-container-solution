@@ -21,6 +21,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+//public slots:
+//    void inputTypeChanged();
+
 private slots:
 
     void on_btnEnter_clicked();
