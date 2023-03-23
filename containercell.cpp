@@ -6,8 +6,14 @@ ContainerCell::ContainerCell(QWidget *parent) : QPushButton(parent)
     setFixedWidth(80);
     cellColor = Qt::white;
     hoverColor = Qt::red;
+    setDisabled(true);
+    setText("name");
+    setToolTip("THIS IS A TOOLTIP");
     currStyleSheet = QString("QPushButton {"
                              "background-color: %1;"
+                             "}"
+                             "QPushButton:disabled {"
+                             "color: black"
                              "}")
                          .arg(cellColor.name());
     setStyleSheet(currStyleSheet);
@@ -21,9 +27,13 @@ void ContainerCell::updateInputType(int inputType)
     case 0:
         currStyleSheet = QString("QPushButton {"
                                  "background-color: %1;"
+                                 "}"
+                                 "QPushButton:disabled {"
+                                 "color: black"
                                  "}")
                              .arg(cellColor.name());
         setStyleSheet(currStyleSheet);
+        setDisabled(true);
         break;
     // unloading mode
     case 1:
@@ -36,6 +46,7 @@ void ContainerCell::updateInputType(int inputType)
                                  "}")
                              .arg(cellColor.name(), hoverColor.name());
         setStyleSheet(currStyleSheet);
+        setDisabled(false);
         break;
     }
 }
