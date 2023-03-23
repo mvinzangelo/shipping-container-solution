@@ -23,6 +23,8 @@ set(PROJECT_SOURCES
         shippingcontainergrid.cpp
         containercell.h
         containercell.cpp
+        loadingunloadinginput.h
+        loadingunloadinginput.cpp
 )
 
 
