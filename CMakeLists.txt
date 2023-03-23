@@ -25,6 +25,7 @@ set(PROJECT_SOURCES
         containercell.cpp
 )
 
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(shipping-container-solution
         MANUAL_FINALIZATION
@@ -57,6 +58,10 @@ set_target_properties(shipping-container-solution PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
+
+# subdirectories
+add_subdirectory(logfile)
+add_subdirectory(manifest)
 
 install(TARGETS shipping-container-solution
     BUNDLE DESTINATION .
