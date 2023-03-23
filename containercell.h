@@ -7,6 +7,8 @@ class ContainerCell : public QPushButton
 {
 public:
     ContainerCell(QWidget *parent = nullptr);
+private:
+    QColor cellColor;
 };
 
 #endif // CONTAINERCELL_H
