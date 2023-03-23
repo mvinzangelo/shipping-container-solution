@@ -1,9 +1,13 @@
 #ifndef BALANCE_H
 #define BALANCE_H
-
 #include "../manifest/manifest.h"
+using namespace std;
+#include <vector>
+#include <queue> 
+#include <set> 
 
 //OPERATORS  
+
 
 //returns container that was picked up from ship
 Container pickUp(Ship& currShip, int row, int col){
@@ -17,6 +21,7 @@ Container pickUp(Ship& currShip, int row, int col){
 
     return temp; 
 }; 
+
 
 //dropping off container operator 
 void dropOff(Ship& currShip, Container& cont,int row, int col){
@@ -36,9 +41,106 @@ void dropOff(Ship& currShip, Container& cont,int row, int col){
 
 //expand the current ship's children by checking what operators can 
 //be done and creating new children 
-void operators(Ship visited[] ){
+//actionType represents wheter we are picking up or dropping off
+//even -> dropping off 
+//odd -> picking up 
 
+
+void operators(Ship& currShip, set<Ship> visited, int actionType ){
+
+    //case where we are picking up a container to move 
+    if(actionType % 2 != 0){
+        
+        for(int i = 0; i < 12; ++i ){
+
+            for(int j = 8; j > 0; --j){
+
+                if(currShip.bay[i][j].name != "UNUSED" && currShip.bay[i][j].name != "NAN" ){
+
+                    Ship newShip = currShip; 
+
+                    newShip.onCrane = pickUp(currShip,i,j); 
+                    std::cout<<"Pikcing up container: "<< currShip.bay[i][j].name << endl; 
+
+                    newShip.craneLocation = j;
+
+                    //check wheter newly created ship has been visited already 
+                    bool inVisited = false;
+                    for(auto const &item: visited)
+                    {
+                        if(item == newShip){inVisited = true; break;}
+                    }//check whether newShip has already been visited 
+
+                    if(!inVisited){
+                        currShip.balanceChild[i] = &newShip;
+                        currShip.depth +=1; 
+                    }//new node created,update children of parent and increase depth of search 
+
+                    
+                
+                }//search columns top to bottom to find first one we can pick up  
+
+
+            }//go through rows 
+             
+        }//go through columns
+
+    }//end if that picks up containers  
+
+
+
+
+
+    //case where we are dropping off a container  
+    if(actionType % 2 == 0 ){
+
+
+
+    }//end if
+
+
+
+ 
 
 };//end operators 
 
+
+
+//general search function that will search through possible cases 
+//to find best moves 
+
+/*
+void balanceSearch(Ship& currShip, int qFunc){
+
+int expandedNodes = 0;
+int maxQ = 0;
+int tempQ = 0; 
+
+//queue of nodes to search through
+queue<Ship> nodes; 
+
+//list of nodes already visited CHANGED FROM VECTOR TO SET
+set<Ship> visited; 
+
+//variable to hold store the current ship layout before expanding 
+Ship currNode = currShip; 
+
+//push initial ship into queue of ships to expand 
+nodes.push(currNode); 
+tempQ += 1; 
+maxQ+= 1; 
+
+//put initial board as visited for inital check 
+//incase ship comes into port already legally balanced 
+visited.push_back(currNode);
+
+
+
+
+
+}; 
+
+*/
 #endif 
+
+
