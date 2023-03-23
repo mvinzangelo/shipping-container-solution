@@ -1,3 +1,5 @@
+#ifndef MANIFEST_H
+#define MANIFEST_H
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -55,6 +57,7 @@ struct Ship {
 Ship::Ship(std::string& name)
 {
    std::ifstream file(name);
+   manifestName = name;
    if (file.is_open())
    {
       char c;
@@ -156,7 +159,6 @@ int Ship::getNumContainers()
    }
    return numContainers;
 }
-
 /*
 void populateShip() // test function
 {
@@ -210,3 +212,5 @@ void populateShip() // test function
    std::cout << "Successfully parsed through " << manifest << ", which has " << currentShip.numContainers << " containers" << ".\n";
 }
 */
+
+#endif
