@@ -75,16 +75,19 @@ void MainWindow::on_backButtonLU_clicked()
 
 void MainWindow::on_btnInputType_clicked()
 {
+    // loading -> unloading
     if (currLoadingUnloading->currInputType == LOADING)
     {
         currLoadingUnloading->currInputType = UNLOADING;
         ui->btnInputType->setText("Unloading");
-        ui->btnInputType->setStyleSheet("background: rgba(255, 0, 0, 0.8)");
+        ui->btnInputType->setStyleSheet("background: rgb(255, 0, 0)");
         if (currInputGrid)
         {
             currInputGrid->updateInputMode(1);
         }
+        ui->loadInput->setEnabled(false);
     }
+    // unloading -> loading
     else
     {
         currLoadingUnloading->currInputType = LOADING;
@@ -94,5 +97,6 @@ void MainWindow::on_btnInputType_clicked()
         {
             currInputGrid->updateInputMode(0);
         }
+        ui->loadInput->setEnabled(true);
     }
 }
