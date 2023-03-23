@@ -5,6 +5,7 @@ int main(int argc, char *argv[])
    std::string manifestName;
    std::cout << "Input a manifest name: ";
    std::getline(std::cin, manifestName);
+   // TODO: Input validation on the file name
    std::cout << '\n';
    Ship currentShip(manifestName);
    Container* currentContainer;
