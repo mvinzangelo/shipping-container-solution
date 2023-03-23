@@ -36,7 +36,7 @@
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">background: white
+    <string notr="true">
 </string>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
@@ -623,19 +623,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item row="3" column="0">
-         <spacer name="verticalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item row="0" column="0" alignment="Qt::AlignTop">
          <widget class="QWidget" name="headerLoadingUnloading" native="true">
           <property name="minimumSize">
@@ -727,6 +714,19 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </layout>
          </widget>
         </item>
+        <item row="4" column="0">
+         <spacer name="verticalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="1" column="0">
          <spacer name="verticalSpacer_6">
           <property name="orientation">
@@ -766,12 +766,58 @@ li.checked::marker { content: &quot;\2612&quot;; }
              <string notr="true"/>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout">
-             <item>
-              <widget class="QLabel" name="label">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetDefaultConstraint</enum>
+             </property>
+             <item alignment="Qt::AlignTop">
+              <widget class="QLabel" name="labelInputType">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>14</pointsize>
+                </font>
+               </property>
                <property name="text">
-                <string>TextLabel</string>
+                <string>Input Type:</string>
                </property>
               </widget>
+             </item>
+             <item alignment="Qt::AlignTop">
+              <widget class="QPushButton" name="btnInputType">
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>500</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_7">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
