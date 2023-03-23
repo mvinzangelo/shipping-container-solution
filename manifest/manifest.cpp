@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
    }
    std::cout << "Port weight: " << currentShip.getPortWeight() << '\n';
    std::cout << "Starboard weight: " << currentShip.getStarbordWeight() << '\n';
-
+   std::cout << "Number of Containers on ship: " << currentShip.getNumContainers() << '\n';
    
    return 0;
 }

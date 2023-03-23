@@ -44,16 +44,16 @@ struct Ship {
    Container bay[8][12];
    Container buffer[4][24];
    std::string manifestName;
-   int numContainers;
-   Ship() : numContainers(0) {}
+   // int numContainers;
+   Ship() {}
    Ship(std::string& name);
    int getPortWeight();
    int getStarbordWeight();
+   int getNumContainers();
 };
 
 Ship::Ship(std::string& name)
 {
-   numContainers = 0;
    std::ifstream file(name);
    if (file.is_open())
    {
@@ -74,7 +74,7 @@ Ship::Ship(std::string& name)
             currentContainer = Container(row, column, weight, name);
 
             bay[row - 1][column - 1] = currentContainer;
-            if (name != "NAN" && name != "UNUSED") numContainers++;
+            // if (name != "NAN" && name != "UNUSED") numContainers++;
 
          }
          file.close();
@@ -141,7 +141,21 @@ int Ship::getStarbordWeight()
    return weight;
 }
 
-Ship currentShip;
+int Ship::getNumContainers()
+{
+   int numContainers = 0;
+   for (int i = 0; i < 8; i++)
+   {
+      for (int j = 0; j < 12; j++)
+      {
+         if (bay[i][j].name != "UNUSED" && bay[i][j].name != "NAN")
+         {
+            numContainers++;
+         }
+      }
+   }
+   return numContainers;
+}
 
 /*
 void populateShip() // test function
