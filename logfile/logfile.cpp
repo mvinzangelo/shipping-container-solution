@@ -113,7 +113,7 @@ void LogFile::logManifestFinish(Ship& ship)
         const char* userProfile = std::getenv("USERPROFILE");
         if (userProfile != nullptr) {
             homeDir = userProfile;
-            newManifestPath = homeDir + "\\" + newManifestName;
+            newManifestPath = homeDir + "\\Desktop\\" + newManifestName;
         }
     #else // If running on Linux or other Unix-based OS
         const char* home = std::getenv("HOME");
@@ -131,7 +131,9 @@ void LogFile::logManifestFinish(Ship& ship)
             newManifest << "[" << std::setw(2) << std::setfill('0') << ship.bay[i][j].row
                         << "," << std::setw(2) << std::setfill('0') << ship.bay[i][j].column
                         << "], {" << std::setw(5) << std::setfill('0') << ship.bay[i][j].weight
-                        << "}, " << ship.bay[i][j].name << '\n';
+                        << "}, " << ship.bay[i][j].name;
+            if (i == 7 && j == 11) break;
+            newManifest << '\n';
         }
     }
 

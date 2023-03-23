@@ -107,8 +107,10 @@ int Ship::getNumContainers()
    return numContainers;
 }
 
+/*
 int main(int argc, char *argv[])
 {
+   
    std::string manifestName;
    std::cout << "Input a manifest name: ";
    std::getline(std::cin, manifestName);
@@ -141,3 +143,4 @@ int main(int argc, char *argv[])
    
    return 0;
 }
+*/
