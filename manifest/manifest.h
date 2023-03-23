@@ -22,15 +22,15 @@ PLEASE NOTE: This struct SHOULD be moved to another file! It is only here for te
 struct Ship;
 
 // TODO: Move Container and Ship structs to a different file.
-struct Container {
+struct Container
+{
    short row;
    short column;
    int weight;
    std::string name;
    Container() : row(-1), column(-1), weight(0), name("NAN") {}
-   Container(int row, int column, int weight, std::string& name) : 
-   row(row), column(column), weight(weight), name(name) {}
-   short getDepth(Ship&);
+   Container(int row, int column, int weight, std::string &name) : row(row), column(column), weight(weight), name(name) {}
+   short getDepth(Ship &);
 };
 
 /*
@@ -42,19 +42,20 @@ struct Container {
       - Note: might be better to protect the fields of the Container struct to avoid accidental modification, since we do NOT modify the containers.
 */
 
-struct Ship {
+struct Ship
+{
    Container bay[8][12];
    Container buffer[4][24];
    std::string manifestName;
    // int numContainers;
    Ship() {}
-   Ship(std::string& name);
+   Ship(std::string &name);
    int getPortWeight();
    int getStarbordWeight();
    int getNumContainers();
 };
 
-Ship::Ship(std::string& name)
+Ship::Ship(std::string &name)
 {
    std::ifstream file(name);
    manifestName = name;
@@ -65,22 +66,21 @@ Ship::Ship(std::string& name)
       std::string name, line;
       Container currentContainer;
       while (std::getline(file, line))
-         {
-            // std::cout << line << '\n'; // Debug
-            std::stringstream s(line);
-            s >> std::skipws >> c >> row >> c >> column >> c >> c >> c >> weight >> c >> c;
-            std::getline(s, name);
-            name.erase(0, 1);
-            // if (name == "NAN") std::cout << "ALERT: This slot does not exist! ";
-            // else if (name == "UNUSED") std::cout << "ALERT: This slot is empty! ";
-            // std::cout << "Row: " << row << "\n" << "Column: " << column << '\n' << "Weight: " << weight << '\n' << "Name: " << name << '\n';
-            currentContainer = Container(row, column, weight, name);
+      {
+         // std::cout << line << '\n'; // Debug
+         std::stringstream s(line);
+         s >> std::skipws >> c >> row >> c >> column >> c >> c >> c >> weight >> c >> c;
+         std::getline(s, name);
+         name.erase(0, 1);
+         // if (name == "NAN") std::cout << "ALERT: This slot does not exist! ";
+         // else if (name == "UNUSED") std::cout << "ALERT: This slot is empty! ";
+         // std::cout << "Row: " << row << "\n" << "Column: " << column << '\n' << "Weight: " << weight << '\n' << "Name: " << name << '\n';
+         currentContainer = Container(row, column, weight, name);
 
-            bay[row - 1][column - 1] = currentContainer;
-            // if (name != "NAN" && name != "UNUSED") numContainers++;
-
-         }
-         file.close();
+         bay[row - 1][column - 1] = currentContainer;
+         // if (name != "NAN" && name != "UNUSED") numContainers++;
+      }
+      file.close();
    }
    else
    {
@@ -88,32 +88,36 @@ Ship::Ship(std::string& name)
    }
 }
 
-short Container::getDepth(Ship& ship)
+short Container::getDepth(Ship &ship)
 {
    try
    {
       short depth = 0;
-      
-      if (ship.bay[row - 1][column - 1].name != name || ship.bay[row - 1][column - 1].name == "NAN") 
+
+      if (ship.bay[row - 1][column - 1].name != name || ship.bay[row - 1][column - 1].name == "NAN")
       {
          throw std::invalid_argument("ERROR: getDepth called on incorrect container.\n");
-         
       }
       else
       {
          for (int i = row; i < 8; i++)
-         //for (int i = row; i < 8; i++)
-         {  
-            if(ship.bay[i][column - 1].name != "UNUSED"){ depth++; }
-            else{ break; }      
+         // for (int i = row; i < 8; i++)
+         {
+            if (ship.bay[i][column - 1].name != "UNUSED")
+            {
+               depth++;
+            }
+            else
+            {
+               break;
+            }
          }
          return depth;
       }
-      
    }
-   catch (const std::exception& e)
+   catch (const std::exception &e)
    {
-      std::cout << "Caught an exception: " << e.what() << "\n"; 
+      std::cout << "Caught an exception: " << e.what() << "\n";
    }
    return -1;
 }
@@ -176,7 +180,7 @@ void populateShip() // test function
       int row, column, weight;
       std::string name, line;
       Container currentContainer;
-      
+
 
       while (std::getline(file, line))
       {
