@@ -1,7 +1,10 @@
+#ifndef LOGFILE_H
+#define LOGFILE_H
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <chrono>
+#include "../manifest/manifest.h"
 
 // Macros to make it easy to define onload/offload to log
 #define ONLOAD 0
@@ -19,8 +22,8 @@ class LogFile
         ~LogFile();
         void logEmployeeCheckIn(std::string&);
         void logAtomicMove(std::string&, int);
-        void logManifestOpen(std::string&);
-        void logManifestFinish(std::string&);
+        void logManifestOpen(Ship&);
+        void logManifestFinish(Ship&);
         void getOperatorMessage();
 };
 
@@ -104,13 +107,29 @@ void LogFile::logAtomicMove(std::string& containerName, int loadType)
         this->logFile << timestamp << ": \"" << containerName << '\"' << " is offloaded.\n"; 
     }
 }
-void LogFile::logManifestOpen(std::string& manifestName)
+void LogFile::logManifestOpen(Ship& ship)
 {
-
+    std::string timestamp = getTimestampString();
+    this->logFile << timestamp << ": " << "Manifest " << ship.manifestName << " is opened, there are " << ship.getNumContainers() << " on the ship.\n";
 }
-void LogFile::logManifestFinish(std::string& manifestName)
+void LogFile::logManifestFinish(Ship& ship)
 {
+    std::string timestamp = getTimestampString();
+    std::string oldManifestName = ship.manifestName;
+    std::string newManifestName;
 
+    auto findFileExtension = oldManifestName.find_last_of('.');
+    if (findFileExtension != std::string::npos)
+    {
+        newManifestName = oldManifestName.substr(0, findFileExtension);
+        newManifestName += "OUTBOUND";
+        newManifestName += oldManifestName.substr(findFileExtension);
+    }
+    else
+    {
+        newManifestName = oldManifestName + "OUTBOUND";
+    }
+    this->logFile << timestamp << ": " << "Finished a cycle. Manifest " << newManifestName << " was written to desktop, and a reminder pop-up to operator to send file was displayed.\n";
 }
 void LogFile::getOperatorMessage()
 {
@@ -120,3 +139,4 @@ void LogFile::getOperatorMessage()
     this->logFile << getTimestampString() << ": " << message << '\n';
 }
 
+#endif
