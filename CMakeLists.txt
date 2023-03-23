@@ -23,7 +23,10 @@ set(PROJECT_SOURCES
         shippingcontainergrid.cpp
         containercell.h
         containercell.cpp
+        loadingunloadinginput.h
+        loadingunloadinginput.cpp
 )
+
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(shipping-container-solution
@@ -57,6 +60,10 @@ set_target_properties(shipping-container-solution PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
+
+# subdirectories
+add_subdirectory(logfile)
+add_subdirectory(manifest)
 
 install(TARGETS shipping-container-solution
     BUNDLE DESTINATION .

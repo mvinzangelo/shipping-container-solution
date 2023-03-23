@@ -5,15 +5,60 @@ ContainerCell::ContainerCell(QWidget *parent) : QPushButton(parent)
     setFixedHeight(80);
     setFixedWidth(80);
     cellColor = Qt::white;
-    QColor hoverColor = Qt::red;
-    QString cs1 = QString("QPushButton {"
-                          "background-color: %1;"
-                          //   "border: 1px solid black;"
-                        //   "border-radius: 0px;"
-                          "}"
-                          "QPushButton:hover {"
-                          "background-color: %2;"
-                          "}")
-                      .arg(cellColor.name(), hoverColor.name());
-    setStyleSheet(cs1);
+    hoverColor = Qt::red;
+    setDisabled(true);
+    setText("name");
+    setToolTip("THIS IS A TOOLTIP");
+    currStyleSheet = QString("QPushButton {"
+                             "background-color: %1;"
+                             "}"
+                             "QPushButton:disabled {"
+                             "color: black"
+                             "}")
+                         .arg(cellColor.name());
+    setStyleSheet(currStyleSheet);
+}
+
+void ContainerCell::updateInputType(int inputType)
+{
+    switch (inputType)
+    {
+    // loading mode
+    case 0:
+        currStyleSheet = QString("QPushButton {"
+                                 "background-color: %1;"
+                                 "}"
+                                 "QPushButton:disabled {"
+                                 "color: black"
+                                 "}")
+                             .arg(cellColor.name());
+        setStyleSheet(currStyleSheet);
+        setDisabled(true);
+        break;
+    // unloading mode
+    case 1:
+        setStyleSheet("");
+        currStyleSheet = QString("QPushButton {"
+                                 "background-color: %1;"
+                                 "}"
+                                 "QPushButton:hover {"
+                                 "background-color: %2;"
+                                 "}")
+                             .arg(cellColor.name(), hoverColor.name());
+        setStyleSheet(currStyleSheet);
+        setDisabled(false);
+        break;
+    }
+}
+
+void ContainerCell::updateStyleSheet()
+{
+    currStyleSheet = QString("QPushButton {"
+                             "background-color: %1;"
+                             "}"
+                             "QPushButton:hover {"
+                             "background-color: %2;"
+                             "}")
+                         .arg(cellColor.name(), hoverColor.name());
+    setStyleSheet(currStyleSheet);
 }

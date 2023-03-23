@@ -2,6 +2,11 @@
 #define SHIPPINGCONTAINERGRID_H
 
 #include <QWidget>
+#include "qgridlayout.h"
+#include "qpushbutton.h"
+#include "containercell.h"
+#include <QLabel>
+#include <vector>
 
 class ShippingContainerGrid : public QWidget
 {
@@ -11,8 +16,14 @@ public:
     void onCellPressed(int i, int j);
     int columns = 12;
     int rows = 8;
+    int inputMode = 0;
+    ContainerCell *cellWidgets[8][12];
+    void updateInputMode(int newMode);
 
 signals:
+
+private:
+    void setHoverColor(QColor newHoverColor);
 };
 
 #endif // SHIPPINGCONTAINERGRID_H

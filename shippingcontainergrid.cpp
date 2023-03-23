@@ -18,16 +18,13 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent)
         {
             if (i != 0 && j != rows)
             {
-                QPushButton *cell = new ContainerCell(this);
+                ContainerCell *cell = new ContainerCell(this);
                 grid->addWidget(cell, j, i);
-
-                // Set size text etc. for each button
-
+                cellWidgets[rows - j - 1][i - 1] = cell;
                 connect(cell, &QPushButton::clicked, [=]()
-                        {
-                            onCellPressed(rows - j, i); // Call the function which uses i and j here
-                        });
+                        { onCellPressed(rows - j, i); });
             }
+            // labels on the left hand side
             else if (i == 0 && j != rows)
             {
                 QLabel *label = new QLabel(this);
@@ -39,6 +36,7 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent)
                 label->setText(str.setNum(rows - j));
                 grid->addWidget(label, j, i);
             }
+            // labels on the bottom
             else if (i != 0 && j == rows)
             {
                 QLabel *label = new QLabel(this);
@@ -57,4 +55,16 @@ void ShippingContainerGrid::onCellPressed(int i, int j)
 {
     // Do stuff with i and j here
     qInfo() << i << j;
+}
+
+void ShippingContainerGrid::updateInputMode(int newMode)
+{
+    for (unsigned i = 0; i < rows; i++)
+    {
+        for (unsigned j = 0; j < columns; j++)
+        {
+            cellWidgets[i][j]->updateInputType(newMode);
+        }
+    }
+    return;
 }

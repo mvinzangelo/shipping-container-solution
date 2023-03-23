@@ -3,13 +3,20 @@
 
 #include <QMainWindow>
 #include "currentemployee.h"
+#include "loadingunloadinginput.h"
+#include "shippingcontainergrid.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui
+{
+    class MainWindow;
+}
 QT_END_NAMESPACE
 
-enum ProblemType {
-    LOAD_UNLOAD, BALANCING
+enum ProblemType
+{
+    LOAD_UNLOAD,
+    BALANCING
 };
 
 class MainWindow : public QMainWindow
@@ -17,6 +24,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    ShippingContainerGrid *currInputGrid;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -32,10 +40,13 @@ private slots:
 
     void on_backButtonLU_clicked();
 
+    void on_btnInputType_clicked();
+
 private:
     Ui::MainWindow *ui;
     currentEmployee currOperator;
     QString currManifestPath;
     ProblemType currProblem;
+    LoadingUnloadingInput *currLoadingUnloading;
 };
 #endif // MAINWINDOW_H
