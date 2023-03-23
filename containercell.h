@@ -9,6 +9,7 @@ public:
     ContainerCell(QWidget *parent = nullptr);
 private:
     QColor cellColor;
+    QColor hoverColor;
 };
 
 #endif // CONTAINERCELL_H
