@@ -74,6 +74,9 @@ CMakeLists.txt.user*
 a.out
 a.exe
 
+build
+.vscode
+
 # Logfile output files
 KeoghLongBeach*
 config.txt

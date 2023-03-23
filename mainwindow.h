@@ -2,14 +2,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "currentemployee.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-struct user {
-    QString firstName;
-    QString lastName;
+enum ProblemType {
+    LOAD_UNLOAD, BALANCING
 };
 
 class MainWindow : public QMainWindow
@@ -24,8 +24,18 @@ private slots:
 
     void on_btnEnter_clicked();
 
+    void on_backButtonPS_clicked();
+
+    void on_buttonImport_clicked();
+
+    void on_buttonStartProblem_clicked();
+
+    void on_backButtonLU_clicked();
+
 private:
     Ui::MainWindow *ui;
-    user currentEmploye;
+    currentEmployee currOperator;
+    QString currManifestPath;
+    ProblemType currProblem;
 };
 #endif // MAINWINDOW_H
