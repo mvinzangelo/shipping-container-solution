@@ -965,7 +965,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                    </font>
                   </property>
                   <property name="text">
-                   <string>Loading:</string>
+                   <string>Loading list:</string>
                   </property>
                  </widget>
                 </item>

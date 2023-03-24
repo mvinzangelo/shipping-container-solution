@@ -117,10 +117,13 @@ void MainWindow::on_btnAddContainer_clicked()
         Container *containerToLoad = new Container(-1, -1, containerWeight, containerName);
         currInputGrid->loadContainers.push_back(containerToLoad);
     }
+    // update loading contents
+    QLabel * temp = new QLabel(ui->loadingContents);
+    temp->setText(ui->lineContainerName->text());
+    ui->loadingContents->layout()->addWidget(temp);
     // reset ui elements
     ui->lineContainerName->clear();
     ui->lineContainerWeight->clear();
     ui->spinBoxQuantity->setValue(1);
-    // update
-}
 
+}
