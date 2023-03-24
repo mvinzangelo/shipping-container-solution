@@ -134,9 +134,6 @@ void operators(Ship& currShip, vector<Ship> visited, int actionType ){
                             std::cout<<"Dropping off container: "<< newShip.bay[i][j].name << endl;
                         }
                         
-
-
-                        
                         //check wheter newly created ship has been visited already 
                         //bool inVisited = false;
                         //for(auto const &item: visited)
@@ -222,6 +219,7 @@ while(!shipBalanced(currNode)){ //TODO: ADD HEURISTIC VALUE
 
     //sort the queue of nodes depending on the f(n) cost 
     //std::sort(nodes.front(),nodes.back(), sortRuleLambda); FIXME
+    //std::sort(nodes.top(), nodes.back()); 
 
 
 
