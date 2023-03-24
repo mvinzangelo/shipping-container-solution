@@ -14,11 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
     // UNCOMMENT TO START AT BEGINNING
     // ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
     ui->cbProblemType->addItems({"Loading / Unloading", "Balancing"});
-    for (int i = 0; i < 20; i++)
-    {
-        QPushButton *temp = new QPushButton();
-        ui->loadingContents->layout()->addWidget(temp);
-    }
 }
 
 MainWindow::~MainWindow()
@@ -57,12 +52,17 @@ void MainWindow::on_buttonImport_clicked()
 
 void MainWindow::on_buttonStartProblem_clicked()
 {
+    // call constructor for ship with manifest path
     std::string shipPath = currManifestPath.toStdString();
     currShip = new Ship(shipPath);
     // initialize input grid
     ShippingContainerGrid *inputGrid = new ShippingContainerGrid(nullptr, currShip);
     currInputGrid = inputGrid;
+    inputGrid->loadingCollection = ui->loadingContents;
+    inputGrid->unloadingCollection = ui->unloadingContents;
+    // add grid to the input screen
     ui->gridContainer->addWidget(inputGrid, 0, 1);
+    // change screen based off of problem type
     switch (ui->cbProblemType->currentIndex())
     {
     case 0:
@@ -86,7 +86,7 @@ void MainWindow::on_btnInputType_clicked()
     // loading -> unloading
     if (currLoadingUnloading->currInputType == LOADING)
     {
-        currLoadingUnloading->currInputType = UNLOADING;
+        currInputGrid->currInputType = UNLOADING;
         ui->btnInputType->setText("Unloading");
         ui->btnInputType->setStyleSheet("background: rgb(255, 0, 0)");
         if (currInputGrid)
@@ -98,7 +98,7 @@ void MainWindow::on_btnInputType_clicked()
     // unloading -> loading
     else
     {
-        currLoadingUnloading->currInputType = LOADING;
+        currInputGrid->currInputType = LOADING;
         ui->btnInputType->setStyleSheet("background: #3657ff");
         ui->btnInputType->setText("Loading");
         if (currInputGrid)

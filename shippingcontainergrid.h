@@ -10,6 +10,7 @@
 #include "manifest/manifest.h"
 #include <map>
 #include <QRandomGenerator>
+#include "loadingunloadinginput.h"
 
 class ShippingContainerGrid : public QWidget
 {
@@ -19,18 +20,19 @@ public:
     void onCellPressed(int i, int j);
     int columns = 12;
     int rows = 8;
-    int inputMode = 0;
+    INPUT_TYPE currInputType = LOADING;
+    QWidget *loadingCollection;
+    QWidget *unloadingCollection;
+    std::vector<Container *> loadContainers;
+    std::vector<Container *> unloadContainers;
     std::map<std::string, QColor> colorMap = {{"NAN", Qt::gray}, {"UNUSED", Qt::white}};
     ContainerCell *cellWidgets[8][12];
-    std::vector<ContainerCell *> containersToLoad;
-    std::vector<ContainerCell *> containersToUnload;
     void updateInputMode(int newMode);
     void updateManifestGUI();
 
 signals:
 
 private:
-    void setHoverColor(QColor newHoverColor);
 };
 
 #endif // SHIPPINGCONTAINERGRID_H
