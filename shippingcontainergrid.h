@@ -7,23 +7,24 @@
 #include "containercell.h"
 #include <QLabel>
 #include <vector>
+#include "manifest/manifest.h"
 
 class ShippingContainerGrid : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ShippingContainerGrid(QWidget *parent = nullptr);
+    explicit ShippingContainerGrid(QWidget *parent = nullptr, Ship *currShip = nullptr);
     void onCellPressed(int i, int j);
     int columns = 12;
     int rows = 8;
     int inputMode = 0;
     ContainerCell *cellWidgets[8][12];
     void updateInputMode(int newMode);
+    void updateManifestGUI();
 
-signals:
+        signals :
 
-private:
-    void setHoverColor(QColor newHoverColor);
+        private : void setHoverColor(QColor newHoverColor);
 };
 
 #endif // SHIPPINGCONTAINERGRID_H

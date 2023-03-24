@@ -4,9 +4,10 @@
 #include "containercell.h"
 #include <QLabel>
 
-ShippingContainerGrid::ShippingContainerGrid(QWidget *parent)
+ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip)
     : QWidget{parent}
 {
+    qInfo() << currShip->getNumContainers();
     QGridLayout *grid = new QGridLayout(this);
     grid->setSpacing(0);
     grid->setContentsMargins(0, 0, 0, 0);
@@ -18,7 +19,20 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent)
         {
             if (i != 0 && j != rows)
             {
-                ContainerCell *cell = new ContainerCell(this);
+                ContainerCell *cell;
+                // is a container
+                if (currShip->bay[rows - j - 1][i - 1].name != "UNUSED" && currShip->bay[rows - j - 1][i - 1].name != "NAN")
+                {
+                    QColor containerColor = Qt::red;
+                    cell = new ContainerCell(this, containerColor);
+                    qInfo() << "container at" << rows - j - 1 << i - 1;
+                    cell->cellColor = Qt::blue;
+                }
+                // is not a container
+                else
+                {
+                    cell = new ContainerCell(this);
+                }
                 grid->addWidget(cell, j, i);
                 cellWidgets[rows - j - 1][i - 1] = cell;
                 connect(cell, &QPushButton::clicked, [=]()

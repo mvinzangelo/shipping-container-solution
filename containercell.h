@@ -6,9 +6,9 @@
 class ContainerCell : public QPushButton
 {
 public:
-    ContainerCell(QWidget *parent = nullptr);
+    ContainerCell(QWidget *parent = nullptr, QColor cellColor = Qt::white);
     QColor cellColor;
-    QColor hoverColor;
+    QColor hoverColor = Qt::red;
     QString currStyleSheet;
     void updateInputType(int inputType);
 

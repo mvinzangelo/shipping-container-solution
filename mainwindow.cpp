@@ -14,9 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
     // UNCOMMENT TO START AT BEGINNING
     // ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
     ui->cbProblemType->addItems({"Loading / Unloading", "Balancing"});
-    ShippingContainerGrid *inputGrid = new ShippingContainerGrid();
-    ui->gridContainer->addWidget(inputGrid, 0, 1);
-    currInputGrid = inputGrid;
     for (int i = 0; i < 20; i++)
     {
         QPushButton *temp = new QPushButton();
@@ -62,6 +59,10 @@ void MainWindow::on_buttonStartProblem_clicked()
 {
     std::string shipPath = currManifestPath.toStdString();
     currShip = new Ship(shipPath);
+    // initialize input grid
+    ShippingContainerGrid *inputGrid = new ShippingContainerGrid(nullptr, currShip);
+    currInputGrid = inputGrid;
+    ui->gridContainer->addWidget(inputGrid, 0, 1);
     switch (ui->cbProblemType->currentIndex())
     {
     case 0:

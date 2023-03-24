@@ -1,11 +1,10 @@
 #include "containercell.h"
 
-ContainerCell::ContainerCell(QWidget *parent) : QPushButton(parent)
+ContainerCell::ContainerCell(QWidget *parent, QColor cellColor) : QPushButton(parent)
 {
+    this->cellColor = cellColor;
     setFixedHeight(80);
     setFixedWidth(80);
-    cellColor = Qt::white;
-    hoverColor = Qt::red;
     setDisabled(true);
     setText("name");
     setToolTip("THIS IS A TOOLTIP");
