@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <vector>
 #include "manifest/manifest.h"
+#include <map>
 
 class ShippingContainerGrid : public QWidget
 {
@@ -21,10 +22,12 @@ public:
     ContainerCell *cellWidgets[8][12];
     void updateInputMode(int newMode);
     void updateManifestGUI();
+    std::map<std::string, QColor> colorMap;
 
-        signals :
+signals:
 
-        private : void setHoverColor(QColor newHoverColor);
+private:
+    void setHoverColor(QColor newHoverColor);
 };
 
 #endif // SHIPPINGCONTAINERGRID_H

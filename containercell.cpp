@@ -1,8 +1,7 @@
 #include "containercell.h"
 
-ContainerCell::ContainerCell(QWidget *parent, QColor cellColor) : QPushButton(parent)
+ContainerCell::ContainerCell(QWidget *parent, Container *currContainer) : QPushButton(parent)
 {
-    this->cellColor = cellColor;
     setFixedHeight(80);
     setFixedWidth(80);
     setDisabled(true);
