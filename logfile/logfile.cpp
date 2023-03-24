@@ -2,7 +2,6 @@
 #include "../manifest/manifest.h"
 #include <string>
 
-
 LogFile::LogFile()
 {
     validFileName = false;

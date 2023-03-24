@@ -1,10 +1,23 @@
 #include "manifest.h"
 #include "../logfile/logfile.h"
 
-Ship::Ship(std::string &name)
+Ship::Ship(std::string &path)
 {
-   std::ifstream file(name);
-   manifestName = name;
+   manifestPath = path;
+   std::ifstream file(path);
+   #ifdef _WIN32
+      auto findFileExtension = manifestPath.find_last_of('\\');
+   #else
+      auto findFileExtension = manifestPath.find_last_of('/');
+   #endif
+   if (findFileExtension != std::string::npos)
+   {
+      manifestName = manifestPath.substr(findFileExtension + 1);
+   }
+   else
+   {
+      manifestName = manifestPath;
+   }
    if (file.is_open())
    {
       char c;
@@ -30,7 +43,7 @@ Ship::Ship(std::string &name)
    }
    else
    {
-      std::cout << "ERROR: Unable to open " << name << ".\n";
+      std::cout << "ERROR: Unable to open " << path << ".\n";
    }
 }
 
@@ -110,6 +123,7 @@ int Ship::getNumContainers()
    return numContainers;
 }
 
+/*
 int main(int argc, char *argv[])
 {
    std::string manifestName;
@@ -144,3 +158,4 @@ int main(int argc, char *argv[])
 
    return 0;
 }
+*/
