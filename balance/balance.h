@@ -6,18 +6,15 @@ using namespace std;
 #include <queue> 
 #include <set> 
 
+
 //OPERATORS  
 
 
 //returns container that was picked up from ship
-Container pickUp(Ship& currShip, int row, int col){
+Container pickUp(Ship currShip, int row, int col){
 
     //temp variable to hold container being picked up 
     Container temp = currShip.bay[row][col]; 
-
-    //update slot where old container was to be empty
-    currShip.bay[row][col].name = "UNUSED";
-    currShip.bay[row][col].weight = 00000;  
 
     return temp; 
 }; 
@@ -37,6 +34,13 @@ void dropOff(Ship& currShip, Container& cont,int row, int col){
 
 };
 
+//update the newShips' bay to reflect what container was picked up
+//and no longer in the same cell 
+void removeContainer(Ship& newShip, int row, int col){
+
+    newShip.bay[row][col].name = "UNUSED";
+    newShip.bay[row][col].weight = 00000;  
+}
 
 
 //expand the current ship's children by checking what operators can 
@@ -44,42 +48,41 @@ void dropOff(Ship& currShip, Container& cont,int row, int col){
 //actionType represents wheter we are picking up or dropping off
 //even -> dropping off 
 //odd -> picking up 
-
-
 void operators(Ship& currShip, set<Ship> visited, int actionType ){
 
     //case where we are picking up a container to move 
     if(actionType % 2 != 0){
         
-        for(int i = 0; i < 12; ++i ){
+        for(int j = 0; j < 12; ++j ){
 
-            for(int j = 8; j > 0; --j){
+            for(int i = 7; i >= 0; --i){
 
                 if(currShip.bay[i][j].name != "UNUSED" && currShip.bay[i][j].name != "NAN" ){
-
-                    Ship newShip = currShip; 
+                    Ship newShip(currShip);
+                    newShip.balanceChild.clear(); //clear children for newly created Ship 
 
                     newShip.onCrane = pickUp(currShip,i,j); 
-                    std::cout<<"Pikcing up container: "<< currShip.bay[i][j].name << endl; 
+                    std::cout<<"Pikcing up container: "<< newShip.bay[i][j].name << endl; 
+                    //remove the current picked up crane for the currentShip
+                    removeContainer(newShip,i,j); 
 
                     newShip.craneLocation = j;
-
+                    
                     //check wheter newly created ship has been visited already 
                     bool inVisited = false;
                     for(auto const &item: visited)
                     {
                         if(item == newShip){inVisited = true; break;}
+
                     }//check whether newShip has already been visited 
 
                     if(!inVisited){
-                        currShip.balanceChild[i] = &newShip;
+                        currShip.balanceChild.push_back(newShip); 
                         currShip.depth +=1; 
+
                     }//new node created,update children of parent and increase depth of search 
 
-                    
-                
                 }//search columns top to bottom to find first one we can pick up  
-
 
             }//go through rows 
              
