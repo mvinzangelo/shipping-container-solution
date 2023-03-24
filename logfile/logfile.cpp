@@ -71,6 +71,11 @@ void LogFile::logEmployeeCheckIn(std::string& name)
     this->logFile << getTimestampString() << ": " << name << " has checked in.\n";
 }
 
+void LogFile::logEmployeeCheckOut(std::string& name)
+{
+    this->logFile << getTimestampString() << ": " << name << " has checked out.\n";
+}
+
 void LogFile::logAtomicMove(std::string& containerName, int loadType)
 {
     std::string timestamp = getTimestampString();
