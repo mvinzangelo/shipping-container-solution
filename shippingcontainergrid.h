@@ -23,7 +23,7 @@ public:
     ContainerCell *cellWidgets[8][12];
     void updateInputMode(int newMode);
     void updateManifestGUI();
-    std::map<std::string, QColor> colorMap;
+    std::map<std::string, QColor> colorMap = {{"NAN", Qt::gray}, {"UNUSED", Qt::white}};
 
 signals:
 

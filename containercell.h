@@ -12,6 +12,7 @@ public:
     QColor hoverColor = Qt::red;
     QString currStyleSheet;
     void updateInputType(int inputType);
+    Container *currContainer;
 
 private:
     void updateStyleSheet();

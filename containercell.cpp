@@ -5,6 +5,8 @@ ContainerCell::ContainerCell(QWidget *parent, Container *currContainer, std::map
     setFixedHeight(80);
     setFixedWidth(80);
     setDisabled(true);
+    setAttribute(Qt::WA_TranslucentBackground);
+    this->currContainer = currContainer;
     if (currContainer != nullptr)
     {
         // if the container has
@@ -12,9 +14,9 @@ ContainerCell::ContainerCell(QWidget *parent, Container *currContainer, std::map
         {
             setText(QString::fromStdString(currContainer->name));
             setToolTip(QString::fromStdString(currContainer->name));
-            cellColor = colorMap[currContainer->name];
         }
     }
+    cellColor = colorMap[currContainer->name];
     currStyleSheet = QString("QPushButton {"
                              "background-color: %1;"
                              "}"
@@ -44,15 +46,18 @@ void ContainerCell::updateInputType(int inputType)
     // unloading mode
     case 1:
         setStyleSheet("");
-        currStyleSheet = QString("QPushButton {"
-                                 "background-color: %1;"
-                                 "}"
-                                 "QPushButton:hover {"
-                                 "background-color: %2;"
-                                 "}")
-                             .arg(cellColor.name(), hoverColor.name());
-        setStyleSheet(currStyleSheet);
-        setDisabled(false);
+        if (currContainer->isContainer())
+        {
+            currStyleSheet = QString("QPushButton {"
+                                     "background-color: %1;"
+                                     "}"
+                                     "QPushButton:hover {"
+                                     "background-color: %2;"
+                                     "}")
+                                 .arg(cellColor.name(), hoverColor.name());
+            setStyleSheet(currStyleSheet);
+            setDisabled(false);
+        }
         break;
     }
 }
