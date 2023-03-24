@@ -1,10 +1,23 @@
 #include "manifest.h"
 #include "../logfile/logfile.h"
 
-Ship::Ship(std::string &name)
+Ship::Ship(std::string &path)
 {
-   std::ifstream file(name);
-   manifestName = name;
+   manifestPath = path;
+   std::ifstream file(path);
+#ifdef _WIN32
+   auto findFileExtension = manifestPath.find_last_of('\\');
+#else
+   auto findFileExtension = manifestPath.find_last_of('/');
+#endif
+   if (findFileExtension != std::string::npos)
+   {
+      manifestName = manifestPath.substr(findFileExtension + 1);
+   }
+   else
+   {
+      manifestName = manifestPath;
+   }
    if (file.is_open())
    {
       char c;
@@ -30,7 +43,7 @@ Ship::Ship(std::string &name)
    }
    else
    {
-      std::cout << "ERROR: Unable to open " << name << ".\n";
+      std::cout << "ERROR: Unable to open " << path << ".\n";
    }
 }
 
@@ -110,22 +123,23 @@ int Ship::getNumContainers()
    return numContainers;
 }
 
-//int main(int argc, char *argv[])
-//{
-//   std::string manifestName;
-//   std::cout << "Input a manifest name: ";
-//   std::getline(std::cin, manifestName);
-//   std::cout << '\n';
-//   Ship currentShip(manifestName);
-//   Container *currentContainer;
-//   for (int i = 7; i >= 0; i--)
-//   {
-//      for (int j = 0; j < 12; j++)
-//      {
-//         std::cout << currentShip.bay[i][j].name[0] << ' ';
-//      }
-//      std::cout << '\n';
-//   }
+/*
+int main(int argc, char *argv[])
+{
+   std::string manifestName;
+   std::cout << "Input a manifest name: ";
+   std::getline(std::cin, manifestName);
+   std::cout << '\n';
+   Ship currentShip(manifestName);
+   Container *currentContainer;
+   for (int i = 7; i >= 0; i--)
+   {
+      for (int j = 0; j < 12; j++)
+      {
+         std::cout << currentShip.bay[i][j].name[0] << ' ';
+      }
+      std::cout << '\n';
+   }
 
 //   for (int i = 7; i >= 0; i--)
 //   {
@@ -141,6 +155,6 @@ int Ship::getNumContainers()
 //   std::cout << "Port weight: " << currentShip.getPortWeight() << '\n';
 //   std::cout << "Starboard weight: " << currentShip.getStarbordWeight() << '\n';
 //   std::cout << "Number of Containers on ship: " << currentShip.getNumContainers() << '\n';
-
-//   return 0;
-//}
+   return 0;
+}
+*/

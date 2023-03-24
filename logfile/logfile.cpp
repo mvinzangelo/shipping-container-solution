@@ -2,14 +2,13 @@
 #include "../manifest/manifest.h"
 #include <string>
 
-
 LogFile::LogFile()
 {
     validFileName = false;
     std::ifstream configFile("config.txt");
     if (configFile.peek() == std::ifstream::traits_type::eof())
     {
-        std::cout << "ALERT: Configuration file is empty. If this is your first time starting the program, ignore this alert." 
+        std::cout << "ALERT: Configuration file is empty. If this is your first time starting the program, ignore this alert."
                   << " If not, please contact Shipping Container Solutions tech support immediately.\n";
         configFile.close();
     }
@@ -19,15 +18,17 @@ LogFile::LogFile()
         validFileName = true;
         configFile.close();
     }
-    if (validFileName) 
+    if (validFileName)
     {
         char option;
         std::cout << "Would you like to start a new logfile? (y/n): ";
         while (option != 'n' && option != 'y')
         {
             std::cin >> option;
-            if (option == 'y' || option == 'n') break;
-            else std::cout << "\nInvalid input, please try again (y/n): ";
+            if (option == 'y' || option == 'n')
+                break;
+            else
+                std::cout << "\nInvalid input, please try again (y/n): ";
         }
 
         if (option == 'n')
@@ -66,35 +67,36 @@ std::string LogFile::getTimestampString()
     return timestamp;
 }
 
-void LogFile::logEmployeeCheckIn(std::string& name)
+void LogFile::logEmployeeCheckIn(std::string &name)
 {
     this->logFile << getTimestampString() << ": " << name << " has checked in.\n";
 }
 
-void LogFile::logEmployeeCheckOut(std::string& name)
+void LogFile::logEmployeeCheckOut(std::string &name)
 {
     this->logFile << getTimestampString() << ": " << name << " has checked out.\n";
 }
 
-void LogFile::logAtomicMove(std::string& containerName, int loadType)
+void LogFile::logAtomicMove(std::string &containerName, int loadType)
 {
     std::string timestamp = getTimestampString();
 
     if (loadType == ONLOAD)
     {
-        this->logFile << timestamp << ": \"" << containerName << '\"' << " is onloaded.\n"; 
+        this->logFile << timestamp << ": \"" << containerName << '\"' << " is onloaded.\n";
     }
     else if (loadType == OFFLOAD)
     {
-        this->logFile << timestamp << ": \"" << containerName << '\"' << " is offloaded.\n"; 
+        this->logFile << timestamp << ": \"" << containerName << '\"' << " is offloaded.\n";
     }
 }
-void LogFile::logManifestOpen(Ship& ship)
+void LogFile::logManifestOpen(Ship &ship)
 {
     std::string timestamp = getTimestampString();
-    this->logFile << timestamp << ": " << "Manifest " << ship.manifestName << " is opened, there are " << ship.getNumContainers() << " on the ship.\n";
+    this->logFile << timestamp << ": "
+                  << "Manifest " << ship.manifestName << " is opened, there are " << ship.getNumContainers() << " on the ship.\n";
 }
-void LogFile::logManifestFinish(Ship& ship)
+void LogFile::logManifestFinish(Ship &ship)
 {
     std::string timestamp = getTimestampString();
     std::string oldManifestName = ship.manifestName;
@@ -115,19 +117,21 @@ void LogFile::logManifestFinish(Ship& ship)
     std::string homeDir;
     std::string newManifestPath;
 
-    #ifdef _WIN32 // If running on Windows
-        const char* userProfile = std::getenv("USERPROFILE");
-        if (userProfile != nullptr) {
-            homeDir = userProfile;
-            newManifestPath = homeDir + "\\" + newManifestName;
-        }
-    #else // If running on Linux or other Unix-based OS
-        const char* home = std::getenv("HOME");
-        if (home != nullptr) {
-            homeDir = home;
-            newManifestPath = homeDir + "/" + newManifestName;
-        }
-    #endif
+#ifdef _WIN32 // If running on Windows
+    const char *userProfile = std::getenv("USERPROFILE");
+    if (userProfile != nullptr)
+    {
+        homeDir = userProfile;
+        newManifestPath = homeDir + "\\" + newManifestName;
+    }
+#else // If running on Linux or other Unix-based OS
+    const char *home = std::getenv("HOME");
+    if (home != nullptr)
+    {
+        homeDir = home;
+        newManifestPath = homeDir + "/" + newManifestName;
+    }
+#endif
     std::ofstream newManifest(newManifestPath);
 
     for (int i = 0; i < 8; i++)
@@ -141,7 +145,8 @@ void LogFile::logManifestFinish(Ship& ship)
         }
     }
 
-    this->logFile << timestamp << ": " << "Finished a cycle. Manifest " << newManifestName << " was written to desktop, and a reminder pop-up to operator to send file was displayed.\n";
+    this->logFile << timestamp << ": "
+                  << "Finished a cycle. Manifest " << newManifestName << " was written to desktop, and a reminder pop-up to operator to send file was displayed.\n";
 }
 void LogFile::getOperatorMessage()
 {
@@ -151,18 +156,17 @@ void LogFile::getOperatorMessage()
     this->logFile << getTimestampString() << ": " << message << '\n';
 }
 
-
-//int main(int argc, char *argv[])
+// int main(int argc, char *argv[])
 //{
-//    LogFile log;
-//    std::string name = "Joshua Candelaria";
-//    std::string container = "Container";
-//    std::string manifestName;
-//    std::cout << "Input a manifest name: ";
-//    std::getline(std::cin >> std::ws, manifestName);
-//    std::cout << '\n';
-//    Ship currentShip(manifestName);
-    
+//     LogFile log;
+//     std::string name = "Joshua Candelaria";
+//     std::string container = "Container";
+//     std::string manifestName;
+//     std::cout << "Input a manifest name: ";
+//     std::getline(std::cin >> std::ws, manifestName);
+//     std::cout << '\n';
+//     Ship currentShip(manifestName);
+
 //    log.logEmployeeCheckIn(name);
 //    log.logAtomicMove(container, ONLOAD);
 //    log.getOperatorMessage();

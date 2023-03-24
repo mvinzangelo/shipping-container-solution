@@ -47,6 +47,7 @@ struct Ship
    Container bay[8][12];
    Container buffer[4][24];
    std::string manifestName;
+   std::string manifestPath;
    // int numContainers;
    Ship() {}
    Ship(std::string &name);
