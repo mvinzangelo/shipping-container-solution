@@ -83,7 +83,7 @@ void MainWindow::on_backButtonLU_clicked()
 void MainWindow::on_btnInputType_clicked()
 {
     // loading -> unloading
-    if (currLoadingUnloading->currInputType == LOADING)
+    if (currInputGrid->currInputType == LOADING)
     {
         currInputGrid->currInputType = UNLOADING;
         ui->btnInputType->setText("Unloading");

@@ -5,7 +5,6 @@ ContainerCell::ContainerCell(QWidget *parent, Container *currContainer, std::map
     setFixedHeight(80);
     setFixedWidth(80);
     setDisabled(true);
-    setAttribute(Qt::WA_TranslucentBackground);
     this->currContainer = currContainer;
     if (currContainer != nullptr)
     {
@@ -33,6 +32,7 @@ void ContainerCell::updateInputType(int inputType)
     {
     // loading mode
     case 0:
+        qInfo() << cellColor.name();
         currStyleSheet = QString("QPushButton {"
                                  "background-color: %1;"
                                  "}"
@@ -63,7 +63,7 @@ void ContainerCell::updateInputType(int inputType)
             currStyleSheet = QString("QPushButton {"
                                      "background-color: %1;"
                                      "}")
-                                 .arg(cellColor.name(), hoverColor.name());
+                                 .arg(cellColor.name());
             setStyleSheet(currStyleSheet);
         }
         break;
