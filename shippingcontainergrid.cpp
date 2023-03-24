@@ -63,13 +63,11 @@ void ShippingContainerGrid::onCellPressed(int i, int j)
     if (currInputType == UNLOADING)
     {
         unloadContainers.push_back(cellWidgets[i - 1][j - 1]->currContainer);
-        QLabel *temp = new QLabel(this);
-        temp->setText(QString::fromStdString(cellWidgets[i - 1][j - 1]->currContainer->name));
-        unloadingCollection->layout()->addWidget(temp);
+        // QLabel *temp = new QLabel(this);
+        // temp->setText(QString::fromStdString(cellWidgets[i - 1][j - 1]->currContainer->name));
+        // unloadingCollection->layout()->addWidget(temp);
     }
     qInfo() << i << j;
-    QPushButton *btn = new QPushButton();
-    unloadingCollection->layout()->addWidget(btn);
 }
 
 void ShippingContainerGrid::updateInputMode(int newMode)

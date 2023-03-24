@@ -22,7 +22,6 @@ public:
     int rows = 8;
     INPUT_TYPE currInputType = LOADING;
     QWidget *loadingCollection;
-    QWidget *unloadingCollection;
     std::vector<Container *> loadContainers;
     std::vector<Container *> unloadContainers;
     std::map<std::string, QColor> colorMap = {{"NAN", Qt::gray}, {"UNUSED", Qt::white}};

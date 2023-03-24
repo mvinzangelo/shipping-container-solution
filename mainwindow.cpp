@@ -59,7 +59,6 @@ void MainWindow::on_buttonStartProblem_clicked()
     ShippingContainerGrid *inputGrid = new ShippingContainerGrid(nullptr, currShip);
     currInputGrid = inputGrid;
     inputGrid->loadingCollection = ui->loadingContents;
-    inputGrid->unloadingCollection = ui->unloadingContents;
     // add grid to the input screen
     ui->gridContainer->addWidget(inputGrid, 0, 1);
     // change screen based off of problem type
