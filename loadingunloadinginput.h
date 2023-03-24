@@ -2,6 +2,7 @@
 #define LOADINGUNLOADINGINPUT_H
 
 #include <vector>
+#include "manifest/manifest.h"
 
 enum INPUT_TYPE
 {
@@ -14,8 +15,8 @@ class LoadingUnloadingInput
 public:
     LoadingUnloadingInput();
     INPUT_TYPE currInputType;
-    //    std::vector<Container *> loadContainers;
-    //    std::vector<Container *> unloadContainers;
+    std::vector<Container *> loadContainers;
+    std::vector<Container *> unloadContainers;
 
 private:
 };

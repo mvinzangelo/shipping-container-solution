@@ -17,9 +17,10 @@ MainWindow::MainWindow(QWidget *parent)
     ShippingContainerGrid *inputGrid = new ShippingContainerGrid();
     ui->gridContainer->addWidget(inputGrid, 0, 1);
     currInputGrid = inputGrid;
-    for(int i = 0; i < 20; i++) {
-    QPushButton * temp = new QPushButton();
-    ui->loadingContents->layout()->addWidget(temp);
+    for (int i = 0; i < 20; i++)
+    {
+        QPushButton *temp = new QPushButton();
+        ui->loadingContents->layout()->addWidget(temp);
     }
 }
 
@@ -59,6 +60,8 @@ void MainWindow::on_buttonImport_clicked()
 
 void MainWindow::on_buttonStartProblem_clicked()
 {
+    std::string shipPath = currManifestPath.toStdString();
+    currShip = new Ship(shipPath);
     switch (ui->cbProblemType->currentIndex())
     {
     case 0:

@@ -55,6 +55,4 @@ struct Ship
    int getNumContainers();
 };
 
-
-
 #endif

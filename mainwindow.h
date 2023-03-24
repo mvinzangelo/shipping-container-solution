@@ -5,6 +5,7 @@
 #include "currentemployee.h"
 #include "loadingunloadinginput.h"
 #include "shippingcontainergrid.h"
+#include "manifest/manifest.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -27,6 +28,7 @@ public:
     ShippingContainerGrid *currInputGrid;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    Ship *currShip;
 
 private slots:
 
