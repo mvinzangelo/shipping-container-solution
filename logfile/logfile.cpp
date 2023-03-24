@@ -138,8 +138,8 @@ void LogFile::logManifestFinish(Ship &ship)
     {
         for (int j = 0; j < 12; j++)
         {
-            newManifest << "[" << std::setw(2) << std::setfill('0') << ship.bay[i][j].row
-                        << "," << std::setw(2) << std::setfill('0') << ship.bay[i][j].column
+            newManifest << "[" << std::setw(2) << std::setfill('0') << i + 1
+                        << "," << std::setw(2) << std::setfill('0') << j + 1
                         << "], {" << std::setw(5) << std::setfill('0') << ship.bay[i][j].weight
                         << "}, " << ship.bay[i][j].name << '\n';
         }
