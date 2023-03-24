@@ -23,6 +23,7 @@ class LogFile
         LogFile();
         ~LogFile();
         void logEmployeeCheckIn(std::string&);
+        void logEmployeeCheckOut(std::string&);
         void logAtomicMove(std::string&, int);
         void logManifestOpen(Ship&);
         void logManifestFinish(Ship&);
