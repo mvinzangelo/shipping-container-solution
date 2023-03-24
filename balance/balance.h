@@ -32,6 +32,12 @@ void dropOff(Ship& currShip, Container& cont,int row, int col){
     currShip.bay[row][col].name = cont.name; 
     currShip.bay[row][col].weight = cont.weight; 
 
+    //reset value of the onCrane after dropping off 
+    Container temp; 
+    currShip.onCrane = temp; 
+
+    currShip.craneLocation = col; 
+
 };
 
 //update the newShips' bay to reflect what container was picked up
@@ -52,49 +58,6 @@ void operators(Ship& currShip, set<Ship> visited, int actionType ){
 
     //case where we are picking up a container to move 
     if(actionType % 2 != 0){
-
-        /*
-
-        int i = 7;
-        int j = 0; 
-        do{
-            if(currShip.bay[i][j].name != "UNUSED" && currShip.bay[i][j].name != "NAN" ){
-                    Ship newShip(currShip);
-                    newShip.balanceChild.clear(); //clear children for newly created Ship 
-
-                    newShip.onCrane = pickUp(currShip,i,j); 
-                    std::cout<<"Pikcing up container: "<< newShip.bay[i][j].name << endl; 
-                    //remove the current picked up crane for the currentShip
-                    removeContainer(newShip,i,j); 
-
-                    newShip.craneLocation = j;
-                    
-                    //check wheter newly created ship has been visited already 
-                    bool inVisited = false;
-                    for(auto const &item: visited)
-                    {
-                        if(item == newShip){inVisited = true; break;}
-
-                    }//check whether newShip has already been visited 
-
-                    if(!inVisited){
-                        currShip.balanceChild.push_back(newShip); 
-                        currShip.depth +=1; 
-
-                    }//new node created,update children of parent and increase depth of search
-
-                    ++i;
-                    ++j; 
-                    continue; 
-                }//search columns top to bottom to find first one we can pick up 
-
-            ++i;
-            ++j;                 
-
-        }while(j<12); 
-
-        */
-        
         
         for(int j = 0; j < 12; ++j ){
 
@@ -120,8 +83,9 @@ void operators(Ship& currShip, set<Ship> visited, int actionType ){
                     }//check whether newShip has already been visited 
 
                     if(!inVisited){
+                        newShip.depth =newShip.depth + 1; 
                         currShip.balanceChild.push_back(newShip); 
-                        currShip.depth +=1; 
+                        
 
                     }//new node created,update children of parent and increase depth of search 
 
@@ -137,19 +101,52 @@ void operators(Ship& currShip, set<Ship> visited, int actionType ){
     }//end if that picks up containers  
 
 
-
-
-
     //case where we are dropping off a container  
     if(actionType % 2 == 0 ){
+ 
 
+         for(int j = 0; j < 12; ++j ){
 
+            if(currShip.craneLocation != j){
+
+                for(int i = 0; i < 8; ++i){
+
+                    if(currShip.bay[i][j].name == "UNUSED"){
+                        Ship newShip(currShip);
+                        newShip.balanceChild.clear(); //clear children for newly created Ship 
+
+                        dropOff(newShip,newShip.onCrane,i,j);
+                        std::cout<<"Dropping off container: "<< newShip.bay[i][j].name << endl;
+
+                        //check wheter newly created ship has been visited already 
+                        bool inVisited = false;
+                        for(auto const &item: visited)
+                        {
+                            if(item == newShip){inVisited = true; break;}
+
+                        }//check whether newShip has already been visited 
+
+                        if(!inVisited){
+                            newShip.depth = newShip.depth + 1;
+                            currShip.balanceChild.push_back(newShip); 
+                             
+
+                        }//new node created,update children of parent and increase depth of search 
+ 
+
+                        
+
+                        break; //don't need to check remaining rows above 
+                    }//first spot we may drop off the container
+
+                }//go through rows 
+
+            }//ensure that the location we are checking to drop off is not the one we just picked up from
+
+        }//go through columns
 
     }//end if
 
-
-
- 
 
 };//end operators 
 
