@@ -10,6 +10,7 @@
 #include "../manifest/manifest.h"
 
 // Used to generate manifests to test
+// Compile with g++ main.cpp ../logfile/logfile.cpp ../manifest/manifest.cpp
 
 void generateManifest(Ship& ship, std::string& nameOfTest)
 {
@@ -37,9 +38,28 @@ int main()
    getline(std::cin, nameOfTest);
    nameOfTest += ".txt";
    
+   for (int i = 0; i < 8; i++)
+   {
+      for (int j = 0; j < 12; j++)
+      {
+         ship.bay[i][j].row = i + 1;
+         ship.bay[i][j].column = j + 1;
+         ship.bay[i][j].name = "UNUSED";
+      }
+   }
+
    // DECLARE CONTAINERS IN HERE
+   std::string strtemp = "A";
+   std::string strtemp2 = "B";
+   std::string strtemp3 = "C";
 
+   Container temp(1, 1, 50, strtemp);
+   Container temp2(1, 1, 45, strtemp2);
+   Container temp3(1, 1, 5, strtemp3);
 
+   ship.bay[0][4] = temp3;
+   ship.bay[0][5] = temp;
+   ship.bay[0][6] = temp2;
 
    generateManifest(ship, nameOfTest);
 }
