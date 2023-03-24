@@ -20,10 +20,12 @@ public:
     int columns = 12;
     int rows = 8;
     int inputMode = 0;
+    std::map<std::string, QColor> colorMap = {{"NAN", Qt::gray}, {"UNUSED", Qt::white}};
     ContainerCell *cellWidgets[8][12];
+    std::vector<ContainerCell *> containersToLoad;
+    std::vector<ContainerCell *> containersToUnload;
     void updateInputMode(int newMode);
     void updateManifestGUI();
-    std::map<std::string, QColor> colorMap = {{"NAN", Qt::gray}, {"UNUSED", Qt::white}};
 
 signals:
 
