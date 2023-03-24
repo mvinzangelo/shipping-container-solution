@@ -916,7 +916,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton">
+                 <widget class="QPushButton" name="btnAddContainer">
                   <property name="minimumSize">
                    <size>
                     <width>100</width>

@@ -7,12 +7,17 @@
 class ContainerCell : public QPushButton
 {
 public:
-    ContainerCell(QWidget *parent, Container *currContainer, std::map<std::string, QColor> &colorMap);
+    ContainerCell(QWidget *parent, Container *currContainer, std::map<std::string, QColor> *colorMap);
     QColor cellColor = Qt::white;
     QColor hoverColor = Qt::red;
     QString currStyleSheet;
-    void updateInputType(int inputType);
     Container *currContainer;
+    bool isBeingUnloaded = false;
+    std::map<std::string, QColor> *currColorMap;
+
+    void
+    toggleIsBeingUnloaded();
+    void updateInputType(int inputType);
 
 private:
     void updateStyleSheet();

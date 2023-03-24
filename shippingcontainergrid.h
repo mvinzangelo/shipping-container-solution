@@ -24,7 +24,7 @@ public:
     QWidget *loadingCollection;
     std::vector<Container *> loadContainers;
     std::vector<Container *> unloadContainers;
-    std::map<std::string, QColor> colorMap = {{"NAN", Qt::gray}, {"UNUSED", Qt::white}};
+    std::map<std::string, QColor> *colorMap = new std::map<std::string, QColor>({{"NAN", Qt::gray}, {"UNUSED", Qt::white}});
     ContainerCell *cellWidgets[8][12];
     void updateInputMode(int newMode);
     void updateManifestGUI();

@@ -6,7 +6,6 @@
 ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip)
     : QWidget{parent}
 {
-    qInfo() << currShip->getNumContainers();
     QGridLayout *grid = new QGridLayout(this);
     grid->setSpacing(0);
     grid->setContentsMargins(0, 0, 0, 0);
@@ -20,9 +19,9 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip)
             {
                 ContainerCell *cell;
                 // is a container
-                if (!colorMap.count(currShip->bay[rows - j - 1][i - 1].name))
+                if (!colorMap->count(currShip->bay[rows - j - 1][i - 1].name))
                 {
-                    colorMap[currShip->bay[rows - j - 1][i - 1].name] = QColor::fromRgb(QRandomGenerator::global()->generate());
+                    (*colorMap)[currShip->bay[rows - j - 1][i - 1].name] = QColor::fromRgb(QRandomGenerator::global()->generate());
                 }
                 cell = new ContainerCell(this, &currShip->bay[rows - j - 1][i - 1], colorMap);
                 grid->addWidget(cell, j, i);
@@ -62,12 +61,26 @@ void ShippingContainerGrid::onCellPressed(int i, int j)
     // Do stuff with i and j here
     if (currInputType == UNLOADING)
     {
-        unloadContainers.push_back(cellWidgets[i - 1][j - 1]->currContainer);
-        // QLabel *temp = new QLabel(this);
-        // temp->setText(QString::fromStdString(cellWidgets[i - 1][j - 1]->currContainer->name));
-        // unloadingCollection->layout()->addWidget(temp);
+        // cell is already being unloaded
+        if (cellWidgets[i - 1][j - 1]->isBeingUnloaded)
+        {
+            for (unsigned x = 0; x < unloadContainers.size(); x++)
+            {
+                // remove that element from the vector
+                if (unloadContainers.at(x)->name == cellWidgets[i - 1][j - 1]->currContainer->name)
+                {
+                    unloadContainers.erase(unloadContainers.begin() + x);
+                }
+            }
+        }
+        // cell is now being unloaded
+        else
+        {
+            unloadContainers.push_back(cellWidgets[i - 1][j - 1]->currContainer);
+        }
+        // toggle cell to be unloaded
+        cellWidgets[i - 1][j - 1]->toggleIsBeingUnloaded();
     }
-    qInfo() << i << j;
 }
 
 void ShippingContainerGrid::updateInputMode(int newMode)

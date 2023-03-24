@@ -44,6 +44,8 @@ private slots:
 
     void on_btnInputType_clicked();
 
+    void on_btnAddContainer_clicked();
+
 private:
     Ui::MainWindow *ui;
     currentEmployee currOperator;

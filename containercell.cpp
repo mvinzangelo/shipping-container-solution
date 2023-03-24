@@ -1,11 +1,12 @@
 #include "containercell.h"
 
-ContainerCell::ContainerCell(QWidget *parent, Container *currContainer, std::map<std::string, QColor> &colorMap) : QPushButton(parent)
+ContainerCell::ContainerCell(QWidget *parent, Container *currContainer, std::map<std::string, QColor> *colorMap) : QPushButton(parent)
 {
     setFixedHeight(80);
     setFixedWidth(80);
     setDisabled(true);
     this->currContainer = currContainer;
+    currColorMap = colorMap;
     if (currContainer != nullptr)
     {
         // if the container has
@@ -15,7 +16,7 @@ ContainerCell::ContainerCell(QWidget *parent, Container *currContainer, std::map
             setToolTip(QString::fromStdString(currContainer->name));
         }
     }
-    cellColor = colorMap[currContainer->name];
+    cellColor = (*colorMap)[currContainer->name];
     currStyleSheet = QString("QPushButton {"
                              "background-color: %1;"
                              "}"
@@ -32,7 +33,6 @@ void ContainerCell::updateInputType(int inputType)
     {
     // loading mode
     case 0:
-        qInfo() << cellColor.name();
         currStyleSheet = QString("QPushButton {"
                                  "background-color: %1;"
                                  "}"
@@ -80,4 +80,20 @@ void ContainerCell::updateStyleSheet()
                              "}")
                          .arg(cellColor.name(), hoverColor.name());
     setStyleSheet(currStyleSheet);
+}
+
+void ContainerCell::toggleIsBeingUnloaded()
+{
+    if (!isBeingUnloaded)
+    {
+        cellColor = Qt::red;
+        isBeingUnloaded = true;
+        updateStyleSheet();
+    }
+    else
+    {
+        cellColor = (*currColorMap)[currContainer->name];
+        isBeingUnloaded = false;
+        updateStyleSheet();
+    }
 }

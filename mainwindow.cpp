@@ -25,7 +25,6 @@ void MainWindow::on_btnEnter_clicked()
 {
     currOperator.setFirstName(ui->lineFirstName->text());
     currOperator.setLastName(ui->lineLastName->text());
-    qInfo() << currOperator.getFirstName() << currOperator.getLastName();
     ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
 }
 
@@ -107,3 +106,21 @@ void MainWindow::on_btnInputType_clicked()
         ui->loadInput->setEnabled(true);
     }
 }
+
+void MainWindow::on_btnAddContainer_clicked()
+{
+    // create new container for quantity and push into vector
+    for (auto i = 0; i < ui->spinBoxQuantity->value(); i++)
+    {
+        std::string containerName = ui->lineContainerName->text().toStdString();
+        int containerWeight = ui->lineContainerWeight->text().toInt();
+        Container *containerToLoad = new Container(-1, -1, containerWeight, containerName);
+        currInputGrid->loadContainers.push_back(containerToLoad);
+    }
+    // reset ui elements
+    ui->lineContainerName->clear();
+    ui->lineContainerWeight->clear();
+    ui->spinBoxQuantity->setValue(1);
+    // update
+}
+
