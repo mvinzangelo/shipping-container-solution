@@ -4,11 +4,15 @@
 using namespace std;
 #include <vector>
 #include <queue> 
-#include <set> 
-
+#include <cstdlib>
 
 //OPERATORS  
 
+//stub to print ship 
+void printShip(Ship currShip);
+
+//stub for balance check 
+bool shipBalanced(Ship currShip); 
 
 //returns container that was picked up from ship
 Container pickUp(Ship currShip, int row, int col){
@@ -54,7 +58,7 @@ void removeContainer(Ship& newShip, int row, int col){
 //actionType represents wheter we are picking up or dropping off
 //even -> dropping off 
 //odd -> picking up 
-void operators(Ship& currShip, set<Ship> visited, int actionType ){
+void operators(Ship& currShip, vector<Ship> visited, int actionType ){
 
     //case where we are picking up a container to move 
     if(actionType % 2 != 0){
@@ -116,7 +120,11 @@ void operators(Ship& currShip, set<Ship> visited, int actionType ){
                         newShip.balanceChild.clear(); //clear children for newly created Ship 
 
                         dropOff(newShip,newShip.onCrane,i,j);
-                        std::cout<<"Dropping off container: "<< newShip.bay[i][j].name << endl;
+                        if(newShip.bay[i][j].name != "UNUSED" && newShip.bay[i][j].name != "NAN") 
+                        {
+                            std::cout<<"Dropping off container: "<< newShip.bay[i][j].name << endl;
+                        }
+                        
 
                         //check wheter newly created ship has been visited already 
                         bool inVisited = false;
@@ -132,7 +140,6 @@ void operators(Ship& currShip, set<Ship> visited, int actionType ){
                              
 
                         }//new node created,update children of parent and increase depth of search 
- 
 
                         
 
@@ -155,7 +162,7 @@ void operators(Ship& currShip, set<Ship> visited, int actionType ){
 //general search function that will search through possible cases 
 //to find best moves 
 
-/*
+
 void balanceSearch(Ship& currShip, int qFunc){
 
 int expandedNodes = 0;
@@ -166,7 +173,7 @@ int tempQ = 0;
 queue<Ship> nodes; 
 
 //list of nodes already visited CHANGED FROM VECTOR TO SET
-set<Ship> visited; 
+vector<Ship>visited; 
 
 //variable to hold store the current ship layout before expanding 
 Ship currNode = currShip; 
@@ -181,12 +188,112 @@ maxQ+= 1;
 visited.push_back(currNode);
 
 
+if(shipBalanced(currNode)){
+
+    std::cout << "Ship already balanced!" << endl;
+    std::cout << "Port weight: " << currNode.getPortWeight() << '\n';
+    std::cout << "Starboard weight: " << currNode.getStarbordWeight() << '\n';
+    std::cout << "Number of Containers on ship: " << currNode.getNumContainers() << '\n'; 
+}//end if 
 
 
+//actionType represents wheter we are picking up or dropping off
+//even -> dropping off 
+//odd -> picking up 
+int actionType = 1; 
+
+//count variable to determine when to change our actionType
+//depending on the amount of children created 
+int newLayer = 0; 
+
+//main loop to find balance
+while(!shipBalanced(currNode)){
+
+    if(nodes.size() == 0){
+        std::cout<< "Failure: No valid solution :( (AKA. this boy buggin)" << endl;
+    }//i
+
+
+    //TODO: Add heuristic value for currShip.h after breadth first search works 
+
+    //get first element from queue and pop 
+    currNode = nodes.front();   
+
+    nodes.pop(); 
+
+    tempQ -=1;
+    expandedNodes +=1; 
+
+
+    //visited.push_back(currNode);   
+    printShip(currNode); 
+
+    if(shipBalanced(currNode)){
+
+        std::cout << "Ship already balanced!" << endl;
+        std::cout << "Port weight: " << currNode.getPortWeight() << '\n';
+        std::cout << "Starboard weight: " << currNode.getStarbordWeight() << '\n';
+        std::cout << "Number of Containers on ship: " << currNode.getNumContainers() << '\n';
+        printShip(currNode); 
+
+    }//end if 
+
+
+    operators(currNode,visited,actionType); 
+    actionType ++; //increment to switch between picking up and dropping off 
+    visited.push_back(currNode); 
+
+    //for loop to iterate through possibly made children
+    //updating heuristic value and appending 
+    //newly created child to queue for further expansion 
+    for(int i=0; i < currNode.balanceChild.size(); ++i){
+
+        nodes.push(currNode.balanceChild.at(i)); //future node to expand 
+        tempQ += 1;
+
+    }//end for 
+
+    if(tempQ > maxQ){maxQ = tempQ;} //end if for updating max q size 
+
+
+
+
+};// main while loop 
+
+
+
+}//end balanceSearch; 
+
+
+
+//function that checks if ship is legally balanced 
+bool shipBalanced(Ship currShip){
+
+    float portW = currShip.getPortWeight();
+    float starboardW = currShip.getStarbordWeight(); 
+
+    float p = (abs(portW - starboardW)) / max(portW,starboardW); 
+
+    if( (p*100) <=10 ) { return true;}
+
+    else{return false;};
 
 }; 
 
-*/
+void printShip(Ship currShip){
+
+    for (int i = 7; i >= 0; i--)
+   {
+      for (int j = 0; j < 12; j++)
+      {
+         std::cout << currShip.bay[i][j].name[0] << ' ';
+      }//end inner 
+      std::cout << '\n';
+   }//end outer
+
+};//end printShip
+
+
 #endif 
 
 
