@@ -5,8 +5,15 @@ ContainerCell::ContainerCell(QWidget *parent, Container *currContainer) : QPushB
     setFixedHeight(80);
     setFixedWidth(80);
     setDisabled(true);
-    setText("name");
-    setToolTip("THIS IS A TOOLTIP");
+    if (currContainer != nullptr)
+    {
+        // if the container has
+        if (currContainer->isContainer())
+        {
+            setText(QString::fromStdString(currContainer->name));
+            setToolTip(QString::fromStdString(currContainer->name));
+        }
+    }
     currStyleSheet = QString("QPushButton {"
                              "background-color: %1;"
                              "}"

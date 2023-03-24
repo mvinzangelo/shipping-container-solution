@@ -25,9 +25,13 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip)
                 {
                     cell = new ContainerCell(this, &currShip->bay[rows - j - 1][i - 1]);
                     qInfo() << "container at" << rows - j - 1 << i - 1;
-                    cell->cellColor = Qt::blue;
                 }
-                // is not a container
+                // is a grey NAN
+                else if (currShip->bay[rows - j - 1][i - 1].name == "NAN")
+                {
+                    cell = new ContainerCell(this, &currShip->bay[rows - j - 1][i - 1]);
+                }
+                // us UNUSED
                 else
                 {
                     cell = new ContainerCell(this);

@@ -81,6 +81,11 @@ short Container::getDepth(Ship &ship)
    return -1;
 }
 
+bool Container::isContainer()
+{
+   return name != "NAN" && name != "UNUSED";
+}
+
 int Ship::getPortWeight()
 {
    int weight = 0;
