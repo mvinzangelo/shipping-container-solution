@@ -52,6 +52,49 @@ void operators(Ship& currShip, set<Ship> visited, int actionType ){
 
     //case where we are picking up a container to move 
     if(actionType % 2 != 0){
+
+        /*
+
+        int i = 7;
+        int j = 0; 
+        do{
+            if(currShip.bay[i][j].name != "UNUSED" && currShip.bay[i][j].name != "NAN" ){
+                    Ship newShip(currShip);
+                    newShip.balanceChild.clear(); //clear children for newly created Ship 
+
+                    newShip.onCrane = pickUp(currShip,i,j); 
+                    std::cout<<"Pikcing up container: "<< newShip.bay[i][j].name << endl; 
+                    //remove the current picked up crane for the currentShip
+                    removeContainer(newShip,i,j); 
+
+                    newShip.craneLocation = j;
+                    
+                    //check wheter newly created ship has been visited already 
+                    bool inVisited = false;
+                    for(auto const &item: visited)
+                    {
+                        if(item == newShip){inVisited = true; break;}
+
+                    }//check whether newShip has already been visited 
+
+                    if(!inVisited){
+                        currShip.balanceChild.push_back(newShip); 
+                        currShip.depth +=1; 
+
+                    }//new node created,update children of parent and increase depth of search
+
+                    ++i;
+                    ++j; 
+                    continue; 
+                }//search columns top to bottom to find first one we can pick up 
+
+            ++i;
+            ++j;                 
+
+        }while(j<12); 
+
+        */
+        
         
         for(int j = 0; j < 12; ++j ){
 
@@ -82,11 +125,14 @@ void operators(Ship& currShip, set<Ship> visited, int actionType ){
 
                     }//new node created,update children of parent and increase depth of search 
 
+                    break; //exit loop to move on to next column in ship 
                 }//search columns top to bottom to find first one we can pick up  
 
             }//go through rows 
              
         }//go through columns
+
+        
 
     }//end if that picks up containers  
 
