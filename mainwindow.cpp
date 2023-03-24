@@ -109,6 +109,11 @@ void MainWindow::on_btnInputType_clicked()
 
 void MainWindow::on_btnAddContainer_clicked()
 {
+    // add new color to the color map
+    if (!(*currInputGrid->colorMap).count(ui->lineContainerName->text().toStdString()))
+    {
+        (*currInputGrid->colorMap)[ui->lineContainerName->text().toStdString()] = QColor::fromRgb(QRandomGenerator::global()->generate());
+    }
     // create new container for quantity and push into vector
     for (auto i = 0; i < ui->spinBoxQuantity->value(); i++)
     {
@@ -116,14 +121,32 @@ void MainWindow::on_btnAddContainer_clicked()
         int containerWeight = ui->lineContainerWeight->text().toInt();
         Container *containerToLoad = new Container(-1, -1, containerWeight, containerName);
         currInputGrid->loadContainers.push_back(containerToLoad);
-    }
     // update loading contents
-    QLabel * temp = new QLabel(ui->loadingContents);
-    temp->setText(ui->lineContainerName->text());
-    ui->loadingContents->layout()->addWidget(temp);
+    // create widget
+    QWidget *container = new QWidget(this);
+    QVBoxLayout *layout = new QVBoxLayout(container);
+    container->setFixedHeight(80);
+    QColor widgetColor = (*currInputGrid->colorMap)[ui->lineContainerName->text().toStdString()];
+    QString styleSheet = QString("background: %1").arg(widgetColor.name());
+    container->setStyleSheet(styleSheet);
+    // create labels
+    QLabel *nameText = new QLabel();
+    QLabel *weightText = new QLabel();
+    // set font of labels
+    QFont font = QFont(weightText->font());
+    font.setPointSize(14);
+    nameText->setText(ui->lineContainerName->text());
+    weightText->setText(ui->lineContainerWeight->text());
+    nameText->setFont(font);
+    weightText->setFont(font);
+    // add to layout
+    layout->addWidget(nameText);
+    layout->addWidget(weightText);
+    // add to actual gui container
+    ui->loadingContents->layout()->addWidget(container);
+    }
     // reset ui elements
     ui->lineContainerName->clear();
     ui->lineContainerWeight->clear();
     ui->spinBoxQuantity->setValue(1);
-
 }

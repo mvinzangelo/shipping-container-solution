@@ -23,6 +23,7 @@ public:
     INPUT_TYPE currInputType = LOADING;
     QWidget *loadingCollection;
     std::vector<Container *> loadContainers;
+    std::vector<QWidget *> loadContainersWidgets;
     std::vector<Container *> unloadContainers;
     std::map<std::string, QColor> *colorMap = new std::map<std::string, QColor>({{"NAN", Qt::gray}, {"UNUSED", Qt::white}});
     ContainerCell *cellWidgets[8][12];

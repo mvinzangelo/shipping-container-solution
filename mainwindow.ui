@@ -854,6 +854,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   <property name="font">
                    <font>
                     <pointsize>14</pointsize>
+                    <underline>false</underline>
+                    <strikeout>false</strikeout>
+                    <kerning>true</kerning>
                    </font>
                   </property>
                   <property name="text">
