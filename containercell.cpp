@@ -58,6 +58,14 @@ void ContainerCell::updateInputType(int inputType)
             setStyleSheet(currStyleSheet);
             setDisabled(false);
         }
+        else
+        {
+            currStyleSheet = QString("QPushButton {"
+                                     "background-color: %1;"
+                                     "}")
+                                 .arg(cellColor.name(), hoverColor.name());
+            setStyleSheet(currStyleSheet);
+        }
         break;
     }
 }
