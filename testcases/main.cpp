@@ -22,13 +22,25 @@ void generateManifest(Ship& ship, std::string& nameOfTest)
             newManifest << "[" << std::setw(2) << std::setfill('0') << i + 1
                         << "," << std::setw(2) << std::setfill('0') << j + 1
                         << "], {" << std::setw(5) << std::setfill('0') << ship.bay[i][j].weight
-                        << "}, " << ship.bay[i][j].name << '\n';
+                        << "}, " << ship.bay[i][j].name;
+            if (i == 7 && j == 11) break;
+            else newManifest << '\n';
         }
     }
 }
 
 int main()
 {
+   Ship ship;
+   std::string nameOfTest;
+   std::cout << "Input name of test (don't write .txt, I got it): ";
+   getline(std::cin, nameOfTest);
+   nameOfTest += ".txt";
+   
+   // DECLARE CONTAINERS IN HERE
 
+
+
+   generateManifest(ship, nameOfTest);
 }
 
