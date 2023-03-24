@@ -1,7 +1,6 @@
 #include "shippingcontainergrid.h"
 #include "qgridlayout.h"
 #include "qpushbutton.h"
-#include "containercell.h"
 #include <QLabel>
 
 ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip)
@@ -23,18 +22,21 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip)
                 // is a container
                 if (currShip->bay[rows - j - 1][i - 1].name != "UNUSED" && currShip->bay[rows - j - 1][i - 1].name != "NAN")
                 {
-                    cell = new ContainerCell(this, &currShip->bay[rows - j - 1][i - 1]);
-                    qInfo() << "container at" << rows - j - 1 << i - 1;
+                    if (!colorMap.count(currShip->bay[rows - j - 1][i - 1].name))
+                    {
+                        colorMap[currShip->bay[rows - j - 1][i - 1].name] = QColor::fromRgb(QRandomGenerator::global()->generate());
+                    }
+                    cell = new ContainerCell(this, &currShip->bay[rows - j - 1][i - 1], colorMap);
                 }
                 // is a grey NAN
                 else if (currShip->bay[rows - j - 1][i - 1].name == "NAN")
                 {
-                    cell = new ContainerCell(this, &currShip->bay[rows - j - 1][i - 1]);
+                    cell = new ContainerCell(this, &currShip->bay[rows - j - 1][i - 1], colorMap);
                 }
                 // us UNUSED
                 else
                 {
-                    cell = new ContainerCell(this);
+                    cell = new ContainerCell(this, &currShip->bay[rows - j - 1][i - 1], colorMap);
                 }
                 grid->addWidget(cell, j, i);
                 cellWidgets[rows - j - 1][i - 1] = cell;

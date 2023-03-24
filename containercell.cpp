@@ -1,6 +1,6 @@
 #include "containercell.h"
 
-ContainerCell::ContainerCell(QWidget *parent, Container *currContainer) : QPushButton(parent)
+ContainerCell::ContainerCell(QWidget *parent, Container *currContainer, std::map<std::string, QColor> &colorMap) : QPushButton(parent)
 {
     setFixedHeight(80);
     setFixedWidth(80);
@@ -12,6 +12,7 @@ ContainerCell::ContainerCell(QWidget *parent, Container *currContainer) : QPushB
         {
             setText(QString::fromStdString(currContainer->name));
             setToolTip(QString::fromStdString(currContainer->name));
+            cellColor = colorMap[currContainer->name];
         }
     }
     currStyleSheet = QString("QPushButton {"

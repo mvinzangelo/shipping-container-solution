@@ -7,7 +7,7 @@
 class ContainerCell : public QPushButton
 {
 public:
-    ContainerCell(QWidget *parent = nullptr, Container *currContainer = nullptr);
+    ContainerCell(QWidget *parent, Container *currContainer, std::map<std::string, QColor> &colorMap);
     QColor cellColor = Qt::white;
     QColor hoverColor = Qt::red;
     QString currStyleSheet;
