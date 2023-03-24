@@ -8,6 +8,15 @@ using namespace std;
 
 //OPERATORS  
 
+//stub for heuristic 
+int balanceH(Ship currShip);
+
+//lambda key for sorting q of nodes in search
+auto sortRuleLambda = [] (Ship const& s1, Ship const& s2) -> bool
+{
+    return ( (s1.h + s1.depth) < (s2.h + s2.depth)) ;
+};
+
 //stub to print ship 
 void printShip(Ship currShip);
 
@@ -78,20 +87,20 @@ void operators(Ship& currShip, vector<Ship> visited, int actionType ){
 
                     newShip.craneLocation = j;
                     
-                    //check wheter newly created ship has been visited already 
-                    bool inVisited = false;
-                    for(auto const &item: visited)
-                    {
-                        if(item == newShip){inVisited = true; break;}
+                    //check wheter newly created ship has been visited already TESTING W/O PRUNING 
+                    //bool inVisited = false;
+                   // for(auto const &item: visited)
+                   // {
+                    //    if(item == newShip){inVisited = true; break;}
 
-                    }//check whether newShip has already been visited 
+                   // }//check whether newShip has already been visited 
 
-                    if(!inVisited){
+                    //if(!inVisited){
                         newShip.depth =newShip.depth + 1; 
                         currShip.balanceChild.push_back(newShip); 
                         
 
-                    }//new node created,update children of parent and increase depth of search 
+                    //}//new node created,update children of parent and increase depth of search 
 
                     break; //exit loop to move on to next column in ship 
                 }//search columns top to bottom to find first one we can pick up  
@@ -126,20 +135,22 @@ void operators(Ship& currShip, vector<Ship> visited, int actionType ){
                         }
                         
 
+
+                        
                         //check wheter newly created ship has been visited already 
-                        bool inVisited = false;
-                        for(auto const &item: visited)
-                        {
-                            if(item == newShip){inVisited = true; break;}
+                        //bool inVisited = false;
+                        //for(auto const &item: visited)
+                        //{
+                            //if(item == newShip){inVisited = true; break;}
 
-                        }//check whether newShip has already been visited 
+                        //}//check whether newShip has already been visited 
 
-                        if(!inVisited){
+                       // if(!inVisited){
                             newShip.depth = newShip.depth + 1;
                             currShip.balanceChild.push_back(newShip); 
                              
 
-                        }//new node created,update children of parent and increase depth of search 
+                        //}//new node created,update children of parent and increase depth of search 
 
                         
 
@@ -197,37 +208,33 @@ if(shipBalanced(currNode)){
 }//end if 
 
 
-//actionType represents wheter we are picking up or dropping off
-//even -> dropping off 
-//odd -> picking up 
-int actionType = 1; 
-
-//count variable to determine when to change our actionType
-//depending on the amount of children created 
-int newLayer = 0; 
-
 //main loop to find balance
-while(!shipBalanced(currNode)){
+while(!shipBalanced(currNode)){ //TODO: ADD HEURISTIC VALUE 
 
+    //check if q is empty, in which case the search failed or no solution (hopefully the no solution) 
     if(nodes.size() == 0){
         std::cout<< "Failure: No valid solution :( (AKA. this boy buggin)" << endl;
-    }//i
+        return; 
+    }//
+
+    //set heruistic value for the node 
+    currNode.h = balanceH(currNode); 
+
+    //sort the queue of nodes depending on the f(n) cost 
+    //std::sort(nodes.front(),nodes.back(), sortRuleLambda); FIXME
 
 
-    //TODO: Add heuristic value for currShip.h after breadth first search works 
 
-    //get first element from queue and pop 
-    currNode = nodes.front();   
-
-    nodes.pop(); 
-
-    tempQ -=1;
-    expandedNodes +=1; 
+    //gets the current node from the q
+    currNode = nodes.front();
+    nodes.pop();
+    tempQ --;
+    expandedNodes++; 
 
 
-    //visited.push_back(currNode);   
-    printShip(currNode); 
+    visited.push_back(currNode); 
 
+    //check if currNode is balanced 
     if(shipBalanced(currNode)){
 
         std::cout << "Ship already balanced!" << endl;
@@ -235,28 +242,32 @@ while(!shipBalanced(currNode)){
         std::cout << "Starboard weight: " << currNode.getStarbordWeight() << '\n';
         std::cout << "Number of Containers on ship: " << currNode.getNumContainers() << '\n';
         printShip(currNode); 
+        return; 
 
     }//end if 
 
+    
 
-    operators(currNode,visited,actionType); 
-    actionType ++; //increment to switch between picking up and dropping off 
-    visited.push_back(currNode); 
+    if(currNode.onCrane.name != "NAN"){ //container on crane. dropping off 
 
-    //for loop to iterate through possibly made children
-    //updating heuristic value and appending 
-    //newly created child to queue for further expansion 
-    for(int i=0; i < currNode.balanceChild.size(); ++i){
+        operators(currNode,visited,2); 
+    }
 
-        nodes.push(currNode.balanceChild.at(i)); //future node to expand 
-        tempQ += 1;
+    else{//no container on crane, picking up container 
+        operators(currNode,visited,1);
+        printShip(currNode);
+        std::cout << "Port weight: " << currNode.getPortWeight() << '\n';
+        std::cout << "Starboard weight: " << currNode.getStarbordWeight() << '\n'; 
 
-    }//end for 
+    }
+    
 
-    if(tempQ > maxQ){maxQ = tempQ;} //end if for updating max q size 
+    for(int i = 0; i < currNode.balanceChild.size(); ++i)
+    {
+        nodes.push((currNode.balanceChild.at(i)));
+        tempQ++;
 
-
-
+    }//pushes all the newly created children into the q of nodes
 
 };// main while loop 
 
@@ -292,6 +303,64 @@ void printShip(Ship currShip){
    }//end outer
 
 };//end printShip
+
+
+
+int balanceH(Ship currShip){
+
+    int moveCount = 0; //minimum number of containers to achieve balance 
+
+    vector<int>contW; //containerWeights to be stored to determine which weights are best to move 
+    float portW = currShip.getPortWeight();
+    float starboardW = currShip.getStarbordWeight(); 
+
+    //check which weights we want to move(which side is heaver)
+    float temp = min(portW,starboardW); 
+
+    if(temp == portW){//arrange left side containers into vector 
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                contW.push_back(currShip.bay[i][j].weight);
+            }
+        }
+
+    }
+
+    else if (temp == starboardW){//arrange right side containers into vector
+
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 6; j < 12; j++)
+            {
+                contW.push_back(currShip.bay[i][j].weight);
+            }
+        }
+
+    }
+
+
+    sort(contW.begin(),contW.end(),greater<int>()); //sort vector list in descending order 
+
+    float balanceMass = (portW + starboardW) / 2; //never changes for ship 
+    float deficit = balanceMass - min(portW,starboardW); 
+
+
+    for(int i = 0; i < contW.size(); ++i)
+    {
+        if(contW.at(i) <= deficit)
+        {
+            moveCount++; 
+        }
+    }
+
+    return moveCount; 
+
+}//end heuristic func
+
+
+
 
 
 #endif 
