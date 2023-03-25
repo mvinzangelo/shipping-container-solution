@@ -55,6 +55,7 @@ struct Ship
    // int numContainers;
    Ship() {}
    Ship(std::string &name);
+   Ship(const Ship&);
    int getPortWeight();
    int getStarbordWeight();
    int getNumContainers();
@@ -80,8 +81,7 @@ struct Ship
       return(this->fn < rhs.fn);
 
    }
-
-
+   Ship& operator=(const Ship&);
 };
 
 #endif
