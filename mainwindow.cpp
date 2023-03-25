@@ -145,6 +145,8 @@ void MainWindow::on_btnAddContainer_clicked()
         deleteButton->setFont(font);
         deleteButton->setMaximumWidth(80);
         deleteButton->setMaximumHeight(30);
+        connect(deleteButton, &QPushButton::clicked, [=]()
+                { delete container;;});
         // add to layout
         layout->addWidget(nameText);
         layout->addWidget(weightText);
