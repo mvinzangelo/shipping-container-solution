@@ -281,11 +281,12 @@ void MainWindow::generateBalanceOperationsList()
     // calculate time to completion
     qInfo() << "FINISHED SEARCH";
     qInfo() << currOperationsList.size();
-    for (unsigned i = 0; i < currOperationsList.size() - 1; i++)
+    for (unsigned i = 0; i < currOperationsList.size(); i++)
     {
-        qInfo() << "opeartion: " << i;
+        qInfo() << "operation: " << i;
         minToCompleteCurrJob += currOperationsList.at(i)->timeToMove;
     }
+    qInfo() << "Finish iterating though the list once";
     currOperationIndex = 0;
     updateOperationsScreen(currOperationIndex);
 }
@@ -299,6 +300,11 @@ void MainWindow::generateLoadingUnloadingOperationsList()
 void MainWindow::updateOperationsScreen(int index)
 {
     AtomicMove *currMove = currOperationsList.at(index);
+    qInfo() << "GOT CURR MOVE";
+    if (currMove->shipState)
+    {
+        qInfo() << "HAS SHIP STATE";
+    }
     currBufferGrid->renderNewShip(currMove->shipState);
     currShipGrid->renderNewShip(currMove->shipState);
     // set minutes left
@@ -333,7 +339,7 @@ void MainWindow::on_buttonNextMove_clicked()
         msgBox.exec();
         if (msgBox.clickedButton() == pButtonYes)
         {
-            ui->stackedWidget->setCurrentWidget(ui->screenInput);
+            ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
         }
         currLogFile->logManifestFinish(*(currOperationsList.back()->shipState));
         currOperationIndex = 0;

@@ -117,6 +117,7 @@ void ShippingContainerGrid::updateInputMode(int newMode)
 
 void ShippingContainerGrid::renderNewShip(Ship *newShip)
 {
+    qInfo() << "RENDERING SHIP";
     for (unsigned i = 0; i < columns; i++)
     {
         for (unsigned j = 0; j < rows; j++)
@@ -124,12 +125,15 @@ void ShippingContainerGrid::renderNewShip(Ship *newShip)
             // render new buffer
             if (currSubject == BUFFER)
             {
-                bufCellWidgets[rows - j][i]->renderNewContainer(&(newShip->buffer[rows - j][i]));
+                qInfo() << "RENDERING BUFFER";
+                // bufCellWidgets[rows - j][i]->renderNewContainer(&(newShip->buffer[rows - j][i]));
             }
             // render new ship
-            else
+            else if (currSubject == SHIP)
             {
-                cellWidgets[rows - j][i]->renderNewContainer(&(newShip->bay[rows - j][i]));
+                qInfo() << "RENDERING SHIP";
+                // qInfo() << "RENDER SHIP AT" << QString::number(rows - j) << QString::number(i);
+                // cellWidgets[rows - j][i]->renderNewContainer(&(newShip->bay[rows - j][i]));
             }
         }
     }

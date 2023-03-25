@@ -99,6 +99,7 @@ void ContainerCell::toggleIsBeingUnloaded()
 
 void ContainerCell::renderNewContainer(Container *newContainer)
 {
+    qInfo() << "RENDERING CONTAINER";
     this->currContainer = newContainer;
     if (currContainer != nullptr)
     {
