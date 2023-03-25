@@ -146,7 +146,14 @@ void MainWindow::on_btnAddContainer_clicked()
         deleteButton->setMaximumWidth(80);
         deleteButton->setMaximumHeight(30);
         connect(deleteButton, &QPushButton::clicked, [=]()
-                { delete container;;});
+                { 
+                    for (unsigned x = 0; x < currInputGrid->loadContainers.size(); x++) {
+                        if (currInputGrid->loadContainers.at(x)->name == nameText->text().toStdString()) {
+                            currInputGrid->loadContainers.erase(currInputGrid->loadContainers.begin() + x);
+                            break;
+                        }
+                    }
+                    delete container; });
         // add to layout
         layout->addWidget(nameText);
         layout->addWidget(weightText);
