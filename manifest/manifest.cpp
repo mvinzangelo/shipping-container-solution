@@ -1,36 +1,135 @@
 #include "manifest.h"
 
-int main(int argc, char *argv[])
+//int calculateDistance(orderedPair point1, orderedPair point2);
+
+short Container::getDepth(Ship& ship)
 {
-   std::string manifestName;
-   std::cout << "Input a manifest name: ";
-   std::getline(std::cin, manifestName);
-   std::cout << '\n';
-   Ship currentShip(manifestName);
+   try
+   {
+      short depth = 0;
+      
+      if (ship.bay[row - 1][column - 1].name != name || ship.bay[row - 1][column - 1].name == "NAN") 
+      {
+         throw std::invalid_argument("ERROR: getDepth called on incorrect container.\n");
+         
+      }
+      else
+      {
+         for (int i = row; i < 8; i++)
+         //for (int i = row; i < 8; i++)
+         {  
+            if(ship.bay[i][column - 1].name != "UNUSED")
+            {
+            depth++;
+            }
+            else
+            {
+               break;
+            }      
+           
+         }
+         return depth;
+      }
+      
+   }
+   catch (const std::exception& e)
+   {
+      std::cout << "Caught an exception: " << e.what() << "\n"; 
+   }
+   return -1;
+}
+
+
+//---------------------------------SHIP----------------------------------------
+Ship::Ship(std::string& name)
+{
+   numContainers = 0;
+   crainX = 0;
+   crainY = 8;
+   std::ifstream file(name);
+   if (file.is_open())
+   {
+      char c;
+      int row, column, weight;
+      std::string name, line;
+      Container currentContainer;
+      while (std::getline(file, line))
+         {
+            // std::cout << line << '\n'; // Debug
+            std::stringstream s(line);
+            s >> std::skipws >> c >> row >> c >> column >> c >> c >> c >> weight >> c >> c;
+            std::getline(s, name);
+            name.erase(0, 1);
+            // if (name == "NAN") std::cout << "ALERT: This slot does not exist! ";
+            // else if (name == "UNUSED") std::cout << "ALERT: This slot is empty! ";
+            // std::cout << "Row: " << row << "\n" << "Column: " << column << '\n' << "Weight: " << weight << '\n' << "Name: " << name << '\n';
+            currentContainer = Container(row, column, weight, name);
+
+            bay[row - 1][column - 1] = currentContainer;
+            if (name != "NAN" && name != "UNUSED") numContainers++;
+
+         }
+         file.close();
+   }
+   else
+   {
+      std::cout << "ERROR: Unable to open " << name << ".\n";
+   }
+};
+
+int Ship::getPortWeight()
+{
+   int weight = 0;
+   for (int i = 0; i < 8; i++)
+   {
+      for (int j = 0; j < 6; j++)
+      {
+         weight += bay[i][j].weight;
+      }
+   }
+   return weight;
+}
+
+int Ship::getStarbordWeight()
+{
+   int weight = 0;
+   for (int i = 0; i < 8; i++)
+   {
+      for (int j = 6; j < 12; j++)
+      {
+         weight += bay[i][j].weight;
+      }
+   }
+   return weight;
+}
+
+void Ship::printShip()
+{
+   for (int i = 7; i >= 0; i--)
+   {
+      for (int j = 0; j < 12; j++)
+      {
+         std::cout << this->bay[i][j].name[0] << ' ';
+      }
+      std::cout << '\n';
+   }
+}
+
+void Ship::printDepths()
+{
    Container* currentContainer;
    for (int i = 7; i >= 0; i--)
    {
       for (int j = 0; j < 12; j++)
       {
-         std::cout << currentShip.ship[i][j].name[0] << ' ';
-      }
-      std::cout << '\n';
-   }
-
-   for (int i = 7; i >= 0; i--)
-   {
-      for (int j = 0; j < 12; j++)
-      {
-         if (currentShip.ship[i][j].name != "NAN" && currentShip.ship[i][j].name != "UNUSED")
+         if (this->bay[i][j].name != "NAN" && this->bay[i][j].name != "UNUSED")
          {
-            currentContainer = &currentShip.ship[i][j];
-            std::cout << "Depth of " << currentContainer->name << ": " << currentContainer->getDepth(currentShip) << '\n';
+            currentContainer = &this->bay[i][j] ;
+            std::cout << "Depth of " << currentContainer->name << ": " << currentContainer->getDepth(*this) << '\n';
          }
       }
    }
-   std::cout << "Port weight: " << currentShip.getPortWeight() << '\n';
-   std::cout << "Starboard weight: " << currentShip.getStarbordWeight() << '\n';
-
-   
-   return 0;
 }
+
+
+
