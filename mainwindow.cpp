@@ -70,6 +70,7 @@ void MainWindow::on_buttonStartProblem_clicked()
         break;
     case 1:
         currProblem = BALANCING;
+        ui->stackedWidget->setCurrentWidget(ui->screenOperation);
         break;
     }
 }
