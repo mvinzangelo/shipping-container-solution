@@ -8,6 +8,7 @@
 #include "manifest/manifest.h"
 #include "logfile/logfile.h"
 #include "atomicmove.h"
+#include "balance/balance.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
