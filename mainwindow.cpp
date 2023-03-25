@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <QFileDialog>
+#include <QMessageBox>
 
 void onCellPressed(int i, int j)
 {
@@ -67,7 +68,17 @@ void MainWindow::on_buttonStartProblem_clicked()
     // change screen based off of problem type
     if (ui->cbProblemType->currentIndex() == 0)
     {
+        if (currInputGrid)
+        {
+            QLayoutItem* item;
+                while ( ( item = ui->loadingContents->layout()->takeAt( 0 ) ) != NULL )
+                {
+                    delete item->widget();
+                    delete item;
+                }
 
+            delete currInputGrid;
+        }
         // initialize input grid
         ShippingContainerGrid *inputGrid = new ShippingContainerGrid(nullptr, currShip);
         currInputGrid = inputGrid;
@@ -82,6 +93,11 @@ void MainWindow::on_buttonStartProblem_clicked()
     else
     {
         // initialize input grid
+        if (currShipGrid && currBufferGrid)
+        {
+            delete currShipGrid;
+            delete currBufferGrid;
+        }
         ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currShip);
         ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currShip, 24, 4, shipGrid->colorMap);
         currShipGrid = shipGrid;
@@ -90,7 +106,16 @@ void MainWindow::on_buttonStartProblem_clicked()
         // add grid to the input screen
         ui->operationGrid->addWidget(shipGrid, 0, 1, Qt::AlignLeft);
         ui->operationGrid->addWidget(bufferGrid, 1, 0, 1, 2, Qt::AlignHCenter);
+        // alert user generating
+        QMessageBox *msgbox = new QMessageBox(this);
+        msgbox->setWindowTitle("");
+        msgbox->setText("Generating operations list...");
+        msgbox->open();
+        // TODO: CALL AI
+        generateBalanceOperationsList();
         ui->stackedWidget->setCurrentWidget(ui->screenOperation);
+        // alert user done generating
+        msgbox->setText("Generating operations complete.");
     }
 }
 
@@ -189,7 +214,11 @@ void MainWindow::on_btnAddContainer_clicked()
 
 void MainWindow::on_buttonStartLoadingUnloading_clicked()
 {
-
+    if (currShipGrid && currBufferGrid)
+    {
+        delete currShipGrid;
+        delete currBufferGrid;
+    }
     ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currShip, 12, 8, currInputGrid->colorMap);
     ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currShip, 24, 4, shipGrid->colorMap);
     currShipGrid = shipGrid;
@@ -197,7 +226,16 @@ void MainWindow::on_buttonStartLoadingUnloading_clicked()
     // add grid to the input screen
     ui->operationGrid->addWidget(shipGrid, 0, 1, Qt::AlignLeft);
     ui->operationGrid->addWidget(bufferGrid, 1, 0, 1, 2, Qt::AlignHCenter);
+    QMessageBox *msgbox = new QMessageBox(this);
+    // alert user that it's generating
+    msgbox->setWindowTitle("");
+    msgbox->setText("Generating operations list...");
+    msgbox->open();
+    // TODO: CALL AI
+    generateLoadingUnloadingOperationsList();
     ui->stackedWidget->setCurrentWidget(ui->screenOperation);
+    // alert user done generating
+    msgbox->setText("Generating operations complete.");
 }
 
 void MainWindow::on_backButtonOperation_clicked()
@@ -244,4 +282,14 @@ void MainWindow::on_buttonAddComment_clicked()
     std::string comment = ui->txtComment->toPlainText().toStdString();
     currLogFile->getOperatorMessage(comment);
     ui->txtComment->clear();
+}
+
+// TODO: CALL AI FUNCTIONS
+void MainWindow::generateBalanceOperationsList()
+{
+    // TODO: CALL SYKLER
+}
+void MainWindow::generateLoadingUnloadingOperationsList()
+{
+    // TODO: CALL CHAD
 }

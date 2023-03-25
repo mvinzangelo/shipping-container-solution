@@ -59,6 +59,8 @@ private slots:
     void on_buttonEnterApp_clicked();
 
     void on_buttonAddComment_clicked();
+    void generateBalanceOperationsList();
+    void generateLoadingUnloadingOperationsList();
 
 private:
     Ui::MainWindow *ui;
