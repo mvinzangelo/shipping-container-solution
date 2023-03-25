@@ -298,8 +298,8 @@ void operators(Ship& currShip, unordered_set<std::size_t>& visited,std::size_t& 
 
 
 //general search function that will search through possible cases 
-//to find best moves 
-void balanceSearch(Ship& currShip, int qFunc){
+//to find best moves. Returns a vector of atomicMoves for UI 
+vector<atomicMove*> balanceSearch(Ship& currShip, int qFunc){
 
     //inital check to determine if the ship can be legally balanced
     vector<int> weights = isolateContainerWeights(currShip); 
@@ -314,14 +314,14 @@ void balanceSearch(Ship& currShip, int qFunc){
     else
     {
         std::cout<<"Cannot legally balance. Using SIFT"<<endl; 
-        vector<atomicMove*>atomicMoves = SIFT(currShip); //keep list of atomic moves to give frontEnd
+        moves = SIFT(currShip); //keep list of atomic moves to give frontEnd
 
-        for(int i = 0; i < atomicMoves.size();++i){
+        for(int i = 0; i < moves.size();++i){
             std::cout<<"New move"<<endl;
             //printShip(atomicMoves->at(i).*shipsState); //print out each atomic move to console 
             std::cout<<endl;
         }
-        return; 
+        return moves; 
     }
     
 
@@ -368,7 +368,7 @@ while(!shipBalanced(currNode)){ //TODO: ADD HEURISTIC VALUE
     //check if q is empty, in which case the search failed or no solution (hopefully the no solution) 
     if(nodes.size() == 0){
         std::cout<< "Failure: No valid solution :( (AKA. this boy buggin)" << endl;
-        return; 
+        return moves; 
     }//
 
     //set heruistic value for the node 
@@ -401,7 +401,7 @@ while(!shipBalanced(currNode)){ //TODO: ADD HEURISTIC VALUE
         std::cout << "Port weight: " << currNode.getPortWeight() << '\n';
         std::cout << "Starboard weight: " << currNode.getStarbordWeight() << '\n';
         std::cout << "Number of Containers on ship: " << currNode.getNumContainers() << '\n';
-        return; 
+        return moves; //FIX ME (Add atomicMoves for regular balancing)
 
     }//end if 
 

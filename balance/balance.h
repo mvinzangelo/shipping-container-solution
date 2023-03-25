@@ -66,7 +66,7 @@ void operators(Ship& currShip, unordered_set<std::size_t>& visited,std::size_t& 
 
 //general search function that will search through possible cases 
 //to find best moves 
-void balanceSearch(Ship& currShip, int qFunc); 
+vector<atomicMove*> balanceSearch(Ship& currShip, int qFunc); 
 
 
 
