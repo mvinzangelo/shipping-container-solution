@@ -54,24 +54,23 @@ void MainWindow::on_buttonStartProblem_clicked()
     // call constructor for ship with manifest path
     std::string shipPath = currManifestPath.toStdString();
     currShip = new Ship(shipPath);
-    // initialize input grid
-    ShippingContainerGrid *inputGrid = new ShippingContainerGrid(nullptr, currShip);
-    currInputGrid = inputGrid;
-    inputGrid->loadingCollection = ui->loadingContents;
-    // add grid to the input screen
-    ui->gridContainer->addWidget(inputGrid, 0, 1);
     // change screen based off of problem type
-    switch (ui->cbProblemType->currentIndex())
-    {
-    case 0:
+    if (ui->cbProblemType->currentIndex() == 0 ) {
+
+        // initialize input grid
+        ShippingContainerGrid *inputGrid = new ShippingContainerGrid(nullptr, currShip);
+        currInputGrid = inputGrid;
+        inputGrid->loadingCollection = ui->loadingContents;
+        // add grid to the input screen
+        ui->gridContainer->addWidget(inputGrid, 0, 1);
         currProblem = LOAD_UNLOAD;
         ui->stackedWidget->setCurrentWidget(ui->screenInput);
         currLoadingUnloading = new LoadingUnloadingInput();
-        break;
-    case 1:
+    }
+    // if balancing problem
+    else  {
         currProblem = BALANCING;
         ui->stackedWidget->setCurrentWidget(ui->screenOperation);
-        break;
     }
 }
 
@@ -176,6 +175,11 @@ void MainWindow::on_buttonStartLoadingUnloading_clicked()
 
 void MainWindow::on_backButtonOperation_clicked()
 {
-    ui->stackedWidget->setCurrentWidget(ui->screenInput);
+    if (currProblem == LOAD_UNLOAD) {
+        ui->stackedWidget->setCurrentWidget(ui->screenInput);
+    }
+    else if (currProblem == BALANCING) {
+        ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
+    }
 }
 

@@ -3,7 +3,7 @@
 #include "qpushbutton.h"
 #include <QLabel>
 
-ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip)
+ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, int columns, int rows)
     : QWidget{parent}
 {
     QGridLayout *grid = new QGridLayout(this);

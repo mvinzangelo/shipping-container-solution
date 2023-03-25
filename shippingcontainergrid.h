@@ -16,7 +16,7 @@ class ShippingContainerGrid : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ShippingContainerGrid(QWidget *parent = nullptr, Ship *currShip = nullptr);
+    explicit ShippingContainerGrid(QWidget *parent = nullptr, Ship *currShip = nullptr, int columns = 12, int rows = 8);
     void onCellPressed(int i, int j);
     int columns = 12;
     int rows = 8;
