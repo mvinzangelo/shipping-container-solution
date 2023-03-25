@@ -48,6 +48,7 @@ class Node
         //void checkTops();
         void offLoad(orderedPair container);
         void moveContainer(orderedPair container);
+        void onboard(Container* container);
 
 
         //orderedPair findOffboardTarget(std::string target);

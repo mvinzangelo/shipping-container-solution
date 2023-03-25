@@ -1,4 +1,4 @@
-#include "Que.h"
+  #include "Que.h"
 
 
 Que::Que(Node* node)
@@ -23,36 +23,44 @@ void Que::expand()
 {
     Node* currentNode, *tempNode;
     currentNode = heap.top();
-    //finds the top of columns that have containers to be offboarded
-    std::vector<Container*> targetTops = currentNode->findTop(currentNode->findTargetColumns()); 
-
-    for(int i = 0; i < targetTops.size(); i++)
-    {
-        for(int j = 0; j < currentNode->containersOFF.size(); j++)
+    if(!currentNode->containersOFF.empty()){
+        //finds the top of columns that have containers to be offboarded
+        std::vector<Container*> targetTops = currentNode->findTop(currentNode->findTargetColumns()); 
+        for(int i = 0; i < targetTops.size(); i++)
         {
-            // if container on the top matches a one to be offboared 
-            if(targetTops[i]->name == currentNode->containersOFF[j]->name) 
+            for(int j = 0; j < currentNode->containersOFF.size(); j++)
             {
-                tempNode = new Node(*currentNode); //copy current node
-                std::cout << "\nOffLoading [" << targetTops[i]->row - 1<< ", " << targetTops[i]->column - 1<< "]\n";
-                tempNode->offLoad(orderedPair(targetTops[i]->row -1,targetTops[i]->column-1)); //offload target container
-                tempNode->containersOFF.erase(tempNode->containersOFF.begin()+j); //Remove target from offboarding list
-                heap.push(tempNode);
-                tempNode->print();
+                // if container on the top matches a one to be offboared 
+                if(targetTops[i]->name == currentNode->containersOFF[j]->name) 
+                {
+                    tempNode = new Node(*currentNode); //copy current node
+                    std::cout << "\nOffLoading [" << targetTops[i]->row - 1<< ", " << targetTops[i]->column - 1<< "]\n";
+                    tempNode->offLoad(orderedPair(targetTops[i]->row -1,targetTops[i]->column-1)); //offload target container
+                    tempNode->containersOFF.erase(tempNode->containersOFF.begin()+j); //Remove target from offboarding list
+                    heap.push(tempNode);
+                    tempNode->print();
+                }
+                else
+                {
+                    tempNode = new Node(*currentNode);
+                    std::cout << "\nMoving container [" <<targetTops[i]->row -1 << ", " << targetTops[i]->column - 1 << "]\n";
+                    tempNode->moveContainer(orderedPair(targetTops[i]->row -1,targetTops[i]->column-1));
+                    heap.push(tempNode);
+                    tempNode->print();
+                }
+                
             }
-            else
-            {
-                tempNode = new Node(*currentNode);
-                std::cout << "\nMoving container [" <<targetTops[i]->row -1 << ", " << targetTops[i]->column - 1 << "]\n";
-                tempNode->moveContainer(orderedPair(targetTops[i]->row -1,targetTops[i]->column-1));
-                heap.push(tempNode);
-                tempNode->print();
-            }
-            
         }
+        heap.pop();
+    }
+    if(!heap.top()->containersON.empty())
+    {
+        tempNode->onboard(tempNode->containersON.back());
+        tempNode->containersON.pop_back();
+        heap.push(tempNode);
     }
 
-    heap.pop();
+    
 }
 
 

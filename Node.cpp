@@ -116,10 +116,10 @@ std::vector<Container*> Node::findTop(std::vector<int> columns){
             }
         }
     }
-    for(int i = 0; i < targetTops.size(); i++)
-    {
-        std::cout << "[" << targetTops[i]->row -1 << ", " << targetTops[i]->column -1 <<"]\n";
-    }
+    // for(int i = 0; i < targetTops.size(); i++)
+    // {
+    //     std::cout << "[" << targetTops[i]->row -1 << ", " << targetTops[i]->column -1 <<"]\n";
+    // }
     return targetTops;
 }
 
@@ -181,6 +181,68 @@ void Node::moveContainer(orderedPair Loc)
     }
 }
 
+void Node::onboard(Container* container)
+{
+    std::cout << "onboarding!!\n";
+    bool Target = false;
+    // find columns that don't have container that need to be offloaded
+    std::vector<int> targetColumns = findTargetColumns();
+    std::vector<int> freeColumns;
+    for(int i = 0; i < 12; i++)
+    {
+        for(int j = 0; j < targetColumns.size(); j++ )
+        {
+            if(targetColumns[j] == i){ Target = true; }
+        }
+        if(!Target){ freeColumns.push_back(i); }
+        else Target = false;
+    }
+    if(freeColumns.empty())
+    {
+
+    }
+    else
+    {
+        // Find the top free spot of columns without conainers to be offloaded
+        std::vector<Container*> freeTops = findTop(freeColumns);
+        int minDist = 999;
+        int tempDist;
+        orderedPair tempLoc, closestSpot;
+        //finds the closest spot to onboard container
+        for(int i = 0; i <freeTops.size(); i++)
+        {
+            tempLoc.first = freeTops[i]->row;
+            tempLoc.second = freeTops[i]->column -1;
+            tempDist = calculateDistance(pinkBox,tempLoc);
+            if(tempDist < minDist)
+            {
+                minDist = tempDist;
+                closestSpot = tempLoc;
+            }
+            std::cout << "Free Spots: \n";
+            tempLoc.print();
+            std::cout << '\n';
+        }
+        Fx += minDist; //update cost;
+        if(inBuffer)
+        { 
+            Fx += 4;
+            inBuffer = false;
+            inShip = true;
+        }
+        else
+        {
+            Fx += 8;
+            inShip = true;
+        }
+        crain.first = closestSpot.first;//update crain
+        crain.second = closestSpot.second;
+        ship.bay[closestSpot.first][closestSpot.second].name = container->name; //update container
+        ship.bay[closestSpot.first][closestSpot.second].weight = container->weight;
+        std::cout << "container Onboard!\n";
+    }
+}
+
 // orderedPair Node::findOffboardTarget(std::string target)
 // {
 //     orderedPair targetLoc;
@@ -207,7 +269,8 @@ void Node::offLoad(orderedPair container)
 int Node::offloadCost(orderedPair container)
 {
     int cost = 0;
-    cost += calculateDistance(crain, container) + calculateDistance(container, pinkBox);
+    if(inBuffer){ cost = 4;}
+    cost += calculateDistance(crain, container) + calculateDistance(container, pinkBox) + 4;
     std::cout << "off load cost: " << cost << std::endl;
     return cost;
 }
