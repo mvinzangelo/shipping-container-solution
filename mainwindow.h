@@ -72,6 +72,8 @@ private slots:
 
     void on_buttonNextMove_clicked();
 
+    void on_btnLogOut_clicked();
+
 private:
     Ui::MainWindow *ui;
     currentEmployee currOperator;

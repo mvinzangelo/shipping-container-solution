@@ -70,7 +70,6 @@ void MainWindow::on_buttonStartProblem_clicked()
     {
         if (currInputGrid)
         {
-
             delete currInputGrid;
         }
         // initialize input grid
@@ -320,19 +319,28 @@ void MainWindow::updateOperationsScreen(int index)
 void MainWindow::on_buttonNextMove_clicked()
 {
     currOperationIndex++;
-    if (currOperationIndex == currOperationsList.size()) {
+    if (currOperationIndex == currOperationsList.size())
+    {
         // TODO: JOB FINISHED HANDLER
         QString finishMessage = QString("%1OUTBOUND.txt wirtten to the desktop. Please make sure to email it to the captain.").arg(QString::fromStdString(currShip->manifestName));
-        QMessageBox msgBox; msgBox.setText(finishMessage); QAbstractButton* pButtonYes = msgBox.addButton(tr("Leave"), QMessageBox::YesRole);
+        QMessageBox msgBox;
+        msgBox.setText(finishMessage);
+        QAbstractButton *pButtonYes = msgBox.addButton(tr("Leave"), QMessageBox::YesRole);
         msgBox.exec();
-        if (msgBox.clickedButton()==pButtonYes) {
+        if (msgBox.clickedButton() == pButtonYes)
+        {
             ui->stackedWidget->setCurrentWidget(ui->screenInput);
         }
         currLogFile->logManifestFinish(*(currOperationsList.back()->shipState));
         currOperationIndex = 0;
     }
-    else {
+    else
+    {
         updateOperationsScreen(currOperationIndex);
     }
 }
 
+void MainWindow::on_btnLogOut_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
+}
