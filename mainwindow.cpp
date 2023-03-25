@@ -70,12 +70,6 @@ void MainWindow::on_buttonStartProblem_clicked()
     {
         if (currInputGrid)
         {
-            QLayoutItem* item;
-                while ( ( item = ui->loadingContents->layout()->takeAt( 0 ) ) != NULL )
-                {
-                    delete item->widget();
-                    delete item;
-                }
 
             delete currInputGrid;
         }
@@ -115,6 +109,7 @@ void MainWindow::on_buttonStartProblem_clicked()
         generateBalanceOperationsList();
         ui->stackedWidget->setCurrentWidget(ui->screenOperation);
         // alert user done generating
+        msgbox->open();
         msgbox->setText("Generating operations complete.");
     }
 }
@@ -235,6 +230,7 @@ void MainWindow::on_buttonStartLoadingUnloading_clicked()
     generateLoadingUnloadingOperationsList();
     ui->stackedWidget->setCurrentWidget(ui->screenOperation);
     // alert user done generating
+    msgbox->open();
     msgbox->setText("Generating operations complete.");
 }
 
@@ -288,8 +284,43 @@ void MainWindow::on_buttonAddComment_clicked()
 void MainWindow::generateBalanceOperationsList()
 {
     // TODO: CALL SYKLER
+    // call function and set currOperationsList
+    // calculate time to completion
+    updateOperationsScreen(0);
 }
 void MainWindow::generateLoadingUnloadingOperationsList()
 {
     // TODO: CALL CHAD
+    // call function and set currOperationsList
+    // calculate time to completion
 }
+
+void MainWindow::updateOperationsScreen(int index)
+{
+    AtomicMove *currMove = currOperationsList.at(index);
+    currBufferGrid->renderNewShip(currMove->shipState);
+    currShipGrid->renderNewShip(currMove->shipState);
+    // set minutes left
+    QString minutesLeftString;
+    if (index == 0)
+    {
+        minutesLeftString = QString("%1 minutes left").arg(QString::number(minToCompleteCurrJob));
+    }
+    else
+    {
+        minToCompleteCurrJob -= currOperationsList.at(index - 1)->timeToMove;
+        minutesLeftString = QString("%1 minutes left").arg(QString::number(minToCompleteCurrJob));
+    }
+    ui->labelMinutesLeft->setText(minutesLeftString);
+    // set current move
+    QString currentMove = QString("Current move: %1 to %2").arg(QString::fromStdString(currOperationsList.at(index)->containerToMove), QString::fromStdString(currOperationsList.at(index)->locationToMove));
+    ui->labelCurrentMove->setText(currentMove);
+    // set steps string
+    QString currentSteps = QString("Step %1 of %2").arg(QString::number(index + 1), QString::number(currOperationsList.size()));
+    ui->labelSteps->setText(currentSteps);
+}
+void MainWindow::on_buttonNextMove_clicked()
+{
+
+}
+
