@@ -886,7 +886,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineContainerWeight">
+                 <widget class="QSpinBox" name="lineContainerWeight">
                   <property name="font">
                    <font>
                     <pointsize>14</pointsize>

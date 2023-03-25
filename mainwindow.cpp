@@ -163,6 +163,6 @@ void MainWindow::on_btnAddContainer_clicked()
     }
     // reset ui elements
     ui->lineContainerName->clear();
-    ui->lineContainerWeight->clear();
+    ui->lineContainerWeight->setValue(1);
     ui->spinBoxQuantity->setValue(1);
 }
