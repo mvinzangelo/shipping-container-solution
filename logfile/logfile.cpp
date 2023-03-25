@@ -199,3 +199,24 @@ void LogFile::getOperatorMessage(std::string& message)
 {
     this->logFile << getTimestampString() << ": " << message << '\n';
 }
+
+int main(int argc, char *argv[])
+{
+    LogFile log;
+    std::string name = "Joshua Candelaria";
+    std::string container = "Container";
+    std::string message = "Hello world";
+    std::string manifestName;
+    std::cout << "Input a manifest name: ";
+    std::getline(std::cin >> std::ws, manifestName);
+    std::cout << '\n';
+    Ship currentShip(manifestName);
+    
+    log.initLogFile(CONTINUE, 2023);
+    log.logEmployeeCheckIn(name);
+    log.logAtomicMove(container, ONLOAD);
+    log.getOperatorMessage(message);
+    log.logAtomicMove(container, OFFLOAD);
+    log.logManifestOpen(currentShip);
+    log.logManifestFinish(currentShip);
+}
