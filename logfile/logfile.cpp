@@ -68,7 +68,7 @@ void LogFile::initLogFile(int option, int year)
     if (configFile.peek() == std::ifstream::traits_type::eof())
     {
         std::cout << "ALERT: Configuration file is empty. If this is your first time starting the program, ignore this alert."
-                  << " If not, please contact Shipping Container Solutions tech support immediately.\n";
+                  << " If not, please contact Shipping Container Solutions tech support immediately." << std::endl;
         configFile.close();
         option = NEW;
     }
@@ -83,7 +83,7 @@ void LogFile::initLogFile(int option, int year)
     // If the user wants to continue, open the log file.
     if (option == CONTINUE)
     {
-        std::cout << "Resuming logging in " << currentLogFileName << ".\n";
+        std::cout << "Resuming logging in " << currentLogFileName << "." << std::endl;
         logFile.open(currentLogFileName, std::ios::app);
         return;
     }
@@ -113,12 +113,12 @@ std::string LogFile::getTimestampString()
 
 void LogFile::logEmployeeCheckIn(std::string &name)
 {
-    this->logFile << getTimestampString() << ": " << name << " has checked in.\n";
+    this->logFile << getTimestampString() << ": " << name << " has checked in." << std::endl;
 }
 
 void LogFile::logEmployeeCheckOut(std::string &name)
 {
-    this->logFile << getTimestampString() << ": " << name << " has checked out.\n";
+    this->logFile << getTimestampString() << ": " << name << " has checked out." << std::endl;
 }
 
 void LogFile::logAtomicMove(std::string &containerName, int loadType)
@@ -127,18 +127,18 @@ void LogFile::logAtomicMove(std::string &containerName, int loadType)
 
     if (loadType == ONLOAD)
     {
-        this->logFile << timestamp << ": \"" << containerName << '\"' << " is onloaded.\n";
+        this->logFile << timestamp << ": \"" << containerName << '\"' << " is onloaded." << std::endl;
     }
     else if (loadType == OFFLOAD)
     {
-        this->logFile << timestamp << ": \"" << containerName << '\"' << " is offloaded.\n";
+        this->logFile << timestamp << ": \"" << containerName << '\"' << " is offloaded." << std::endl;
     }
 }
 void LogFile::logManifestOpen(Ship &ship)
 {
     std::string timestamp = getTimestampString();
     this->logFile << timestamp << ": "
-                  << "Manifest " << ship.manifestName << " is opened, there are " << ship.getNumContainers() << " on the ship.\n";
+                  << "Manifest " << ship.manifestName << " is opened, there are " << ship.getNumContainers() << " on the ship." << std::endl;
 }
 void LogFile::logManifestFinish(Ship &ship)
 {
@@ -198,7 +198,7 @@ void LogFile::logManifestFinish(Ship &ship)
 }
 void LogFile::getOperatorMessage(std::string &message)
 {
-    this->logFile << getTimestampString() << ": " << message << '\n';
+    this->logFile << getTimestampString() << ": " << message << std::endl;
 }
 /*
 int main(int argc, char *argv[])
