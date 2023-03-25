@@ -46,6 +46,10 @@ private slots:
 
     void on_btnAddContainer_clicked();
 
+    void on_buttonStartLoadingUnloading_clicked();
+
+    void on_backButtonOperation_clicked();
+
 private:
     Ui::MainWindow *ui;
     currentEmployee currOperator;

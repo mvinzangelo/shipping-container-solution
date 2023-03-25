@@ -166,3 +166,15 @@ void MainWindow::on_btnAddContainer_clicked()
     ui->lineContainerWeight->setValue(1);
     ui->spinBoxQuantity->setValue(1);
 }
+
+void MainWindow::on_buttonStartLoadingUnloading_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->screenOperation);
+}
+
+
+void MainWindow::on_backButtonOperation_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->screenInput);
+}
+
