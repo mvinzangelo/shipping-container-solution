@@ -27,6 +27,8 @@ class MainWindow : public QMainWindow
 
 public:
     ShippingContainerGrid *currInputGrid;
+    ShippingContainerGrid *currShipGrid;
+    ShippingContainerGrid *currBufferGrid;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Ship *currShip;

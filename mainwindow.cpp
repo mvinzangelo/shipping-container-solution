@@ -84,6 +84,8 @@ void MainWindow::on_buttonStartProblem_clicked()
         // initialize input grid
         ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currShip);
         ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currShip, 24, 4, shipGrid->colorMap);
+        currShipGrid = shipGrid;
+        currBufferGrid = bufferGrid;
         currProblem = BALANCING;
         // add grid to the input screen
         ui->operationGrid->addWidget(shipGrid, 0, 1, Qt::AlignLeft);
@@ -190,6 +192,8 @@ void MainWindow::on_buttonStartLoadingUnloading_clicked()
 
     ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currShip, 12, 8, currInputGrid->colorMap);
     ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currShip, 24, 4, shipGrid->colorMap);
+    currShipGrid = shipGrid;
+    currBufferGrid = bufferGrid;
     // add grid to the input screen
     ui->operationGrid->addWidget(shipGrid, 0, 1, Qt::AlignLeft);
     ui->operationGrid->addWidget(bufferGrid, 1, 0, 1, 2, Qt::AlignHCenter);
