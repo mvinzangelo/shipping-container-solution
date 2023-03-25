@@ -133,7 +133,6 @@ vector<AtomicMove *> SIFT(Ship &currShip)
 {
     // vector<Ship>atomicMove;
     vector<AtomicMove *> moves;
-
     vector<int> weights = isolateContainerWeights(currShip); // vector to hold container weights so we can sort prior to putting back on the ship
     sort(weights.begin(), weights.end(), greater<int>());    // sort vector from largest to smallest
 
@@ -148,22 +147,29 @@ vector<AtomicMove *> SIFT(Ship &currShip)
             if (currShip.bay[i][j].name != "UNUSED" && currShip.bay[i][j].name != "NAN")
             {
 
-                currShip.onCrane = pickUp(currShip, i, j, 1); // pick up crane to move (1:bay)
-                removeContainer(currShip, i, j, 1);
-                dropOff(currShip, currShip.onCrane, bufferRow, bufferCol, 0); // 0 means dropping off container in buffer
-                bufferCol--;
 
-                string newLocation = "{" + to_string(bufferRow) + "," + to_string(bufferCol) + "}";
-                AtomicMove *currAtoimcMove = new AtomicMove();
-                currAtoimcMove->containerToMove = currShip.onCrane.name;
-                currAtoimcMove->locationToMove = newLocation;
-
-                // keep track of each atomic move through vector of Ships
+                AtomicMove *currAtomicMove = new AtomicMove();
                 Ship *tempShip = new Ship();
                 tempShip = &currShip;
                 printShip(*tempShip);
                 std::cout << endl;
-                currAtoimcMove->shipState = tempShip;
+                currAtomicMove->shipState = tempShip;
+
+                currShip.onCrane = pickUp(currShip, i, j, 1); // pick up crane to move (1:bay)
+
+                currAtomicMove->containerToMove = currShip.onCrane.name;
+
+                removeContainer(currShip, i, j, 1);
+                dropOff(currShip, currShip.onCrane, bufferRow, bufferCol, 0); // 0 means dropping off container in buffer
+                bufferCol--;
+
+                string newLocation = "{" + to_string(bufferRow) + "," + to_string(bufferCol) + "}"; 
+                currAtomicMove->locationToMove = newLocation;
+
+                // keep track of each atomic move through vector of Ships
+
+
+                moves.push_back(currAtomicMove); 
 
                 // push created struct into atomicMove vector
 
@@ -179,8 +185,17 @@ vector<AtomicMove *> SIFT(Ship &currShip)
     for (int j = 23; j > 0; --j)
     {
         if (currShip.buffer[0][j].weight == weights.front())
-        {                                                                     // found the heaviest weight in vector to move
-            currShip.onCrane = pickUp(currShip, 0, j, 0);                     // 0 for picking up in buffer
+        {  
+                AtomicMove *currAtomicMove = new AtomicMove();
+                Ship *tempShip = new Ship();
+                tempShip = &currShip;
+                printShip(*tempShip);
+                std::cout << endl;
+                currAtomicMove->shipState = tempShip; 
+
+             // found the heaviest weight in vector to move
+            currShip.onCrane = pickUp(currShip, 0, j, 0);    
+            currAtomicMove->containerToMove = currShip.onCrane.name;                 // 0 for picking up in buffer
             dropOff(currShip, currShip.onCrane, 0, insertSeq.front() - 1, 1); // drop off container into bay of currShip [denoted by the 1]
             removeContainer(currShip, 0, j, 0);
 
@@ -189,16 +204,9 @@ vector<AtomicMove *> SIFT(Ship &currShip)
             // atomicMove.push_back(temp);
 
             string newLocation = "{" + to_string(0) + "," + to_string(insertSeq.front()) + "}";
-            AtomicMove *currAtoimcMove = new AtomicMove();
-            currAtoimcMove->containerToMove = currShip.onCrane.name;
-            currAtoimcMove->locationToMove = newLocation;
+            currAtomicMove->locationToMove = newLocation;
 
-            // keep track of each atomic move through vector of Ships
-            Ship *tempShip = new Ship();
-            tempShip = &currShip;
-            printShip(*tempShip);
-            std::cout << endl;
-            currAtoimcMove->shipState = tempShip;
+            moves.push_back(currAtomicMove); 
 
             // remove elements from vectors to contiue through iteration
             insertSeq.erase(insertSeq.begin());
@@ -332,13 +340,15 @@ vector<AtomicMove *> balanceSearch(Ship &currShip, int qFunc)
     {
         std::cout << "Cannot legally balance. Using SIFT" << endl;
         moves = SIFT(currShip); // keep list of atomic moves to give frontEnd
+        std::cout <<"Size of moves vector: " << moves.size() << endl;
 
-        for (int i = 0; i < moves.size(); ++i)
-        {
-            std::cout << "New move" << endl;
+       // for (int i = 0; i < moves.size(); ++i)
+        //{
+            //std::cout << "New move" << endl;
             // printShip(atomicMoves->at(i).*shipsState); //print out each atomic move to console
-            std::cout << endl;
-        }
+            //std::cout << endl;
+        //}
+
         return moves;
     }
 
