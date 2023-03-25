@@ -58,6 +58,7 @@ void MainWindow::on_buttonStartProblem_clicked()
     // call constructor for ship with manifest path
     std::string shipPath = currManifestPath.toStdString();
     currShip = new Ship(shipPath);
+    currLogFile->logManifestOpen(*currShip);
     // change screen based off of problem type
     if (ui->cbProblemType->currentIndex() == 0 ) {
 
