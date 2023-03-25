@@ -277,8 +277,17 @@ void MainWindow::generateBalanceOperationsList()
 {
     // TODO: CALL SYKLER
     // call function and set currOperationsList
+    currOperationsList = balanceSearch(*currShip, 1);
     // calculate time to completion
-    updateOperationsScreen(0);
+    qInfo() << "FINISHED SEARCH";
+    qInfo() << currOperationsList.size();
+    for (unsigned i = 0; i < currOperationsList.size() - 1; i++)
+    {
+        qInfo() << "opeartion: " << i;
+        minToCompleteCurrJob += currOperationsList.at(i)->timeToMove;
+    }
+    currOperationIndex = 0;
+    updateOperationsScreen(currOperationIndex);
 }
 void MainWindow::generateLoadingUnloadingOperationsList()
 {
