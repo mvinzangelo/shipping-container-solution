@@ -199,7 +199,7 @@ void LogFile::getOperatorMessage(std::string& message)
 {
     this->logFile << getTimestampString() << ": " << message << '\n';
 }
-
+/*
 int main(int argc, char *argv[])
 {
     LogFile log;
@@ -220,3 +220,4 @@ int main(int argc, char *argv[])
     log.logManifestOpen(currentShip);
     log.logManifestFinish(currentShip);
 }
+*/
