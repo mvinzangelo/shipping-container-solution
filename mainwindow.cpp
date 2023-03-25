@@ -121,29 +121,36 @@ void MainWindow::on_btnAddContainer_clicked()
         int containerWeight = ui->lineContainerWeight->text().toInt();
         Container *containerToLoad = new Container(-1, -1, containerWeight, containerName);
         currInputGrid->loadContainers.push_back(containerToLoad);
-    // update loading contents
-    // create widget
-    QWidget *container = new QWidget(this);
-    QVBoxLayout *layout = new QVBoxLayout(container);
-    container->setFixedHeight(80);
-    QColor widgetColor = (*currInputGrid->colorMap)[ui->lineContainerName->text().toStdString()];
-    QString styleSheet = QString("background: %1").arg(widgetColor.name());
-    container->setStyleSheet(styleSheet);
-    // create labels
-    QLabel *nameText = new QLabel();
-    QLabel *weightText = new QLabel();
-    // set font of labels
-    QFont font = QFont(weightText->font());
-    font.setPointSize(14);
-    nameText->setText(ui->lineContainerName->text());
-    weightText->setText(ui->lineContainerWeight->text());
-    nameText->setFont(font);
-    weightText->setFont(font);
-    // add to layout
-    layout->addWidget(nameText);
-    layout->addWidget(weightText);
-    // add to actual gui container
-    ui->loadingContents->layout()->addWidget(container);
+        // update loading contents
+        // create widget
+        QWidget *container = new QWidget(this);
+        QVBoxLayout *layout = new QVBoxLayout(container);
+        container->setFixedHeight(120);
+        QColor widgetColor = (*currInputGrid->colorMap)[ui->lineContainerName->text().toStdString()];
+        QString styleSheet = QString("background: %1").arg(widgetColor.name());
+        container->setStyleSheet(styleSheet);
+        // create labels
+        QLabel *nameText = new QLabel();
+        QLabel *weightText = new QLabel();
+        // set font of labels
+        QFont font = QFont(weightText->font());
+        font.setPointSize(14);
+        nameText->setText(ui->lineContainerName->text());
+        weightText->setText(ui->lineContainerWeight->text());
+        nameText->setFont(font);
+        weightText->setFont(font);
+        // create remove button;
+        QPushButton *deleteButton = new QPushButton();
+        deleteButton->setText("Delete");
+        deleteButton->setFont(font);
+        deleteButton->setMaximumWidth(80);
+        deleteButton->setMaximumHeight(30);
+        // add to layout
+        layout->addWidget(nameText);
+        layout->addWidget(weightText);
+        layout->addWidget(deleteButton);
+        // add to actual gui container
+        ui->loadingContents->layout()->addWidget(container);
     }
     // reset ui elements
     ui->lineContainerName->clear();
