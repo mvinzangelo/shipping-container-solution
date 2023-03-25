@@ -34,8 +34,10 @@ public:
     std::vector<Container *> unloadContainers;
     std::map<std::string, QColor> *colorMap;
     ContainerCell *cellWidgets[8][12];
+    ContainerCell *bufCellWidgets[8][12];
     void updateInputMode(int newMode);
     void updateManifestGUI();
+    void renderNewShip(Ship *newShip);
 
 signals:
 

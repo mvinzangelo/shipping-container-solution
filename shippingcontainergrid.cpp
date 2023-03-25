@@ -23,9 +23,10 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, in
             if (i != 0 && j != rows)
             {
                 ContainerCell *cell;
-                // is a container
+                // ship case
                 if (currSubject == SHIP)
                 {
+                    // is a container
                     if (!colorMap->count(currShip->bay[rows - j - 1][i - 1].name))
                     {
                         (*colorMap)[currShip->bay[rows - j - 1][i - 1].name] = QColor::fromRgb(QRandomGenerator::global()->generate());
@@ -36,6 +37,7 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, in
                     connect(cell, &QPushButton::clicked, [=]()
                             { onCellPressed(rows - j, i); });
                 }
+                // buffer case
                 else
                 {
                     if (!colorMap->count(currShip->buffer[rows - j - 1][i - 1].name))
@@ -43,6 +45,7 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, in
                         (*colorMap)[currShip->buffer[rows - j - 1][i - 1].name] = QColor::fromRgb(QRandomGenerator::global()->generate());
                     }
                     cell = new ContainerCell(this, &currShip->buffer[rows - j - 1][i - 1], colorMap);
+                    bufCellWidgets[rows - j - 1][i - 1] = cell;
                     grid->addWidget(cell, j, i);
                 }
             }
@@ -110,4 +113,8 @@ void ShippingContainerGrid::updateInputMode(int newMode)
         }
     }
     return;
+}
+
+void ShippingContainerGrid::renderNewShip(Ship *newShip)
+{
 }
