@@ -281,6 +281,7 @@ void MainWindow::generateBalanceOperationsList()
     // calculate time to completion
     qInfo() << "FINISHED SEARCH";
     qInfo() << currOperationsList.size();
+    minToCompleteCurrJob = 0;
     for (unsigned i = 0; i < currOperationsList.size(); i++)
     {
         qInfo() << "operation: " << i;
@@ -307,6 +308,7 @@ void MainWindow::updateOperationsScreen(int index)
     }
     currBufferGrid->renderNewShip(currMove->shipState);
     currShipGrid->renderNewShip(currMove->shipState);
+    qInfo() << "RENDERED SHIP AND BUFFER";
     // set minutes left
     QString minutesLeftString;
     if (index == 0)
