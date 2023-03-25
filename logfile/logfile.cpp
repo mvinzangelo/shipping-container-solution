@@ -2,8 +2,13 @@
 #include "../manifest/manifest.h"
 #include <string>
 
+// Macros to make it easier to determine whether or not we continue logging in the current logfile or not
+#define CONTINUE 0
+#define NEW 1
+
 LogFile::LogFile()
 {
+    /*
     validFileName = false;
     std::ifstream configFile("config.txt");
     if (configFile.peek() == std::ifstream::traits_type::eof())
@@ -47,11 +52,51 @@ LogFile::LogFile()
     saveLogFileName << currentLogFileName;
     logFile.open(logFileName, std::ios::app);
     saveLogFileName.close();
+    */
 }
 
 LogFile::~LogFile()
 {
     logFile.close();
+}
+
+void LogFile::initLogFile(int option, int year)
+{
+    validFileName = false;
+    std::ifstream configFile("config.txt");
+    // If config.txt is empty/doesn't exist, create new log file.
+    if (configFile.peek() == std::ifstream::traits_type::eof())
+    {
+        std::cout << "ALERT: Configuration file is empty. If this is your first time starting the program, ignore this alert."
+                  << " If not, please contact Shipping Container Solutions tech support immediately.\n";
+        configFile.close();
+        option = NEW;
+    }
+    // If config.txt exists, get the name of the current logfile in there.
+    else
+    {
+        std::getline(configFile, currentLogFileName);
+        validFileName = true;
+        configFile.close();
+    }
+
+    // If the user wants to continue, open the log file.
+    if (option == CONTINUE)
+    {
+        std::cout << "Resuming logging in " << currentLogFileName << ".\n";
+        logFile.open(currentLogFileName, std::ios::app);
+        return;
+
+    }
+    else
+    {
+        std::string logFileName = "KeoghLongBeach" + std::to_string(year) + ".txt";
+        currentLogFileName = logFileName;
+        std::ofstream saveLogFileName("config.txt");
+        saveLogFileName << currentLogFileName;
+        logFile.open(logFileName, std::ios::app);
+        saveLogFileName.close();
+    }
 }
 
 // Returns timestamp in format of: Month Day, Year: HH:MM:SS (where HH:MM:SS is in 24 hour time)
@@ -150,12 +195,29 @@ void LogFile::logManifestFinish(Ship &ship)
     this->logFile << timestamp << ": "
                   << "Finished a cycle. Manifest " << newManifestName << " was written to desktop, and a reminder pop-up to operator to send file was displayed.\n";
 }
-void LogFile::getOperatorMessage()
+void LogFile::getOperatorMessage(std::string& message)
 {
-    std::string message;
-    std::cout << "Input your message to the logfile: ";
-    getline(std::cin >> std::ws, message);
     this->logFile << getTimestampString() << ": " << message << '\n';
 }
-
-
+/*
+int main(int argc, char *argv[])
+{
+    LogFile log;
+    std::string name = "Joshua Candelaria";
+    std::string container = "Container";
+    std::string message = "Hello world";
+    std::string manifestName;
+    std::cout << "Input a manifest name: ";
+    std::getline(std::cin >> std::ws, manifestName);
+    std::cout << '\n';
+    Ship currentShip(manifestName);
+    
+    log.initLogFile(CONTINUE, 2023);
+    log.logEmployeeCheckIn(name);
+    log.logAtomicMove(container, ONLOAD);
+    log.getOperatorMessage(message);
+    log.logAtomicMove(container, OFFLOAD);
+    log.logManifestOpen(currentShip);
+    log.logManifestFinish(currentShip);
+}
+*/

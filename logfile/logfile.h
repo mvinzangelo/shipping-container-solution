@@ -22,12 +22,13 @@ class LogFile
     public:
         LogFile();
         ~LogFile();
+        void initLogFile(int, int);
         void logEmployeeCheckIn(std::string&);
         void logEmployeeCheckOut(std::string&);
         void logAtomicMove(std::string&, int);
         void logManifestOpen(Ship&);
         void logManifestFinish(Ship&);
-        void getOperatorMessage();
+        void getOperatorMessage(std::string&);
 };
 
 #endif
