@@ -24,8 +24,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btnEnter_clicked()
 {
-    if (currOperator.getFirstName() != "" || currOperator.getLastName() != "") {
-        std::string fullName = currOperator.getFirstName().toStdString() + " " +currOperator.getLastName().toStdString();
+    if (currOperator.getFirstName() != "" || currOperator.getLastName() != "")
+    {
+        std::string fullName = currOperator.getFirstName().toStdString() + " " + currOperator.getLastName().toStdString();
         currLogFile->logEmployeeCheckOut(fullName);
     }
     currOperator.setFirstName(ui->lineFirstName->text());
@@ -64,7 +65,8 @@ void MainWindow::on_buttonStartProblem_clicked()
     currShip = new Ship(shipPath);
     currLogFile->logManifestOpen(*currShip);
     // change screen based off of problem type
-    if (ui->cbProblemType->currentIndex() == 0 ) {
+    if (ui->cbProblemType->currentIndex() == 0)
+    {
 
         // initialize input grid
         ShippingContainerGrid *inputGrid = new ShippingContainerGrid(nullptr, currShip);
@@ -77,10 +79,11 @@ void MainWindow::on_buttonStartProblem_clicked()
         currLoadingUnloading = new LoadingUnloadingInput();
     }
     // if balancing problem
-    else  {
+    else
+    {
         // initialize input grid
         ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currShip);
-        ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currShip, 24, 4);
+        ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currShip, 24, 4, shipGrid->colorMap);
         currProblem = BALANCING;
         // add grid to the input screen
         ui->operationGrid->addWidget(shipGrid, 0, 1, Qt::AlignLeft);
@@ -184,47 +187,53 @@ void MainWindow::on_btnAddContainer_clicked()
 
 void MainWindow::on_buttonStartLoadingUnloading_clicked()
 {
+
+    ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currShip, 12, 8, currInputGrid->colorMap);
+    ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currShip, 24, 4, shipGrid->colorMap);
+    // add grid to the input screen
+    ui->operationGrid->addWidget(shipGrid, 0, 1, Qt::AlignLeft);
+    ui->operationGrid->addWidget(bufferGrid, 1, 0, 1, 2, Qt::AlignHCenter);
     ui->stackedWidget->setCurrentWidget(ui->screenOperation);
 }
 
-
 void MainWindow::on_backButtonOperation_clicked()
 {
-    if (currProblem == LOAD_UNLOAD) {
+    if (currProblem == LOAD_UNLOAD)
+    {
         ui->stackedWidget->setCurrentWidget(ui->screenInput);
     }
-    else if (currProblem == BALANCING) {
+    else if (currProblem == BALANCING)
+    {
         ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
     }
 }
 
-
 void MainWindow::on_cbLogFileResponse_currentIndexChanged(int index)
 {
-    if (index == 0) {
+    if (index == 0)
+    {
         ui->labelLogFileYear->setEnabled(true);
         ui->lineLogFileYear->setEnabled(true);
     }
-    else {
+    else
+    {
         ui->labelLogFileYear->setEnabled(false);
         ui->lineLogFileYear->setEnabled(false);
     }
 }
 
-
 void MainWindow::on_buttonEnterApp_clicked()
 {
-    if (ui->cbLogFileResponse->currentIndex() == 1) {
-        currLogFile->initLogFile(0,2002);
+    if (ui->cbLogFileResponse->currentIndex() == 1)
+    {
+        currLogFile->initLogFile(0, 2002);
     }
     else
     {
         currLogFile->initLogFile(1, ui->lineLogFileYear->text().toInt());
     }
     ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
-
 }
-
 
 void MainWindow::on_buttonAddComment_clicked()
 {
@@ -232,4 +241,3 @@ void MainWindow::on_buttonAddComment_clicked()
     currLogFile->getOperatorMessage(comment);
     ui->txtComment->clear();
 }
-

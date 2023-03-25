@@ -3,13 +3,14 @@
 #include "qpushbutton.h"
 #include <QLabel>
 
-ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, int columns, int rows)
+ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, int columns, int rows, std::map<std::string, QColor> *argColorMap)
     : QWidget{parent}
 {
     QGridLayout *grid = new QGridLayout(this);
     grid->setSpacing(0);
     grid->setContentsMargins(0, 0, 0, 0);
     grid->setSizeConstraint(QLayout::SetFixedSize);
+    this->colorMap = argColorMap;
     if (columns == 24 && rows == 4)
     {
         currSubject = BUFFER;

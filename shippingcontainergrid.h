@@ -22,7 +22,7 @@ class ShippingContainerGrid : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ShippingContainerGrid(QWidget *parent = nullptr, Ship *currShip = nullptr, int columns = 12, int rows = 8);
+    explicit ShippingContainerGrid(QWidget *parent = nullptr, Ship *currShip = nullptr, int columns = 12, int rows = 8, std::map<std::string, QColor> *colorMap = new std::map<std::string, QColor>({{"NAN", Qt::gray}, {"UNUSED", Qt::white}}));
     void onCellPressed(int i, int j);
     int columns = 12;
     int rows = 8;
@@ -32,7 +32,7 @@ public:
     std::vector<Container *> loadContainers;
     std::vector<QWidget *> loadContainersWidgets;
     std::vector<Container *> unloadContainers;
-    std::map<std::string, QColor> *colorMap = new std::map<std::string, QColor>({{"NAN", Qt::gray}, {"UNUSED", Qt::white}});
+    std::map<std::string, QColor> *colorMap;
     ContainerCell *cellWidgets[8][12];
     void updateInputMode(int newMode);
     void updateManifestGUI();
