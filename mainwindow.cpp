@@ -12,8 +12,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     // UNCOMMENT TO START AT BEGINNING
-    ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
+    ui->stackedWidget->setCurrentWidget(ui->screenLogFile);
     ui->cbProblemType->addItems({"Loading / Unloading", "Balancing"});
+    currLogFile = new LogFile();
 }
 
 MainWindow::~MainWindow()
@@ -26,6 +27,9 @@ void MainWindow::on_btnEnter_clicked()
     currOperator.setFirstName(ui->lineFirstName->text());
     currOperator.setLastName(ui->lineLastName->text());
     ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
+    std::string fullName = ui->lineFirstName->text().toStdString() + " " + ui->lineLastName->text().toStdString();
+    currLogFile->logEmployeeCheckIn(fullName);
+    qInfo() << QString::fromStdString(fullName);
 }
 
 void MainWindow::on_backButtonPS_clicked()
@@ -187,5 +191,32 @@ void MainWindow::on_backButtonOperation_clicked()
     else if (currProblem == BALANCING) {
         ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
     }
+}
+
+
+void MainWindow::on_cbLogFileResponse_currentIndexChanged(int index)
+{
+    if (index == 0) {
+        ui->labelLogFileYear->setEnabled(true);
+        ui->lineLogFileYear->setEnabled(true);
+    }
+    else {
+        ui->labelLogFileYear->setEnabled(false);
+        ui->lineLogFileYear->setEnabled(false);
+    }
+}
+
+
+void MainWindow::on_buttonEnterApp_clicked()
+{
+    if (ui->cbLogFileResponse->currentIndex() == 1) {
+        currLogFile->initLogFile(0,2002);
+    }
+    else
+    {
+        currLogFile->initLogFile(1, ui->lineLogFileYear->text().toInt());
+    }
+    ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
+
 }
 

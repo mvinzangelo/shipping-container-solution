@@ -6,6 +6,7 @@
 #include "loadingunloadinginput.h"
 #include "shippingcontainergrid.h"
 #include "manifest/manifest.h"
+#include "logfile/logfile.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -29,6 +30,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Ship *currShip;
+    LogFile *currLogFile;
 
 private slots:
 
@@ -49,6 +51,10 @@ private slots:
     void on_buttonStartLoadingUnloading_clicked();
 
     void on_backButtonOperation_clicked();
+
+    void on_cbLogFileResponse_currentIndexChanged(int index);
+
+    void on_buttonEnterApp_clicked();
 
 private:
     Ui::MainWindow *ui;
