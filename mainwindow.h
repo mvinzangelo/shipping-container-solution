@@ -56,6 +56,8 @@ private slots:
 
     void on_buttonEnterApp_clicked();
 
+    void on_buttonAddComment_clicked();
+
 private:
     Ui::MainWindow *ui;
     currentEmployee currOperator;

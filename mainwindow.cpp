@@ -24,6 +24,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btnEnter_clicked()
 {
+    if (currOperator.getFirstName() != "" || currOperator.getLastName() != "") {
+        std::string fullName = currOperator.getFirstName().toStdString() + " " +currOperator.getLastName().toStdString();
+        currLogFile->logEmployeeCheckOut(fullName);
+    }
     currOperator.setFirstName(ui->lineFirstName->text());
     currOperator.setLastName(ui->lineLastName->text());
     ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
@@ -219,5 +223,13 @@ void MainWindow::on_buttonEnterApp_clicked()
     }
     ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
 
+}
+
+
+void MainWindow::on_buttonAddComment_clicked()
+{
+    std::string comment = ui->txtComment->toPlainText().toStdString();
+    currLogFile->getOperatorMessage(comment);
+    ui->txtComment->clear();
 }
 
