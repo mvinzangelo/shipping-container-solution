@@ -2,8 +2,8 @@
 
 ContainerCell::ContainerCell(QWidget *parent, Container *currContainer, std::map<std::string, QColor> *colorMap) : QPushButton(parent)
 {
-    setFixedHeight(80);
-    setFixedWidth(80);
+    setFixedHeight(60);
+    setFixedWidth(60);
     setDisabled(true);
     this->currContainer = currContainer;
     currColorMap = colorMap;

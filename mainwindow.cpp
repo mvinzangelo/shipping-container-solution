@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     // UNCOMMENT TO START AT BEGINNING
-    // ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
+    ui->stackedWidget->setCurrentWidget(ui->screenSignIn);
     ui->cbProblemType->addItems({"Loading / Unloading", "Balancing"});
 }
 
@@ -69,7 +69,13 @@ void MainWindow::on_buttonStartProblem_clicked()
     }
     // if balancing problem
     else  {
+        // initialize input grid
+        ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currShip);
+        ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currShip, 24, 4);
         currProblem = BALANCING;
+        // add grid to the input screen
+        ui->operationGrid->addWidget(shipGrid, 0, 1);
+        ui->operationGrid->addWidget(bufferGrid, 1, 0);
         ui->stackedWidget->setCurrentWidget(ui->screenOperation);
     }
 }
