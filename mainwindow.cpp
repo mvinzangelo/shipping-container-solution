@@ -102,7 +102,6 @@ void MainWindow::on_buttonStartProblem_clicked()
         ui->operationGrid->addWidget(bufferGrid, 1, 0, 1, 2, Qt::AlignHCenter);
         // alert user generating
         QMessageBox *msgbox = new QMessageBox(this);
-        msgbox->setWindowTitle("");
         msgbox->setText("Generating operations list...");
         msgbox->open();
         // TODO: CALL AI
@@ -223,7 +222,6 @@ void MainWindow::on_buttonStartLoadingUnloading_clicked()
     ui->operationGrid->addWidget(bufferGrid, 1, 0, 1, 2, Qt::AlignHCenter);
     QMessageBox *msgbox = new QMessageBox(this);
     // alert user that it's generating
-    msgbox->setWindowTitle("");
     msgbox->setText("Generating operations list...");
     msgbox->open();
     // TODO: CALL AI
@@ -321,6 +319,20 @@ void MainWindow::updateOperationsScreen(int index)
 }
 void MainWindow::on_buttonNextMove_clicked()
 {
-
+    currOperationIndex++;
+    if (currOperationIndex == currOperationsList.size()) {
+        // TODO: JOB FINISHED HANDLER
+        QString finishMessage = QString("%1OUTBOUND.txt wirtten to the desktop. Please make sure to email it to the captain.").arg(QString::fromStdString(currShip->manifestName));
+        QMessageBox msgBox; msgBox.setText(finishMessage); QAbstractButton* pButtonYes = msgBox.addButton(tr("Leave"), QMessageBox::YesRole);
+        msgBox.exec();
+        if (msgBox.clickedButton()==pButtonYes) {
+            ui->stackedWidget->setCurrentWidget(ui->screenInput);
+        }
+        currLogFile->logManifestFinish(*(currOperationsList.back()->shipState));
+        currOperationIndex = 0;
+    }
+    else {
+        updateOperationsScreen(currOperationIndex);
+    }
 }
 
