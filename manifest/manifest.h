@@ -4,6 +4,9 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <vector> 
+#include <algorithm> 
+
 
 /*
 Format of each manifest line:
@@ -55,6 +58,30 @@ struct Ship
    int getPortWeight();
    int getStarbordWeight();
    int getNumContainers();
+
+   //array to hold children that can be expanded for balancing
+   std::vector<Ship> balanceChild;  
+
+   //variable to hold the container currently being held by the crane
+   //when picking up for balancing 
+   Container onCrane; 
+
+   //keeps track of what column the crane was on
+   //to help avoid repeated staes 
+   int craneLocation = -1; 
+   //variables that hold values for heuristic,depth,and best cost 
+   int h = 0; 
+   int depth = 0;
+   int fn = 0; 
+   
+   //comparison operator for ships (used for inserting into priority queue)
+   bool operator< (const Ship& rhs)const {
+
+      return(this->fn < rhs.fn);
+
+   }
+
+
 };
 
 #endif
