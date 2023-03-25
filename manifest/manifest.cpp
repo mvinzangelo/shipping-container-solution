@@ -5,11 +5,11 @@ Ship::Ship(std::string &path)
 {
    manifestPath = path;
    std::ifstream file(path);
-   #ifdef _WIN32
-      auto findFileExtension = manifestPath.find_last_of('\\');
-   #else
-      auto findFileExtension = manifestPath.find_last_of('/');
-   #endif
+#ifdef _WIN32
+   auto findFileExtension = manifestPath.find_last_of('\\');
+#else
+   auto findFileExtension = manifestPath.find_last_of('/');
+#endif
    if (findFileExtension != std::string::npos)
    {
       manifestName = manifestPath.substr(findFileExtension + 1);
@@ -81,6 +81,11 @@ short Container::getDepth(Ship &ship)
    return -1;
 }
 
+bool Container::isContainer()
+{
+   return name != "NAN" && name != "UNUSED";
+}
+
 int Ship::getPortWeight()
 {
    int weight = 0;
@@ -141,21 +146,20 @@ int main(int argc, char *argv[])
       std::cout << '\n';
    }
 
-   for (int i = 7; i >= 0; i--)
-   {
-      for (int j = 0; j < 12; j++)
-      {
-         if (currentShip.bay[i][j].name != "NAN" && currentShip.bay[i][j].name != "UNUSED")
-         {
-            currentContainer = &currentShip.bay[i][j];
-            std::cout << "Depth of " << currentContainer->name << ": " << currentContainer->getDepth(currentShip) << '\n';
-         }
-      }
-   }
-   std::cout << "Port weight: " << currentShip.getPortWeight() << '\n';
-   std::cout << "Starboard weight: " << currentShip.getStarbordWeight() << '\n';
-   std::cout << "Number of Containers on ship: " << currentShip.getNumContainers() << '\n';
-
+//   for (int i = 7; i >= 0; i--)
+//   {
+//      for (int j = 0; j < 12; j++)
+//      {
+//         if (currentShip.bay[i][j].name != "NAN" && currentShip.bay[i][j].name != "UNUSED")
+//         {
+//            currentContainer = &currentShip.bay[i][j];
+//            std::cout << "Depth of " << currentContainer->name << ": " << currentContainer->getDepth(currentShip) << '\n';
+//         }
+//      }
+//   }
+//   std::cout << "Port weight: " << currentShip.getPortWeight() << '\n';
+//   std::cout << "Starboard weight: " << currentShip.getStarbordWeight() << '\n';
+//   std::cout << "Number of Containers on ship: " << currentShip.getNumContainers() << '\n';
    return 0;
 }
 */
