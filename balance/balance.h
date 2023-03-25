@@ -5,23 +5,22 @@ using namespace std;
 #include <vector>
 #include <queue> 
 #include <cstdlib>
+#include <unordered_set>
 
-//OPERATORS  
-
+ 
+//FUNCTION STUBS
 //stub for heuristic 
 int balanceH(Ship currShip);
-
 //lambda key for sorting q of nodes in search
 auto sortRuleLambda = [] (Ship const& s1, Ship const& s2) -> bool
 {
     return ( (s1.h + s1.depth) < (s2.h + s2.depth)) ;
 };
-
 //stub to print ship 
 void printShip(Ship currShip);
-
 //stub for balance check 
 bool shipBalanced(Ship currShip); 
+
 
 //returns container that was picked up from ship
 Container pickUp(Ship currShip, int row, int col){
@@ -31,8 +30,6 @@ Container pickUp(Ship currShip, int row, int col){
 
     return temp; 
 }; 
-
-
 //dropping off container operator 
 void dropOff(Ship& currShip, Container& cont,int row, int col){
 
@@ -52,7 +49,6 @@ void dropOff(Ship& currShip, Container& cont,int row, int col){
     currShip.craneLocation = col; 
 
 };
-
 //update the newShips' bay to reflect what container was picked up
 //and no longer in the same cell 
 void removeContainer(Ship& newShip, int row, int col){
@@ -62,12 +58,30 @@ void removeContainer(Ship& newShip, int row, int col){
 }
 
 
+//function for creating string hashID from a current ship for tackling already visited nodes 
+string hashID(Ship& currShip){
+
+    string hashString = std::to_string(currShip.craneLocation); //will hold the created string ID
+
+    for(int i = 0; i < 12; ++i){
+        for(int j = 0; j < 8; ++j){
+
+            hashString += (currShip.bay[i][j].name);
+
+
+        }
+    }
+
+    return hashString;
+
+};//end generator for creating unique hash ID 
+
 //expand the current ship's children by checking what operators can 
 //be done and creating new children 
 //actionType represents wheter we are picking up or dropping off
 //even -> dropping off 
 //odd -> picking up 
-void operators(Ship& currShip, vector<Ship> visited, int actionType ){
+void operators(Ship& currShip, unordered_set<std::size_t>& visited,std::size_t& stringHash ,int actionType ){               
 
     //case where we are picking up a container to move 
     if(actionType % 2 != 0){
@@ -86,21 +100,16 @@ void operators(Ship& currShip, vector<Ship> visited, int actionType ){
                     removeContainer(newShip,i,j); 
 
                     newShip.craneLocation = j;
-                    
-                    //check wheter newly created ship has been visited already TESTING W/O PRUNING 
-                    //bool inVisited = false;
-                   // for(auto const &item: visited)
-                   // {
-                    //    if(item == newShip){inVisited = true; break;}
-
-                   // }//check whether newShip has already been visited 
-
-                    //if(!inVisited){
+            
+                    //check using hash to if node already visited 
+                    if(visited.find(stringHash) == visited.end()){ //hash value seen. meaning node already visite de
+                        std::cout<<"Visited State!" << endl;
+                    }
+                    else{
+                        visited.insert(stringHash); 
                         newShip.depth =newShip.depth + 1; 
-                        currShip.balanceChild.push_back(newShip); 
-                        
-
-                    //}//new node created,update children of parent and increase depth of search 
+                        currShip.balanceChild.push_back(newShip);
+                    }
 
                     break; //exit loop to move on to next column in ship 
                 }//search columns top to bottom to find first one we can pick up  
@@ -133,25 +142,19 @@ void operators(Ship& currShip, vector<Ship> visited, int actionType ){
                         {
                             std::cout<<"Dropping off container: "<< newShip.bay[i][j].name << endl;
                         }
-                        
-                        //check wheter newly created ship has been visited already 
-                        //bool inVisited = false;
-                        //for(auto const &item: visited)
-                        //{
-                            //if(item == newShip){inVisited = true; break;}
-
-                        //}//check whether newShip has already been visited 
-
-                       // if(!inVisited){
-                            newShip.depth = newShip.depth + 1;
-                            currShip.balanceChild.push_back(newShip); 
-                             
-
-                        //}//new node created,update children of parent and increase depth of search 
-
-                        
+                    
+                        //check using hash if node already visited or not 
+                       if(visited.find(stringHash) == visited.end()){ //hash value seen. meaning node already visite de
+                            std::cout<<"Visited State!" << endl;
+                        }
+                        else{
+                            visited.insert(stringHash); 
+                            newShip.depth =newShip.depth + 1; 
+                            currShip.balanceChild.push_back(newShip);
+                        }
 
                         break; //don't need to check remaining rows above 
+                        
                     }//first spot we may drop off the container
 
                 }//go through rows 
@@ -180,8 +183,9 @@ int tempQ = 0;
 //queue of nodes to search through
 queue<Ship> nodes; 
 
-//list of nodes already visited CHANGED FROM VECTOR TO SET
-vector<Ship>visited; 
+
+std::hash<std::string> hasher; //hash function object
+unordered_set<std::size_t> visited; //unordered set to store seen hashes (i.e visited nodes)
 
 //variable to hold store the current ship layout before expanding 
 Ship currNode = currShip; 
@@ -193,7 +197,7 @@ maxQ+= 1;
 
 //put initial board as visited for inital check 
 //incase ship comes into port already legally balanced 
-visited.push_back(currNode);
+//visited.insert(currNode);
 
 
 if(shipBalanced(currNode)){
@@ -230,7 +234,10 @@ while(!shipBalanced(currNode)){ //TODO: ADD HEURISTIC VALUE
     expandedNodes++; 
 
 
-    visited.push_back(currNode); 
+    //insert currNode into visited 
+    string tempID = hashID(currNode);
+    std::size_t stringHash = hasher(tempID);
+    visited.insert(stringHash);
 
     //check if currNode is balanced 
     if(shipBalanced(currNode)){
@@ -248,11 +255,11 @@ while(!shipBalanced(currNode)){ //TODO: ADD HEURISTIC VALUE
 
     if(currNode.onCrane.name != "NAN"){ //container on crane. dropping off 
 
-        operators(currNode,visited,2); 
+        operators(currNode,visited,stringHash,2); 
     }
 
     else{//no container on crane, picking up container 
-        operators(currNode,visited,1);
+        operators(currNode,visited,stringHash,1);
         printShip(currNode);
         std::cout << "Port weight: " << currNode.getPortWeight() << '\n';
         std::cout << "Starboard weight: " << currNode.getStarbordWeight() << '\n'; 
