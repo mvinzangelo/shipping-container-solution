@@ -74,8 +74,8 @@ void MainWindow::on_buttonStartProblem_clicked()
         ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currShip, 24, 4);
         currProblem = BALANCING;
         // add grid to the input screen
-        ui->operationGrid->addWidget(shipGrid, 0, 1);
-        ui->operationGrid->addWidget(bufferGrid, 1, 0);
+        ui->operationGrid->addWidget(shipGrid, 0, 1, Qt::AlignLeft);
+        ui->operationGrid->addWidget(bufferGrid, 1, 0, 1, 2, Qt::AlignHCenter);
         ui->stackedWidget->setCurrentWidget(ui->screenOperation);
     }
 }

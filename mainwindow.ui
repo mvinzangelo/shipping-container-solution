@@ -1187,13 +1187,46 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </item>
         <item row="2" column="0">
          <layout class="QGridLayout" name="operationGrid">
-          <item row="0" column="0">
-           <widget class="QWidget" name="widget" native="true">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetFixedSize</enum>
+          </property>
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <item row="0" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
+           <widget class="QWidget" name="operationPanel" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="minimumSize">
              <size>
-              <width>100</width>
-              <height>100</height>
+              <width>700</width>
+              <height>500</height>
              </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: black</string>
             </property>
            </widget>
           </item>
