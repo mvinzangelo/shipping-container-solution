@@ -66,6 +66,7 @@ set_target_properties(shipping-container-solution PROPERTIES
 # subdirectories
 add_subdirectory(logfile)
 add_subdirectory(manifest)
+add_subdirectory(balance)
 
 install(TARGETS shipping-container-solution
     BUNDLE DESTINATION .

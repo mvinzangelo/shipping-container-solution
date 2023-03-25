@@ -3,11 +3,6 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-void onCellPressed(int i, int j)
-{
-    // Do stuff with i and j here
-}
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
