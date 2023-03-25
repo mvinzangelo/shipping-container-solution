@@ -6,6 +6,8 @@ using namespace std;
 #include <queue> 
 #include <cstdlib>
 #include <unordered_set>
+#include <algorithm> 
+#include <numeric> 
 
  
 //FUNCTION STUBS
@@ -57,7 +59,6 @@ void removeContainer(Ship& newShip, int row, int col){
     newShip.bay[row][col].weight = 00000;  
 }
 
-
 //function for creating string hashID from a current ship for tackling already visited nodes 
 string hashID(Ship& currShip){
 
@@ -67,14 +68,61 @@ string hashID(Ship& currShip){
         for(int j = 0; j < 8; ++j){
 
             hashString += (currShip.bay[i][j].name);
-
-
         }
     }
 
     return hashString;
 
 };//end generator for creating unique hash ID 
+
+
+//function to check if ship can be balanced legally. 
+//will determine if we need to sift right away
+bool balancePossible(vector<int>& weights){ //function credited to online resource 
+    std::sort(weights.begin(), weights.end()); // sort the list in non-decreasing order
+    int n = weights.size();
+    int total_sum = accumulate(weights.begin(), weights.end(), 0); // calculate the total sum of the list
+    int left_sum = 0;
+    for (int i = 0; i < n; i++) {
+        left_sum += weights[i];
+        int right_sum = total_sum - left_sum;
+        double diff = abs(left_sum - right_sum) / (double)total_sum; // calculate the absolute difference as a fraction of the total sum
+        if (diff <= 0.1) {
+            return true;
+        }
+    }
+    return false;
+};
+
+//helper function for balancePossible that stores all the weights into a vector of ints 
+vector<int> isolateContainerWeights(Ship& currShip){
+
+    vector<int> temp; //return value for function
+
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 12; j++){
+            if(currShip.bay[i][j].name != "UNUSED" && currShip.bay[i][j].name != "NAN" ){
+                temp.push_back(currShip.bay[i][j].weight); 
+            }//end if to push weights into temp vector 
+
+        }//end inner for 
+    }//end outer for 
+
+    return temp; 
+
+};
+
+
+//SIFT function to SIFT balance the ship due to no legal balance
+void sift(Ship& currShip){
+
+   
+
+
+
+
+}; 
+
 
 //expand the current ship's children by checking what operators can 
 //be done and creating new children 
@@ -176,6 +224,14 @@ void operators(Ship& currShip, unordered_set<std::size_t>& visited,std::size_t& 
 
 void balanceSearch(Ship& currShip, int qFunc){
 
+    //inital check to determine if the ship can be legally balanced
+    vector<int> weights = isolateContainerWeights(currShip); 
+    bool canBalance = balancePossible(weights); 
+
+    if(canBalance){std::cout<<"Can legally balance!"<<endl;}
+    else{std::cout<<"Cannot legally balance. Using SIFT"<<endl; return; }
+    
+
 int expandedNodes = 0;
 int maxQ = 0;
 int tempQ = 0; 
@@ -222,7 +278,7 @@ while(!shipBalanced(currNode)){ //TODO: ADD HEURISTIC VALUE
     currNode.h = balanceH(currNode); 
 
     //sort the queue of nodes depending on the f(n) cost 
-    //std::sort(nodes.front(),nodes.back(), sortRuleLambda); FIXME
+    //std::sort(nodes.front(),nodes.back(), sortRuleLambda);
     //std::sort(nodes.top(), nodes.back()); 
 
 
@@ -242,11 +298,12 @@ while(!shipBalanced(currNode)){ //TODO: ADD HEURISTIC VALUE
     //check if currNode is balanced 
     if(shipBalanced(currNode)){
 
-        std::cout << "Ship already balanced!" << endl;
+
+        printShip(currNode);         
+        std::cout << "Ship balanced!" << endl;
         std::cout << "Port weight: " << currNode.getPortWeight() << '\n';
         std::cout << "Starboard weight: " << currNode.getStarbordWeight() << '\n';
         std::cout << "Number of Containers on ship: " << currNode.getNumContainers() << '\n';
-        printShip(currNode); 
         return; 
 
     }//end if 
