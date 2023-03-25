@@ -10,6 +10,10 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, in
     grid->setSpacing(0);
     grid->setContentsMargins(0, 0, 0, 0);
     grid->setSizeConstraint(QLayout::SetFixedSize);
+    if (columns == 24 && rows == 4)
+    {
+        currSubject = BUFFER;
+    }
 
     for (int i = 0; i < columns + 1; i++)
     {
@@ -19,15 +23,27 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, in
             {
                 ContainerCell *cell;
                 // is a container
-                if (!colorMap->count(currShip->bay[rows - j - 1][i - 1].name))
+                if (currSubject == SHIP)
                 {
-                    (*colorMap)[currShip->bay[rows - j - 1][i - 1].name] = QColor::fromRgb(QRandomGenerator::global()->generate());
+                    if (!colorMap->count(currShip->bay[rows - j - 1][i - 1].name))
+                    {
+                        (*colorMap)[currShip->bay[rows - j - 1][i - 1].name] = QColor::fromRgb(QRandomGenerator::global()->generate());
+                    }
+                    cell = new ContainerCell(this, &currShip->bay[rows - j - 1][i - 1], colorMap);
+                    grid->addWidget(cell, j, i);
+                    cellWidgets[rows - j - 1][i - 1] = cell;
+                    connect(cell, &QPushButton::clicked, [=]()
+                            { onCellPressed(rows - j, i); });
                 }
-                cell = new ContainerCell(this, &currShip->bay[rows - j - 1][i - 1], colorMap);
-                grid->addWidget(cell, j, i);
-                cellWidgets[rows - j - 1][i - 1] = cell;
-                connect(cell, &QPushButton::clicked, [=]()
-                        { onCellPressed(rows - j, i); });
+                else
+                {
+                    if (!colorMap->count(currShip->buffer[rows - j - 1][i - 1].name))
+                    {
+                        (*colorMap)[currShip->buffer[rows - j - 1][i - 1].name] = QColor::fromRgb(QRandomGenerator::global()->generate());
+                    }
+                    cell = new ContainerCell(this, &currShip->buffer[rows - j - 1][i - 1], colorMap);
+                    grid->addWidget(cell, j, i);
+                }
             }
             // labels on the left hand side
             else if (i == 0 && j != rows)

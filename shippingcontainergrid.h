@@ -12,6 +12,12 @@
 #include <QRandomGenerator>
 #include "loadingunloadinginput.h"
 
+enum SUBJECT
+{
+    SHIP,
+    BUFFER
+};
+
 class ShippingContainerGrid : public QWidget
 {
     Q_OBJECT
@@ -22,6 +28,7 @@ public:
     int rows = 8;
     INPUT_TYPE currInputType = LOADING;
     QWidget *loadingCollection;
+    SUBJECT currSubject = SHIP;
     std::vector<Container *> loadContainers;
     std::vector<QWidget *> loadContainersWidgets;
     std::vector<Container *> unloadContainers;
