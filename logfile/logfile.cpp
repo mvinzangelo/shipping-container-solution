@@ -86,7 +86,6 @@ void LogFile::initLogFile(int option, int year)
         std::cout << "Resuming logging in " << currentLogFileName << "." << std::endl;
         logFile.open(currentLogFileName, std::ios::app);
         return;
-
     }
     else
     {
@@ -187,15 +186,17 @@ void LogFile::logManifestFinish(Ship &ship)
                         << "," << std::setw(2) << std::setfill('0') << j + 1
                         << "], {" << std::setw(5) << std::setfill('0') << ship.bay[i][j].weight
                         << "}, " << ship.bay[i][j].name;
-            if (i == 7 && j == 11) break;
-            else newManifest << '\n';
+            if (i == 7 && j == 11)
+                break;
+            else
+                newManifest << '\n';
         }
     }
 
     this->logFile << timestamp << ": "
                   << "Finished a cycle. Manifest " << newManifestName << " was written to desktop, and a reminder pop-up to operator to send file was displayed.\n";
 }
-void LogFile::getOperatorMessage(std::string& message)
+void LogFile::getOperatorMessage(std::string &message)
 {
     this->logFile << getTimestampString() << ": " << message << std::endl;
 }
@@ -211,7 +212,7 @@ int main(int argc, char *argv[])
     std::getline(std::cin >> std::ws, manifestName);
     std::cout << '\n';
     Ship currentShip(manifestName);
-    
+
     log.initLogFile(CONTINUE, 2023);
     log.logEmployeeCheckIn(name);
     log.logAtomicMove(container, ONLOAD);

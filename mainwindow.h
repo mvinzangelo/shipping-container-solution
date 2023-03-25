@@ -6,6 +6,8 @@
 #include "loadingunloadinginput.h"
 #include "shippingcontainergrid.h"
 #include "manifest/manifest.h"
+#include "logfile/logfile.h"
+#include "atomicmove.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -26,9 +28,15 @@ class MainWindow : public QMainWindow
 
 public:
     ShippingContainerGrid *currInputGrid;
+    ShippingContainerGrid *currShipGrid;
+    ShippingContainerGrid *currBufferGrid;
+    std::vector<AtomicMove *> currOperationsList;
+    int minToCompleteCurrJob = 0;
+    int currOperationIndex = 0;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Ship *currShip;
+    LogFile *currLogFile;
 
 private slots:
 
@@ -49,6 +57,22 @@ private slots:
     void on_buttonStartLoadingUnloading_clicked();
 
     void on_backButtonOperation_clicked();
+
+    void on_cbLogFileResponse_currentIndexChanged(int index);
+
+    void on_buttonEnterApp_clicked();
+
+    void on_buttonAddComment_clicked();
+
+    void generateBalanceOperationsList();
+
+    void generateLoadingUnloadingOperationsList();
+
+    void updateOperationsScreen(int index);
+
+    void on_buttonNextMove_clicked();
+
+    void on_btnLogOut_clicked();
 
 private:
     Ui::MainWindow *ui;

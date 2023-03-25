@@ -15,9 +15,9 @@ public:
     bool isBeingUnloaded = false;
     std::map<std::string, QColor> *currColorMap;
 
-    void
-    toggleIsBeingUnloaded();
+    void toggleIsBeingUnloaded();
     void updateInputType(int inputType);
+    void renderNewContainer(Container *newContainer);
 
 private:
     void updateStyleSheet();

@@ -2,14 +2,13 @@
 
 ContainerCell::ContainerCell(QWidget *parent, Container *currContainer, std::map<std::string, QColor> *colorMap) : QPushButton(parent)
 {
-    setFixedHeight(80);
-    setFixedWidth(80);
+    setFixedHeight(60);
+    setFixedWidth(60);
     setDisabled(true);
     this->currContainer = currContainer;
     currColorMap = colorMap;
     if (currContainer != nullptr)
     {
-        // if the container has
         if (currContainer->isContainer())
         {
             setText(QString::fromStdString(currContainer->name));
@@ -96,4 +95,31 @@ void ContainerCell::toggleIsBeingUnloaded()
         isBeingUnloaded = false;
         updateStyleSheet();
     }
+}
+
+void ContainerCell::renderNewContainer(Container *newContainer)
+{
+    this->currContainer = newContainer;
+    if (currContainer != nullptr)
+    {
+        if (currContainer->isContainer())
+        {
+            setText(QString::fromStdString(currContainer->name));
+            setToolTip(QString::fromStdString(currContainer->name));
+        }
+        else
+        {
+            setText("");
+            setToolTip("");
+        }
+    }
+    cellColor = (*currColorMap)[currContainer->name];
+    currStyleSheet = QString("QPushButton {"
+                             "background-color: %1;"
+                             "}"
+                             "QPushButton:disabled {"
+                             "color: black"
+                             "}")
+                         .arg(cellColor.name());
+    setStyleSheet(currStyleSheet);
 }

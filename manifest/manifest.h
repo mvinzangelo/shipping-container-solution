@@ -31,7 +31,7 @@ struct Container
    short column;
    int weight;
    std::string name;
-   Container() : row(-1), column(-1), weight(0), name("NAN") {}
+   Container() : row(-1), column(-1), weight(0), name("UNUSED") {}
    Container(int row, int column, int weight, std::string &name) : row(row), column(column), weight(weight), name(name) {}
    short getDepth(Ship &);
    bool isContainer();
