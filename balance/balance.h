@@ -25,24 +25,38 @@ bool shipBalanced(Ship currShip);
 
 
 //returns container that was picked up from ship
-Container pickUp(Ship currShip, int row, int col){
+Container pickUp(Ship currShip, int row, int col, int bayOrBuffer){// 1: bay, 0: buffer
 
+    Container temp; 
     //temp variable to hold container being picked up 
-    Container temp = currShip.bay[row][col]; 
+    if(bayOrBuffer == 1){temp = currShip.bay[row][col]; }
+    else if (bayOrBuffer == 0){temp = currShip.buffer[row][col];}
 
     return temp; 
 }; 
 //dropping off container operator 
-void dropOff(Ship& currShip, Container& cont,int row, int col){
+void dropOff(Ship& currShip, Container& cont,int row, int col, int bayOrBuffer){ // 1: bay, 0: buffer
 
     //update container's specific location
     cont.row = row+1;
     cont.column = col+1; 
-    
-    //update currentShip with the new dropped off container
-    currShip.bay[row][col] = cont; 
-    currShip.bay[row][col].name = cont.name; 
-    currShip.bay[row][col].weight = cont.weight; 
+
+
+    if(bayOrBuffer == 1){
+        //update currentShip with the new dropped off container
+        currShip.bay[row][col] = cont; 
+        currShip.bay[row][col].name = cont.name; 
+        currShip.bay[row][col].weight = cont.weight;
+    }
+
+    else if (bayOrBuffer == 0){
+        //update currentShip with the new dropped off container
+        currShip.buffer[row][col] = cont; 
+        currShip.buffer[row][col].name = cont.name; 
+        currShip.buffer[row][col].weight = cont.weight;
+
+    }
+ 
 
     //reset value of the onCrane after dropping off 
     Container temp; 
@@ -53,10 +67,17 @@ void dropOff(Ship& currShip, Container& cont,int row, int col){
 };
 //update the newShips' bay to reflect what container was picked up
 //and no longer in the same cell 
-void removeContainer(Ship& newShip, int row, int col){
+void removeContainer(Ship& newShip, int row, int col,int bayOrBuffer){ //1: bay, 0:buffer
+    if(bayOrBuffer == 1){    
+        newShip.bay[row][col].name = "UNUSED";
+        newShip.bay[row][col].weight = 00000;  
+    }
 
-    newShip.bay[row][col].name = "UNUSED";
-    newShip.bay[row][col].weight = 00000;  
+    else if (bayOrBuffer == 0){
+        newShip.buffer[row][col].name = "UNUSED";
+        newShip.buffer[row][col].weight = 00000;  
+    }
+
 }
 
 //function for creating string hashID from a current ship for tackling already visited nodes 
@@ -114,9 +135,56 @@ vector<int> isolateContainerWeights(Ship& currShip){
 
 
 //SIFT function to SIFT balance the ship due to no legal balance
-void sift(Ship& currShip){
+//SIFT here is operating under assumption buffer is empty prior to starting
+void SIFT(Ship& currShip){
 
-   
+    vector<int>weights = isolateContainerWeights(currShip);//vector to hold container weights so we can sort prior to putting back on the ship
+    sort(weights.begin(),weights.end(),greater<int>()); //sort vector from largest to smallest 
+
+    int bufferCol = 23; //bufferCol index 
+    int bufferRow = 0; //bufferRow index
+
+    //want to empty ship and place all containers into buffer
+    for(int i = 0; i < 8; ++i){
+        for(int j = 0; j < 12; ++j){
+            if(currShip.bay[i][j].name != "UNUSED" && currShip.bay[i][j].name != "NAN" ){
+
+                currShip.onCrane = pickUp(currShip,i,j,1); //pick up crane to move (1:bay)
+                removeContainer(currShip,i,j,1);
+                dropOff(currShip,currShip.onCrane,bufferRow,bufferCol,0); //0 means dropping off container in buffer
+                bufferCol--;
+
+                //TODO: UPDATE VECTOR OF SHIPS OF NEW SHIP LAYOUT(COPY CURRSHIP AND PUSH TO VECTOR?)
+
+
+
+            }//end if to unload the containers into the buffer 
+        }
+    }
+    //at this point, all containers are in buffer, begin inserting back into the ship from heaviest to lightest in 
+    //middle of the ship in following sequence: 6,7,5,8,4,9,3,10,2,11,1,12 (col number in bay of ship)
+
+    vector<int>insertSeq{ 6,7,5,8,4,9,3,10,2,11,1,12};
+    for(int j = 23; j > 0; --j){
+        if(currShip.buffer[0][j].weight == weights.front()){ //found the heaviest weight in vector to move
+            currShip.onCrane = pickUp(currShip,0,j,0);//0 for picking up in buffer 
+            dropOff(currShip,currShip.onCrane,0,insertSeq.front()-1,1); //drop off container into bay of currShip [denoted by the 1]
+            removeContainer(currShip,0,j,0); 
+
+            //TODO: UPDATE VECTOR OF SHIPS OF NEW SHIP LAYOUT(COPY CURRSHIP AND PUSH TO VECTOR?)
+
+
+            //remove elements from vectors to contiue through iteration
+            insertSeq.erase(insertSeq.begin()); 
+            weights.erase(weights.begin()); 
+
+
+        }
+    }
+
+
+
+   printShip(currShip); //print ship to see if output looks properly SIFTED 
 
 
 
@@ -142,10 +210,10 @@ void operators(Ship& currShip, unordered_set<std::size_t>& visited,std::size_t& 
                     Ship newShip(currShip);
                     newShip.balanceChild.clear(); //clear children for newly created Ship 
 
-                    newShip.onCrane = pickUp(currShip,i,j); 
+                    newShip.onCrane = pickUp(currShip,i,j,1); //1 for picking up in bay
                     std::cout<<"Pikcing up container: "<< newShip.bay[i][j].name << endl; 
                     //remove the current picked up crane for the currentShip
-                    removeContainer(newShip,i,j); 
+                    removeContainer(newShip,i,j,1); 
 
                     newShip.craneLocation = j;
             
@@ -185,7 +253,7 @@ void operators(Ship& currShip, unordered_set<std::size_t>& visited,std::size_t& 
                         Ship newShip(currShip);
                         newShip.balanceChild.clear(); //clear children for newly created Ship 
 
-                        dropOff(newShip,newShip.onCrane,i,j);
+                        dropOff(newShip,newShip.onCrane,i,j,1);//1 means dropping off container in bay
                         if(newShip.bay[i][j].name != "UNUSED" && newShip.bay[i][j].name != "NAN") 
                         {
                             std::cout<<"Dropping off container: "<< newShip.bay[i][j].name << endl;
@@ -229,7 +297,7 @@ void balanceSearch(Ship& currShip, int qFunc){
     bool canBalance = balancePossible(weights); 
 
     if(canBalance){std::cout<<"Can legally balance!"<<endl;}
-    else{std::cout<<"Cannot legally balance. Using SIFT"<<endl; return; }
+    else{std::cout<<"Cannot legally balance. Using SIFT"<<endl; SIFT(currShip); return; }
     
 
 int expandedNodes = 0;
