@@ -25,6 +25,8 @@ set(PROJECT_SOURCES
         containercell.cpp
         loadingunloadinginput.h
         loadingunloadinginput.cpp
+        atomicmove.h
+        atomicmove.cpp
 )
 
 
