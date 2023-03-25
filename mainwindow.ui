@@ -622,7 +622,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <spacer name="verticalSpacer_5">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -871,6 +871,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     <pointsize>14</pointsize>
                    </font>
                   </property>
+                  <property name="maxLength">
+                   <number>256</number>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -881,7 +884,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                    </font>
                   </property>
                   <property name="text">
-                   <string>Container weight:</string>
+                   <string>Container weight (kg):</string>
                   </property>
                  </widget>
                 </item>
@@ -891,6 +894,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
                    <font>
                     <pointsize>14</pointsize>
                    </font>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>99999</number>
                   </property>
                  </widget>
                 </item>
@@ -915,6 +924,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   </property>
                   <property name="minimum">
                    <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>96</number>
                   </property>
                  </widget>
                 </item>
@@ -1015,6 +1027,30 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  </widget>
                 </item>
                </layout>
+              </widget>
+             </item>
+             <item alignment="Qt::AlignHCenter">
+              <widget class="QPushButton" name="buttonStartLoadingUnloading">
+               <property name="minimumSize">
+                <size>
+                 <width>300</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>300</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>20</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Start</string>
+               </property>
               </widget>
              </item>
              <item>
