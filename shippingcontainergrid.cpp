@@ -154,7 +154,7 @@ void ShippingContainerGrid::renderNewShip(Ship *newShip)
 void ShippingContainerGrid::animateMovement()
 {
     // do nothing if not set to animate
-    if (curr_i < 0 && curr_j < 0)
+    if (curr_i < -2 && curr_j < -2)
     {
         return;
     }
@@ -202,10 +202,28 @@ void ShippingContainerGrid::animateMovement()
 
 void ShippingContainerGrid::setTargetAndStartContainers(int start_i, int start_j, int target_i, int target_j)
 {
-    this->start_i = start_i;
-    this->start_j = start_j;
-    this->curr_i = start_i;
-    this->curr_j = start_j;
-    this->target_i = target_i;
-    this->target_j = target_j;
+    if (start_i == -1 && start_j == -1)
+    {
+        this->start_i = 0;
+        this->start_j = 7;
+        this->curr_i = 0;
+        this->curr_j = 7;
+    }
+    else
+    {
+        this->start_i = start_i;
+        this->start_j = start_j;
+        this->curr_i = start_i;
+        this->curr_j = start_j;
+    }
+    if (target_i == -1 && target_j == -1)
+    {
+        this->target_i = 7;
+        this->target_j = 0;
+    }
+    else
+    {
+        this->target_i = target_i;
+        this->target_j = target_j;
+    }
 }

@@ -29,12 +29,12 @@ public:
     INPUT_TYPE currInputType = LOADING;
     QWidget *loadingCollection;
     SUBJECT currSubject = SHIP;
-    int curr_i = -1;
-    int curr_j = -1;
-    int start_i = -1;
-    int start_j = -1;
-    int target_i = -1;
-    int target_j = -1;
+    int curr_i = -2;
+    int curr_j = -2;
+    int start_i = -2;
+    int start_j = -2;
+    int target_i = -2;
+    int target_j = -2;
     std::vector<Container *> loadContainers;
     std::vector<QWidget *> loadContainersWidgets;
     std::vector<Container *> unloadContainers;
