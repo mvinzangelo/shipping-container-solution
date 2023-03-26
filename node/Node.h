@@ -60,6 +60,8 @@ public:
     int offloadCost(orderedPair container);
 };
 
+std::vector<AtomicMove *> generalSearch(Ship &ship, std::vector<Container *> ON, std::vector<Container *> OFF);
+
 struct LessThanByFx
 {
     bool operator()(Node *lhs, Node *rhs)

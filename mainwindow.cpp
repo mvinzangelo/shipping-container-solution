@@ -241,6 +241,7 @@ void MainWindow::on_buttonStartLoadingUnloading_clicked()
     msgbox->setText("Generating operations list...");
     msgbox->open();
     // TODO: CALL AI
+    qInfo() << "CALL CHAD";
     generateLoadingUnloadingOperationsList();
     ui->stackedWidget->setCurrentWidget(ui->screenOperation);
     // alert user done generating
@@ -323,7 +324,36 @@ void MainWindow::generateLoadingUnloadingOperationsList()
 {
     // TODO: CALL CHAD
     // call function and set currOperationsList
+    qInfo() << "Load containers: ";
+    for (unsigned i = 0; i < currInputGrid->loadContainers.size(); i++)
+    {
+        qInfo() << QString::fromStdString(currInputGrid->loadContainers.at(i)->name);
+    }
+    qInfo() << "Unload containers: ";
+    for (unsigned i = 0; i < currInputGrid->unloadContainers.size(); i++)
+    {
+        qInfo() << QString::fromStdString(currInputGrid->loadContainers.at(i)->name);
+    }
+    qInfo()
+        << "START SEARCH";
+    currOperationsList = generalSearch(*currShip, currInputGrid->loadContainers, currInputGrid->unloadContainers);
     // calculate time to completion
+    qInfo()
+        << "FINISHED SEARCH";
+    qInfo() << currOperationsList.size();
+    minToCompleteCurrJob = 0;
+    for (unsigned i = 0; i < currOperationsList.size(); i++)
+    {
+        qInfo() << "operation: " << i;
+        qInfo() << "time: " << QString::number(currOperationsList.at(i)->timeToMove);
+        qInfo() << "container to move: " << QString::fromStdString(currOperationsList.at(i)->containerToMove);
+        qInfo() << "location to move to: " << QString::fromStdString(currOperationsList.at(i)->locationToMove);
+        qInfo() << "first row: ";
+        minToCompleteCurrJob += currOperationsList.at(i)->timeToMove;
+    }
+    qInfo() << "Finish iterating though the list once";
+    currOperationIndex = 0;
+    updateOperationsScreen(currOperationIndex);
 }
 
 void MainWindow::updateOperationsScreen(int index)
