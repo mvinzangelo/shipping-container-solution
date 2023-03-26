@@ -126,3 +126,25 @@ void ContainerCell::renderNewContainer(Container *newContainer)
                          .arg(cellColor.name());
     setStyleSheet(currStyleSheet);
 }
+
+void ContainerCell::flashColor(QColor newColor)
+{
+    currStyleSheet = QString("QPushButton {"
+                             "background-color: %1;"
+                             "}"
+                             "QPushButton:disabled {"
+                             "color: black"
+                             "}")
+                         .arg(newColor.name());
+    setStyleSheet(currStyleSheet);
+    QTimer::singleShot(500, this, [=]()
+                       {
+                           currStyleSheet = QString("QPushButton {"
+                                                    "background-color: %1;"
+                                                    "}"
+                                                    "QPushButton:disabled {"
+                                                    "color: black"
+                                                    "}")
+                                                .arg(cellColor.name());
+                           setStyleSheet(currStyleSheet); });
+}

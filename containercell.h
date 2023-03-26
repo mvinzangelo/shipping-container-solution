@@ -3,6 +3,7 @@
 
 #include <QPushButton>
 #include "manifest/manifest.h"
+#include <QTimer>
 
 class ContainerCell : public QPushButton
 {
@@ -18,6 +19,7 @@ public:
     void toggleIsBeingUnloaded();
     void updateInputType(int inputType);
     void renderNewContainer(Container *newContainer);
+    void flashColor(QColor newColor);
 
 private:
     void updateStyleSheet();

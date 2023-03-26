@@ -29,15 +29,24 @@ public:
     INPUT_TYPE currInputType = LOADING;
     QWidget *loadingCollection;
     SUBJECT currSubject = SHIP;
+    int curr_i = -1;
+    int curr_j = -1;
+    int start_i = -1;
+    int start_j = -1;
+    int target_i = -1;
+    int target_j = -1;
     std::vector<Container *> loadContainers;
     std::vector<QWidget *> loadContainersWidgets;
     std::vector<Container *> unloadContainers;
     std::map<std::string, QColor> *colorMap;
     ContainerCell *cellWidgets[8][12];
     ContainerCell *bufCellWidgets[8][12];
+    QTimer *animationTimer;
     void updateInputMode(int newMode);
     void updateManifestGUI();
     void renderNewShip(Ship *newShip);
+    void animateMovement();
+    void setTargetAndStartContainers(int start_i, int start_j, int target_i, int target_j);
 
 signals:
 

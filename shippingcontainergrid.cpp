@@ -2,6 +2,7 @@
 #include "qgridlayout.h"
 #include "qpushbutton.h"
 #include <QLabel>
+#include <QTimer>
 
 ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, int columns, int rows, std::map<std::string, QColor> *argColorMap)
     : QWidget{parent}
@@ -13,6 +14,11 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, in
     this->colorMap = argColorMap;
     this->columns = columns;
     this->rows = rows;
+    animationTimer = new QTimer(this);
+    animationTimer->setInterval(500);
+    connect(animationTimer, &QTimer::timeout, [=]()
+            { animateMovement(); });
+    animationTimer->start();
     if (columns == 24 && rows == 4)
     {
         currSubject = BUFFER;
@@ -143,4 +149,63 @@ void ShippingContainerGrid::renderNewShip(Ship *newShip)
             }
         }
     }
+}
+
+void ShippingContainerGrid::animateMovement()
+{
+    // do nothing if not set to animate
+    if (curr_i < 0 && curr_j < 0)
+    {
+        return;
+    }
+    qInfo() << "CALL ANIMATE MOVEMENT";
+    qInfo() << "curr_i: " << QString::number(curr_i);
+    qInfo() << "curr_j: " << QString::number(curr_j);
+    qInfo() << "target_i: " << QString::number(target_i);
+    qInfo() << "target_j: " << QString::number(target_j);
+    if (curr_i != target_i)
+    {
+        if (currSubject == SHIP)
+        {
+            cellWidgets[curr_i][curr_j]->flashColor(cellWidgets[start_i][start_j]->cellColor);
+            if (curr_i < target_i)
+            {
+                curr_i++;
+            }
+            else
+            {
+                curr_i--;
+            }
+        }
+    }
+    else if (curr_j != target_j)
+    {
+        if (currSubject == SHIP)
+        {
+            cellWidgets[curr_i][curr_j]->flashColor(cellWidgets[start_i][start_j]->cellColor);
+            if (curr_j < target_j)
+            {
+                curr_j++;
+            }
+            else
+            {
+                curr_j--;
+            }
+        }
+    }
+    else if (curr_i == target_i && curr_j == target_j)
+    {
+        curr_i = start_i;
+        curr_j = start_j;
+    }
+}
+
+void ShippingContainerGrid::setTargetAndStartContainers(int start_i, int start_j, int target_i, int target_j)
+{
+    this->start_i = start_i;
+    this->start_j = start_j;
+    this->curr_i = start_i;
+    this->curr_j = start_j;
+    this->target_i = target_i;
+    this->target_j = target_j;
 }

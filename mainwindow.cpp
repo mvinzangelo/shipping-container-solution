@@ -32,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
    QString time1 = QDateTime::currentDateTime().toString();
    ui->loadUnloadClock->setText(time1); });
     t->start();
-    // ui->headerLogIn->addWidget(t);
 }
 
 MainWindow::~MainWindow()
@@ -314,10 +313,6 @@ void MainWindow::generateBalanceOperationsList()
         qInfo() << "container to move: " << QString::fromStdString(currOperationsList.at(i)->containerToMove);
         qInfo() << "location to move to: " << QString::fromStdString(currOperationsList.at(i)->locationToMove);
         qInfo() << "first row: ";
-        for (unsigned x = 0; x < 12; x++)
-        {
-            qInfo() << QString::fromStdString(currOperationsList.at(i)->shipState->bay[0][x].name);
-        }
         minToCompleteCurrJob += currOperationsList.at(i)->timeToMove;
     }
     qInfo() << "Finish iterating though the list once";
@@ -343,31 +338,11 @@ void MainWindow::updateOperationsScreen(int index)
     // qInfo() << QString::fromStdString(currMove->shipState->bay[0][4].name);
     currShipGrid->renderNewShip(currMove->shipState);
     currBufferGrid->renderNewShip(currMove->shipState);
-
-    // ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currMove->shipState, 12, 8, currInputGrid->colorMap);
-    // ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currMove->shipState, 24, 4, shipGrid->colorMap);
-
-    // ui->operationGrid->replaceWidget(currShipGrid, shipGrid);
-    // ui->operationGrid->replaceWidget(currBufferGrid, bufferGrid);
-
-    // currShipGrid = shipGrid;
-    // currBufferGrid = bufferGrid;
-
-    // add grid to the input screen
-    // ui->operationGrid->addWidget(shipGrid, 0, 1, Qt::AlignLeft);
-    // ui->operationGrid->addWidget(bufferGrid, 1, 0, 1, 2, Qt::AlignHCenter);
     qInfo() << "RENDERED SHIP AND BUFFER";
     // set minutes left
     QString minutesLeftString;
-    if (index == 0)
-    {
-        minutesLeftString = QString("%1 minutes left").arg(QString::number(minToCompleteCurrJob));
-    }
-    else
-    {
-        minToCompleteCurrJob -= currOperationsList.at(index - 1)->timeToMove;
-        minutesLeftString = QString("%1 minutes left").arg(QString::number(minToCompleteCurrJob));
-    }
+    minToCompleteCurrJob -= currOperationsList.at(index)->timeToMove;
+    minutesLeftString = QString("%1 minutes left").arg(QString::number(minToCompleteCurrJob));
     ui->labelMinutesLeft->setText(minutesLeftString);
     // set current move
     QString currentMove = QString("Current move: %1 to %2").arg(QString::fromStdString(currOperationsList.at(index)->containerToMove), QString::fromStdString(currOperationsList.at(index)->locationToMove));
@@ -375,20 +350,35 @@ void MainWindow::updateOperationsScreen(int index)
     // set steps string
     QString currentSteps = QString("Step %1 of %2").arg(QString::number(index + 1), QString::number(currOperationsList.size()));
     ui->labelSteps->setText(currentSteps);
+    // set animation containers
+    currShipGrid->setTargetAndStartContainers(currMove->curr_i, currMove->curr_j, currMove->target_i, currMove->target_j);
 }
 void MainWindow::on_buttonNextMove_clicked()
 {
     currOperationIndex++;
     if (currOperationIndex == currOperationsList.size())
     {
-        // TODO: JOB FINISHED HANDLER
-        QString finishMessage = QString("%1OUTBOUND.txt wirtten to the desktop. Please make sure to email it to the captain.").arg(QString::fromStdString(currShip->manifestName));
+        // get file name
+        std::string newManifestName;
+        auto findFileExtension = currShip->manifestName.find_last_of('.');
+        if (findFileExtension != std::string::npos)
+        {
+            newManifestName = currShip->manifestName.substr(0, findFileExtension);
+            newManifestName += "OUTBOUND";
+            newManifestName += currShip->manifestName.substr(findFileExtension);
+        }
+        else
+        {
+            newManifestName = currShip->manifestName + "OUTBOUND";
+        }
+        QString finishMessage = QString("%1 written to the desktop. Please make sure to email it to the captain.").arg(QString::fromStdString(newManifestName));
         QMessageBox msgBox;
         msgBox.setText(finishMessage);
         QAbstractButton *pButtonYes = msgBox.addButton(tr("Leave"), QMessageBox::YesRole);
         msgBox.exec();
         if (msgBox.clickedButton() == pButtonYes)
         {
+            ui->textBrowser->clear();
             ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
         }
         currLogFile->logManifestFinish(*(currOperationsList.back()->shipState));
