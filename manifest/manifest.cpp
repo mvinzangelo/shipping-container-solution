@@ -76,8 +76,7 @@ Ship::Ship(const Ship& other)
    fn = other.fn;
 }
 
-
-short Container::getDepth(Ship &ship)
+short Container::getDepth(Ship& ship)
 {
    try
    {
@@ -141,6 +140,36 @@ int Ship::getStarbordWeight()
    }
    return weight;
 }
+
+void Ship::printShip()
+{
+   for (int i = 7; i >= 0; i--)
+   {
+      for (int j = 0; j < 12; j++)
+      {
+         std::cout << this->bay[i][j].name[0] << ' ';
+      }
+      std::cout << '\n';
+   }
+}
+
+void Ship::printDepths()
+{
+   Container* currentContainer;
+   for (int i = 7; i >= 0; i--)
+   {
+      for (int j = 0; j < 12; j++)
+      {
+         if (this->bay[i][j].name != "NAN" && this->bay[i][j].name != "UNUSED")
+         {
+            currentContainer = &this->bay[i][j] ;
+            std::cout << "Depth of " << currentContainer->name << ": " << currentContainer->getDepth(*this) << '\n';
+         }
+      }
+   }
+}
+
+
 
 int Ship::getNumContainers()
 {

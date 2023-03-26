@@ -4,6 +4,8 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <queue>
+#include <list>
 #include <vector> 
 #include <algorithm> 
 
@@ -54,6 +56,8 @@ struct Ship
    Container buffer[4][24];
    std::string manifestName;
    std::string manifestPath;
+   int crainX;
+   int crainY;
    // int numContainers;
    Ship() {}
    Ship(std::string &name);
@@ -61,6 +65,8 @@ struct Ship
    int getPortWeight();
    int getStarbordWeight();
    int getNumContainers();
+   void printShip();
+   void printDepths();
 
    //array to hold children that can be expanded for balancing
    std::vector<Ship> balanceChild;  
