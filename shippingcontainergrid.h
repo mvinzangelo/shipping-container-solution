@@ -46,6 +46,7 @@ public:
     void updateManifestGUI();
     void renderNewShip(Ship *newShip);
     void animateMovement();
+    void setTargetAndStartContainers(int start_i, int start_j, int target_i, int target_j);
 
 signals:
 

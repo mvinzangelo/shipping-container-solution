@@ -350,6 +350,8 @@ void MainWindow::updateOperationsScreen(int index)
     // set steps string
     QString currentSteps = QString("Step %1 of %2").arg(QString::number(index + 1), QString::number(currOperationsList.size()));
     ui->labelSteps->setText(currentSteps);
+    // set animation containers
+    currShipGrid->setTargetAndStartContainers(currMove->curr_i, currMove->curr_j, currMove->target_i, currMove->target_j);
 }
 void MainWindow::on_buttonNextMove_clicked()
 {
