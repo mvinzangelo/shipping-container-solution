@@ -2,8 +2,30 @@
 #define __Node__
 
 #include "manifest/manifest.h"
+//#include "atomicmove.h"
 #include <vector>
+#include <list>
+#include <queue>
 
+
+
+
+class AtomicMove
+{
+public:
+    AtomicMove();
+    AtomicMove(Ship* ship, std::string containerToMove, int curr_i, int curr_j, int target_i, int target_j);
+    Ship *shipState;
+    int timeToMove;
+    std::string containerToMove; //name of container
+    std::string locationToMove; // cords
+    int curr_i; // current location
+    int curr_j;
+    int target_i; // target location truck = -1, -1
+    int target_j;
+    bool isOffloaded; // from ship to truck
+    bool isOnloaded;  // from truck to ship
+};
 
 class orderedPair
 {
@@ -25,6 +47,8 @@ class Node
         Ship ship;
         orderedPair crain;
         orderedPair pinkBox;
+        orderedPair targetLoc;
+        orderedPair containerLoc;
         bool inBuffer;
         bool inShip;
         bool inTruck;
@@ -33,7 +57,7 @@ class Node
         Node* parent;
         std::vector<Container*> containersOFF;
         std::vector<Container*> containersON;
-        ;
+        std::string containerMoved;
 
         Node();
         Node(Ship initialState);
@@ -58,6 +82,32 @@ class Node
         //bool isMoveable(orderedPair container);
         
         int offloadCost(orderedPair container);
+};
+
+struct LessThanByFx
+{
+    bool operator()( Node* lhs, Node* rhs)
+        {
+            return lhs->Fx > rhs->Fx;
+        }
+};
+
+class Que
+{
+    public:
+        std::priority_queue<Node*, std::vector<Node*>, LessThanByFx> heap;
+        std::vector<Node*> visited;
+        std::list<Node*> solutionPath;
+
+        //bool isVisited(Node* newState );
+        //void expandNode(Node* currentNode);
+
+        //Que();
+        Que(Node*);
+
+        void push(Node* newNode);
+
+        void expand();
 };
 
 #endif

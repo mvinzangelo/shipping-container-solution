@@ -1,6 +1,30 @@
 #include "Node.h"
 
 int calculateDistance(orderedPair point1, orderedPair point2);
+std::vector<AtomicMove*> generalSearch(Ship& ship, std::vector<Container*> ON, std::vector<Container*> OFF);
+int findOffboardTarget(Ship& ship, std::string targetName);
+std::vector<orderedPair> findTargetContainers(Ship ship, std::string targetName);
+int costToOffboard(Ship&, std::string);
+
+AtomicMove::AtomicMove()
+{
+
+}
+
+AtomicMove::AtomicMove(Ship* ship, std::string containerToMove, int curr_i, int curr_j, int target_i, int target_j)
+{
+    this->shipState = ship;
+    this->containerToMove = containerToMove;
+    locationToMove = "[" + std::to_string(curr_i) + "," + std::to_string(curr_j) + "]";
+    this->curr_i = curr_i;
+    this->curr_j = curr_j;
+    this->target_i = target_i;
+    this->target_j = target_j;
+    if(target_i == -1){ isOffloaded = true; }
+    else { isOffloaded = false; }
+    if(curr_i == -1){ isOnloaded = true; }
+    else { isOnloaded = false; }
+};
 
 //--------------- Node Class --------------------
 
@@ -66,24 +90,6 @@ bool Node::GoalTest()
     }
     else { return false; }
 }
-
-// std::vector<orderedPair> Node::findMatchingContainers()
-// {
-//     int bayWidth = 12;
-//     int bayHeight = 8;
-//     std::vector<orderedPair> matchingContainers;
-//     for(int i = 0; i < this->containersOFF.size(); i++){
-//         for(int y = 0; y < bayHeight; y++ )
-//         {
-//             for(int x = 0; x < bayWidth; x++)
-//             {
-//                 if(ship.bay[y][x].name == containersOFF[i]->name){ matchingContainers.push_back(orderedPair(y,x)); }
-//             }
-//         }
-//     }
-//     return matchingContainers;
-
-// };
 
 std::vector<int> Node::findTargetColumns()
 {
@@ -180,6 +186,11 @@ void Node::moveContainer(orderedPair Loc)
                 closestSpot = freeTops[i];
             }
         }
+
+        std::cout << "Container moved too [" << closestSpot->row << ", " << closestSpot->column-1 <<"]\n";
+        this->targetLoc.first = closestSpot->row;
+        this->targetLoc.second = closestSpot->column -1;
+        
         ship.bay[closestSpot->row][closestSpot->column -1].name = ship.bay[Loc.first][Loc.second].name;
         ship.bay[closestSpot->row][closestSpot->column -1].weight = ship.bay[Loc.first][Loc.second].weight;
         ship.bay[Loc.first][Loc.second].name = "UNUSED";
@@ -194,7 +205,7 @@ void Node::moveContainer(orderedPair Loc)
 
 void Node::onboard(Container* container)
 {
-    std::cout << "onboarding!!\n";
+    std::cout << "onboarding " << container->name << '\n';
     bool Target = false;
     // find columns that don't have container that need to be offloaded
     std::vector<int> targetColumns = findTargetColumns();
@@ -237,6 +248,12 @@ void Node::onboard(Container* container)
         inTruck = false;
         inShip = true;
         
+        this->targetLoc.first = closestSpot.first +1;
+        this->targetLoc.second = closestSpot.second;
+        this->containerLoc.first = -1;
+        this->containerLoc.second = -1;
+        this->containerMoved = container->name;
+
         crain.first = closestSpot.first +1;//update crain
         crain.second = closestSpot.second;
         ship.bay[closestSpot.first][closestSpot.second].name = container->name; //update container
@@ -269,6 +286,8 @@ void Node::offLoad(orderedPair container)
    inTruck = true;
    crain.first = 8;
    crain.second = 0;
+   std::string containerMoved;
+   std::string targetLocation;
 }
 
 int Node::offloadCost(orderedPair container)
@@ -278,7 +297,7 @@ int Node::offloadCost(orderedPair container)
     if(inBuffer){ cost = 4;} 
     else if(inTruck){ cost = 2; }
     cost += calculateDistance(crain, container) + calculateDistance(container, pinkBox) + 2;
-    std::cout << "off load cost: " << cost << std::endl;
+    std::cout << "\noff load cost: " << cost << std::endl;
     return cost;
 }
 
@@ -291,6 +310,104 @@ void Node::print()
               << "Pink: [" << pinkBox.first << ", " << pinkBox.second << "]\n"
               << "Containers OFF: " << containersOFF.empty() << std::endl
               << "Containers ON: " << containersON.empty() << std::endl;
+}
+
+//-------------- Que class --------------------------------
+
+Que::Que(Node* node)
+{
+    heap.push(node);
+    visited.push_back(node);
+
+};
+
+void Que::push(Node* newNode)
+{
+    heap.push(newNode);
+    visited.push_back(newNode);
+}
+
+
+
+
+
+
+void Que::expand()
+{   bool match = false;
+    Node* currentNode, *tempNode;
+    currentNode = heap.top();
+    heap.pop();
+    //if the current Node has containers to still come off
+    if(!currentNode->containersOFF.empty()){
+        //finds the top of columns that have containers to be offboarded
+        std::vector<Container*> targetTops = currentNode->findTop(currentNode->findTargetColumns()); 
+        for(int i = 0; i < targetTops.size(); i++)
+        {
+            for(int j = 0; j < currentNode->containersOFF.size(); j++)
+            {
+                //Offboard container
+                // if container on the top matches a one to be offboared
+                // take if off
+                if(targetTops[i]->name == currentNode->containersOFF[j]->name) 
+                {
+                    tempNode = new Node(*currentNode); //copy current node
+                    tempNode->inBuffer = currentNode->inBuffer;
+                    tempNode->inShip = currentNode->inShip;
+                    tempNode->inTruck = currentNode->inTruck;
+
+                    std::cout << "\nOffLoading [" << targetTops[i]->row - 1<< ", " << targetTops[i]->column - 1<< "]\n";
+                    std::cout << "Offloading : " << tempNode->ship.bay[targetTops[i]->row -1][targetTops[i]->column -1].name;
+                    tempNode->containerMoved = tempNode->ship.bay[targetTops[i]->row -1][targetTops[i]->column -1].name;
+                    tempNode->containerLoc.first = targetTops[i]->row -1 ;
+                    tempNode->containerLoc.second = targetTops[i]->column - 1;
+                    tempNode->targetLoc.first = -1;
+                    tempNode->targetLoc.second= -1;
+
+
+                    tempNode->offLoad(orderedPair(targetTops[i]->row -1,targetTops[i]->column-1)); //offload target container
+                    tempNode->containersOFF.erase(tempNode->containersOFF.begin()+j); //Remove target from offboarding list
+                    heap.push(tempNode);
+                    tempNode->print();
+                    match = true; //signals the container matched with one in OFF
+                }
+                
+            }
+            //Move container
+            //if the container at the top of a column didn't match any of the names in offboard
+            if(!match)
+            {
+                tempNode = new Node(*currentNode);
+                tempNode->inBuffer = currentNode->inBuffer;
+                tempNode->inShip = currentNode->inShip;
+                tempNode->inTruck = currentNode->inTruck;
+
+                std::cout << "\nMoving container [" <<targetTops[i]->row -1 << ", " << targetTops[i]->column - 1 << "]\n";
+                std::cout << "Moving " << tempNode->ship.bay[targetTops[i]->row][targetTops[i]->column].name << std::endl;
+                tempNode->containerMoved = tempNode->ship.bay[targetTops[i]->row][targetTops[i]->column].name;
+                tempNode->containerLoc.first = targetTops[i]->row -1 ;
+                tempNode->containerLoc.second = targetTops[i]->column - 1;
+
+                tempNode->moveContainer(orderedPair(targetTops[i]->row -1,targetTops[i]->column-1));
+                heap.push(tempNode);
+                tempNode->print();
+            }
+            else
+            {
+                match = false;
+            }
+        } 
+    }
+    //Onboard container
+     if(!(currentNode->containersON.empty()))
+     {
+         tempNode = new Node(*currentNode);
+         tempNode->onboard(tempNode->containersON.back());
+         tempNode->containersON.pop_back();
+         tempNode->print();
+         //tempNode->containersON.pop_back();
+         heap.push(tempNode);
+     }
+    
 }
 
 
@@ -320,4 +437,78 @@ int calculateDistance(orderedPair point1, orderedPair point2)
     return (abs(point1.first - point2.first) + abs(point1.second - point2.second));
 };
 
+std::vector<AtomicMove*> generalSearch(Ship& ship, std::vector<Container*> ON, std::vector<Container*> OFF)
+{
+    Node* currentState = new Node(ship, ON, OFF);
+    Node* tempState;
+    Que Q(currentState);
+    bool answer = false;
+    while(!answer){
+        if(Q.heap.empty())
+        { 
+            std::cout <<"Fail\n" ;
+            std::vector<AtomicMove*> empty;
+            return empty;
+        }
+        currentState = Q.heap.top();
+        if(currentState->GoalTest())
+        {
+            std::cout << "success!!\n";
+            answer = true;
+        }
+        Q.expand();
+    }
+    std::list<Node*> moves;
+    std::vector<AtomicMove*> atomicMoves;
+    while(currentState->parent!=nullptr)
+    {
+        moves.push_front(currentState);
+        currentState = currentState->parent;
+    }
+        moves.push_front(currentState);
+        int sz = moves.size();
+    for(int i = 0; i < sz; i++)
+    {
+        atomicMoves.push_back(new AtomicMove(&moves.front()->ship,
+                                             moves.front()->containerMoved,
+                                             moves.front()->containerLoc.first,
+                                             moves.front()->containerLoc.second,
+                                             moves.front()->targetLoc.first,
+                                             moves.front()->targetLoc.second));
+        moves.pop_front();
+    }
+    return atomicMoves;
 
+}
+
+int findOffboardTarget(Ship& ship, std::string targetName){
+        std::vector<orderedPair> targetContainers = findTargetContainers(ship, targetName);
+        std::cout << "Matching Containers found at position: \n";
+        orderedPair offboard(8,0);
+        orderedPair minCostContainer; 
+        int minCost, currentCost;
+        minCost = 999;
+        orderedPair crain(ship.crainY, ship.crainX);
+
+        return 0;
+   };
+
+    std::vector<orderedPair> findTargetContainers(Ship ship, std::string targetName)
+   {
+     int bayWidth = 12;
+        int bayHeight = 8;
+        std::vector<orderedPair> matchingContainer;
+        for(int y = 0; y < bayHeight; y++ )
+        {
+            for(int x = 0; x < bayWidth; x++)
+            {
+
+                if(ship.bay[y][x].name == targetName)
+                {
+                    matchingContainer.push_back(orderedPair(y,x));
+                }
+            }
+        }
+        return matchingContainer;
+
+   }

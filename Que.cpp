@@ -32,6 +32,7 @@ void Que::expand()
         {
             for(int j = 0; j < currentNode->containersOFF.size(); j++)
             {
+                //Offboard container
                 // if container on the top matches a one to be offboared
                 // take if off
                 if(targetTops[i]->name == currentNode->containersOFF[j]->name) 
@@ -40,7 +41,16 @@ void Que::expand()
                     tempNode->inBuffer = currentNode->inBuffer;
                     tempNode->inShip = currentNode->inShip;
                     tempNode->inTruck = currentNode->inTruck;
+
                     std::cout << "\nOffLoading [" << targetTops[i]->row - 1<< ", " << targetTops[i]->column - 1<< "]\n";
+                    std::cout << "Offloading : " << tempNode->ship.bay[targetTops[i]->row][targetTops[i]->column].name;
+                    tempNode->containerMoved = tempNode->ship.bay[targetTops[i]->row][targetTops[i]->column].name;
+                    tempNode->containerLoc.first = targetTops[i]->row -1 ;
+                    tempNode->containerLoc.second = targetTops[i]->column - 1;
+                    tempNode->targetLoc.first = -1;
+                    tempNode->targetLoc.second= -1;
+
+
                     tempNode->offLoad(orderedPair(targetTops[i]->row -1,targetTops[i]->column-1)); //offload target container
                     tempNode->containersOFF.erase(tempNode->containersOFF.begin()+j); //Remove target from offboarding list
                     heap.push(tempNode);
@@ -49,6 +59,7 @@ void Que::expand()
                 }
                 
             }
+            //Move container
             //if the container at the top of a column didn't match any of the names in offboard
             if(!match)
             {
@@ -56,7 +67,13 @@ void Que::expand()
                 tempNode->inBuffer = currentNode->inBuffer;
                 tempNode->inShip = currentNode->inShip;
                 tempNode->inTruck = currentNode->inTruck;
+
                 std::cout << "\nMoving container [" <<targetTops[i]->row -1 << ", " << targetTops[i]->column - 1 << "]\n";
+                std::cout << "Moving " << tempNode->ship.bay[targetTops[i]->row][targetTops[i]->column].name << std::endl;
+                tempNode->containerMoved = tempNode->ship.bay[targetTops[i]->row][targetTops[i]->column].name;
+                tempNode->containerLoc.first = targetTops[i]->row -1 ;
+                tempNode->containerLoc.second = targetTops[i]->column - 1;
+
                 tempNode->moveContainer(orderedPair(targetTops[i]->row -1,targetTops[i]->column-1));
                 heap.push(tempNode);
                 tempNode->print();
@@ -67,6 +84,7 @@ void Que::expand()
             }
         } 
     }
+    //Onboard container
      if(!(currentNode->containersON.empty()))
      {
          tempNode = new Node(*currentNode);
