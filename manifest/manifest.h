@@ -33,8 +33,10 @@ struct Container
    std::string name;
    Container() : row(-1), column(-1), weight(0), name("UNUSED") {}
    Container(int row, int column, int weight, std::string &name) : row(row), column(column), weight(weight), name(name) {}
+   Container(const Container& other) : row(other.row), column(other.column), weight(other.weight), name(other.name) {}
    short getDepth(Ship &);
    bool isContainer();
+   Container& operator=(const Container& other);
 };
 
 /*
@@ -55,6 +57,7 @@ struct Ship
    // int numContainers;
    Ship() {}
    Ship(std::string &name);
+   Ship(const Ship&);
    int getPortWeight();
    int getStarbordWeight();
    int getNumContainers();
@@ -80,8 +83,7 @@ struct Ship
       return(this->fn < rhs.fn);
 
    }
-
-
+   Ship& operator=(const Ship&);
 };
 
 #endif

@@ -47,6 +47,35 @@ Ship::Ship(std::string &path)
    }
 }
 
+Ship::Ship(const Ship& other) {
+   manifestName = other.manifestName;
+   manifestPath = other.manifestPath;
+
+   for(int i = 0; i < 8; i++) 
+   {
+      for(int j = 0; j < 12; j++) 
+      {
+         bay[i][j] = other.bay[i][j];
+      }
+   }
+
+   for(int i = 0; i < 4; i++) 
+   {
+      for(int j = 0; j < 24; j++) 
+      {
+         buffer[i][j] = other.buffer[i][j];
+      }
+   }
+
+   balanceChild = other.balanceChild;
+   onCrane = other.onCrane;
+   craneLocation = other.craneLocation;
+   h = other.h;
+   depth = other.depth;
+   fn = other.fn;
+}
+
+
 short Container::getDepth(Ship &ship)
 {
    try
@@ -126,6 +155,52 @@ int Ship::getNumContainers()
       }
    }
    return numContainers;
+}
+
+Ship& Ship::operator=(const Ship& other) {
+   if (this != &other) 
+   {
+      manifestName = other.manifestName;
+      manifestPath = other.manifestPath;
+
+      for(int i = 0; i < 8; i++) 
+      {
+         for(int j = 0; j < 12; j++) 
+         {
+            bay[i][j] = other.bay[i][j];
+         }
+      }
+
+      //copy the contents of the buffer
+      for(int i = 0; i < 4; i++) 
+      {
+         for(int j = 0; j < 24; j++) 
+         {
+            buffer[i][j] = other.buffer[i][j];
+         }
+      }
+
+      balanceChild = other.balanceChild;
+      onCrane = other.onCrane;
+      craneLocation = other.craneLocation;
+      h = other.h;
+      depth = other.depth;
+      fn = other.fn;
+   }
+
+   return *this;
+}
+
+Container& Container::operator=(const Container& other) 
+{
+   if (this != &other) 
+   {
+      row = other.row;
+      column = other.column;
+      weight = other.weight;
+      name = other.name;
+   }
+   return *this;
 }
 
 /*
