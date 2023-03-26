@@ -381,14 +381,27 @@ void MainWindow::on_buttonNextMove_clicked()
     currOperationIndex++;
     if (currOperationIndex == currOperationsList.size())
     {
-        // TODO: JOB FINISHED HANDLER
-        QString finishMessage = QString("%1OUTBOUND.txt wirtten to the desktop. Please make sure to email it to the captain.").arg(QString::fromStdString(currShip->manifestName));
+        // get file name
+        std::string newManifestName;
+        auto findFileExtension = currShip->manifestName.find_last_of('.');
+        if (findFileExtension != std::string::npos)
+        {
+            newManifestName = currShip->manifestName.substr(0, findFileExtension);
+            newManifestName += "OUTBOUND";
+            newManifestName += currShip->manifestName.substr(findFileExtension);
+        }
+        else
+        {
+            newManifestName = currShip->manifestName + "OUTBOUND";
+        }
+        QString finishMessage = QString("%1 written to the desktop. Please make sure to email it to the captain.").arg(QString::fromStdString(newManifestName));
         QMessageBox msgBox;
         msgBox.setText(finishMessage);
         QAbstractButton *pButtonYes = msgBox.addButton(tr("Leave"), QMessageBox::YesRole);
         msgBox.exec();
         if (msgBox.clickedButton() == pButtonYes)
         {
+            ui->textBrowser->clear();
             ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
         }
         currLogFile->logManifestFinish(*(currOperationsList.back()->shipState));

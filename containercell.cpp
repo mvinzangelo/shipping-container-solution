@@ -137,7 +137,7 @@ void ContainerCell::flashColor(QColor newColor)
                              "}")
                          .arg(newColor.name());
     setStyleSheet(currStyleSheet);
-    QTimer::singleShot(1000, this, [=]()
+    QTimer::singleShot(500, this, [=]()
                        {
                            currStyleSheet = QString("QPushButton {"
                                                     "background-color: %1;"

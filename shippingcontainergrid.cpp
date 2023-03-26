@@ -7,6 +7,12 @@
 ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, int columns, int rows, std::map<std::string, QColor> *argColorMap)
     : QWidget{parent}
 {
+    curr_i = 0;
+    curr_j = 0;
+    start_i = 0;
+    start_j = 0;
+    target_i = 0;
+    target_j = 11;
     QGridLayout *grid = new QGridLayout(this);
     grid->setSpacing(0);
     grid->setContentsMargins(0, 0, 0, 0);
@@ -15,9 +21,10 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, in
     this->columns = columns;
     this->rows = rows;
     animationTimer = new QTimer(this);
-    animationTimer->setInterval(1000);
+    animationTimer->setInterval(500);
     connect(animationTimer, &QTimer::timeout, [=]()
             { animateMovement(); });
+    animationTimer->start();
     if (columns == 24 && rows == 4)
     {
         currSubject = BUFFER;
@@ -152,6 +159,11 @@ void ShippingContainerGrid::renderNewShip(Ship *newShip)
 
 void ShippingContainerGrid::animateMovement()
 {
+    qInfo() << "CALL ANIMATE MOVEMENT";
+    qInfo() << "curr_i: " << QString::number(curr_i);
+    qInfo() << "curr_j: " << QString::number(curr_j);
+    qInfo() << "target_i: " << QString::number(target_i);
+    qInfo() << "target_j: " << QString::number(target_j);
     if (curr_i != target_i)
     {
         if (currSubject == SHIP)
