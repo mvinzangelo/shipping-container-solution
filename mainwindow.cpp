@@ -313,6 +313,11 @@ void MainWindow::generateBalanceOperationsList()
         qInfo() << "time: " << QString::number(currOperationsList.at(i)->timeToMove);
         qInfo() << "container to move: " << QString::fromStdString(currOperationsList.at(i)->containerToMove);
         qInfo() << "location to move to: " << QString::fromStdString(currOperationsList.at(i)->locationToMove);
+        qInfo() << "first row: ";
+        for (unsigned x = 0; x < 12; x++)
+        {
+            qInfo() << QString::fromStdString(currOperationsList.at(i)->shipState->bay[0][x].name);
+        }
         minToCompleteCurrJob += currOperationsList.at(i)->timeToMove;
     }
     qInfo() << "Finish iterating though the list once";
@@ -373,7 +378,7 @@ void MainWindow::updateOperationsScreen(int index)
 }
 void MainWindow::on_buttonNextMove_clicked()
 {
-    // currOperationIndex++;
+    currOperationIndex++;
     if (currOperationIndex == currOperationsList.size())
     {
         // TODO: JOB FINISHED HANDLER
