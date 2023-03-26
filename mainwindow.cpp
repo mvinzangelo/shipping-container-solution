@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -11,6 +12,27 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->setCurrentWidget(ui->screenLogFile);
     ui->cbProblemType->addItems({"Loading / Unloading", "Balancing"});
     currLogFile = new LogFile();
+    // initialize clocks
+    QTimer *t = new QTimer(this);
+    t->setInterval(1000);
+    connect(t, &QTimer::timeout, [&]()
+            {
+   QString time1 = QDateTime::currentDateTime().toString();
+   ui->logInClock->setText(time1); });
+    connect(t, &QTimer::timeout, [&]()
+            {
+   QString time1 = QDateTime::currentDateTime().toString();
+   ui->PSClock->setText(time1); });
+    connect(t, &QTimer::timeout, [&]()
+            {
+   QString time1 = QDateTime::currentDateTime().toString();
+   ui->jobClock->setText(time1); });
+    connect(t, &QTimer::timeout, [&]()
+            {
+   QString time1 = QDateTime::currentDateTime().toString();
+   ui->loadUnloadClock->setText(time1); });
+    t->start();
+    // ui->headerLogIn->addWidget(t);
 }
 
 MainWindow::~MainWindow()
