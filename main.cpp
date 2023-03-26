@@ -110,25 +110,25 @@ std::list<Node*> generalSearch(Ship& ship, std::vector<Container*> ON, std::vect
         return 0;
    };
 
-   std::vector<orderedPair> findTargetContainers(Ship ship, std::string targetName)
-   {
-     int bayWidth = 12;
-        int bayHeight = 8;
-        std::vector<orderedPair> matchingContainer;
-        for(int y = 0; y < bayHeight; y++ )
-        {
-            for(int x = 0; x < bayWidth; x++)
-            {
+//    std::vector<orderedPair> findTargetContainers(Ship ship, std::string targetName)
+//    {
+//      int bayWidth = 12;
+//         int bayHeight = 8;
+//         std::vector<orderedPair> matchingContainer;
+//         for(int y = 0; y < bayHeight; y++ )
+//         {
+//             for(int x = 0; x < bayWidth; x++)
+//             {
 
-                if(ship.bay[y][x].name == targetName)
-                {
-                    matchingContainer.push_back(orderedPair(y,x));
-                }
-            }
-        }
-        return matchingContainer;
+//                 if(ship.bay[y][x].name == targetName)
+//                 {
+//                     matchingContainer.push_back(orderedPair(y,x));
+//                 }
+//             }
+//         }
+//         return matchingContainer;
 
-   }
+//    }
 
 
 
