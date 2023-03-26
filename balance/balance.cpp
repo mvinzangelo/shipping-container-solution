@@ -428,7 +428,7 @@ vector<AtomicMove *> balanceSearch(Ship &currShip, int qFunc)
 
         } // end if
 
-        if (currNode.onCrane.name != "NAN")
+        if (currNode.onCrane.name != "NAN" && currNode.onCrane.name != "UNUSED")
         { // container on crane. dropping off
 
             operators(currNode, visited, stringHash, 2);
@@ -453,6 +453,7 @@ vector<AtomicMove *> balanceSearch(Ship &currShip, int qFunc)
         } // pushes all the newly created children into the q of nodes
 
     }; // main while loop
+    return moves;
 
 } // end balanceSearch;
 
