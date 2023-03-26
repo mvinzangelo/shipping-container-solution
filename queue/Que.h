@@ -4,7 +4,7 @@
 #include <vector>
 #include <list>
 #include <queue>
-#include "Node.h"
+#include "../node/Node.h"
 
 struct LessThanByFx
 {

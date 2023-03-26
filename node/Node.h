@@ -1,7 +1,7 @@
 #ifndef __Node__
 #define __Node__
 
-#include "manifest/manifest.h"
+#include "../manifest/manifest.h"
 //#include "atomicmove.h"
 #include <vector>
 #include <list>
