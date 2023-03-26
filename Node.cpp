@@ -46,15 +46,16 @@ Node::Node(Node& curNode){
     this->Fx = curNode.Fx;
     this->Gx = curNode.Gx;
     this->parent = &curNode;
-
-    for(int i = 0 ; i <curNode.containersOFF.size(); i++)
+    for(int i = 0 ; i < curNode.containersOFF.size(); i++)
     {
         this->containersOFF.push_back(curNode.containersOFF[i]);
     }
-    for(int i = 0 ; i <curNode.containersON.size(); i++)
+    std::cout << curNode.containersON.size() << '\n';
+    for(int i = 0 ; i < curNode.containersON.size(); i++)
     {
         this->containersON.push_back(curNode.containersON[i]);
     }
+       
 }
 
 bool Node::GoalTest()
@@ -184,7 +185,7 @@ void Node::moveContainer(orderedPair Loc)
         ship.bay[Loc.first][Loc.second].name = "UNUSED";
         ship.bay[Loc.first][Loc.second].weight = 0;
         Fx += calculateDistance(crain, Loc) + minDist;
-        crain.first = closestSpot->row-1;
+        crain.first = closestSpot->row;
         crain.second = closestSpot->column-1;
         //inShip = true;
         //inBuffer = false;
@@ -229,9 +230,6 @@ void Node::onboard(Container* container)
                 minDist = tempDist;
                 closestSpot = tempLoc;
             }
-            std::cout << "Free Spots: \n";
-            tempLoc.print();
-            std::cout << '\n';
         }
         Fx += minDist; //update cost;
         if(!inTruck){ Fx += 4;}
@@ -269,6 +267,8 @@ void Node::offLoad(orderedPair container)
    inShip = false;
    inBuffer = false;
    inTruck = true;
+   crain.first = 8;
+   crain.second = 0;
 }
 
 int Node::offloadCost(orderedPair container)

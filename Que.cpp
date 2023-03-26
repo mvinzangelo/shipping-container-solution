@@ -23,6 +23,7 @@ void Que::expand()
 {   bool match = false;
     Node* currentNode, *tempNode;
     currentNode = heap.top();
+    heap.pop();
     //if the current Node has containers to still come off
     if(!currentNode->containersOFF.empty()){
         //finds the top of columns that have containers to be offboarded
@@ -65,14 +66,14 @@ void Que::expand()
                 match = false;
             }
         } 
-        heap.pop();
     }
-     if(!(heap.top()->containersON.empty()))
+     if(!(currentNode->containersON.empty()))
      {
          tempNode = new Node(*currentNode);
          tempNode->onboard(tempNode->containersON.back());
-         tempNode->print();
          tempNode->containersON.pop_back();
+         tempNode->print();
+         //tempNode->containersON.pop_back();
          heap.push(tempNode);
      }
     

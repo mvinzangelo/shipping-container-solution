@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
    std::string targetNameOn = "Cat";
    std::vector<Container*> containersOffNames, containersOnNames;
    containersOffNames.push_back(new Container(-1, -1, 0, targetNameOff));
+   containersOffNames.push_back(new Container(-1, -1, 0, targetNameOff));
    containersOnNames.push_back(new Container(-1, -1, 0, targetNameOn));
 
     std::list<Node*> moves = generalSearch(ship6, containersOnNames, containersOffNames);
