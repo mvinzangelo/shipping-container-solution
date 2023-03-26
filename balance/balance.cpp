@@ -320,10 +320,26 @@ void operators(Ship &currShip, unordered_set<std::size_t> &visited, std::size_t 
 
                     if (currShip.bay[i][j].name == "UNUSED")
                     {
+                        
+                        //create atomicMove vector to put into child
+                        AtomicMove *currAtomicMove = new AtomicMove();
+                        Ship *tempShip = new Ship(currShip);
+                        currAtomicMove->shipState = tempShip;
+                        currAtomicMove->curr_i = currShip.onCrane.row;
+                        currAtomicMove->curr_j = currShip.onCrane.column; 
+                        currAtomicMove->containerToMove = currShip.onCrane.name; 
+
                         Ship newShip(currShip);
                         newShip.balanceChild.clear(); // clear children for newly created Ship
 
                         dropOff(newShip, newShip.onCrane, i, j, 1); // 1 means dropping off container in bay
+
+                        currAtomicMove->target_i = i;
+                        currAtomicMove->target_j = j;
+
+                        string newLocation = "{" + to_string(i) + "," + to_string(j) + "}";
+                        currAtomicMove->locationToMove = newLocation; 
+
                         if (newShip.bay[i][j].name != "UNUSED" && newShip.bay[i][j].name != "NAN")
                         {
                             std::cout << "Dropping off container: " << newShip.bay[i][j].name << endl;
@@ -340,6 +356,7 @@ void operators(Ship &currShip, unordered_set<std::size_t> &visited, std::size_t 
                             newShip.depth = newShip.depth + 1;
                             newShip.fn = newShip.h + newShip.depth;
                             currShip.balanceChild.push_back(newShip);
+                            currShip.steps.push_back(currAtomicMove);
                         }
 
                         break; // don't need to check remaining rows above

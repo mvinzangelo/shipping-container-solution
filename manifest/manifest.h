@@ -9,7 +9,6 @@
 #include <vector> 
 #include <algorithm> 
 
-
 /*
 Format of each manifest line:
 [RowInt, ColumnInt], {WeightInt}, Name/NAN/Unused
@@ -23,6 +22,8 @@ This test simply gets the information from each row, and outputs it.
 Struct defining a container with it's characteristics, with default and parameterized constructor.
 PLEASE NOTE: This struct SHOULD be moved to another file! It is only here for testing purposes.
 */
+
+class AtomicMove; 
 
 struct Ship;
 
@@ -70,6 +71,8 @@ struct Ship
 
    //array to hold children that can be expanded for balancing
    std::vector<Ship> balanceChild;  
+
+   std::vector<AtomicMove*> steps;
 
    //variable to hold the container currently being held by the crane
    //when picking up for balancing 
