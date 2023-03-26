@@ -192,7 +192,7 @@ void MainWindow::on_btnAddContainer_clicked()
         QFont font = QFont(weightText->font());
         font.setPointSize(14);
         nameText->setText(ui->lineContainerName->text());
-        weightText->setText(ui->lineContainerWeight->text());
+        weightText->setText(QString("%1 kg").arg(ui->lineContainerWeight->text()));
         nameText->setFont(font);
         weightText->setFont(font);
         // create remove button;
@@ -301,8 +301,10 @@ void MainWindow::generateBalanceOperationsList()
     // TODO: CALL SYKLER
     // call function and set currOperationsList
     currOperationsList = balanceSearch(*currShip, 1);
+    // qInfo() << QString::fromStdString(currOperationsList.at(0)->shipState->bay[0][0].name);
     // calculate time to completion
-    qInfo() << "FINISHED SEARCH";
+    qInfo()
+        << "FINISHED SEARCH";
     qInfo() << currOperationsList.size();
     minToCompleteCurrJob = 0;
     for (unsigned i = 0; i < currOperationsList.size(); i++)
@@ -334,21 +336,21 @@ void MainWindow::updateOperationsScreen(int index)
     }
     // TODO : FIXME
     // qInfo() << QString::fromStdString(currMove->shipState->bay[0][4].name);
-    // currShipGrid->renderNewShip(currMove->shipState);
-    // currBufferGrid->renderNewShip(currMove->shipState);
+    currShipGrid->renderNewShip(currMove->shipState);
+    currBufferGrid->renderNewShip(currMove->shipState);
 
-    // ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currShip, 12, 8, currInputGrid->colorMap);
-    // ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currShip, 24, 4, shipGrid->colorMap);
+    // ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currMove->shipState, 12, 8, currInputGrid->colorMap);
+    // ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currMove->shipState, 24, 4, shipGrid->colorMap);
 
-    //    ui->operationGrid->replaceWidget(currShipGrid, shipGrid);
-    //    ui->operationGrid->replaceWidget(currBufferGrid, bufferGrid);
+    // ui->operationGrid->replaceWidget(currShipGrid, shipGrid);
+    // ui->operationGrid->replaceWidget(currBufferGrid, bufferGrid);
 
-    //     currShipGrid = shipGrid;
+    // currShipGrid = shipGrid;
     // currBufferGrid = bufferGrid;
 
     // add grid to the input screen
-    //    ui->operationGrid->addWidget(shipGrid, 0, 1, Qt::AlignLeft);
-    //    ui->operationGrid->addWidget(bufferGrid, 1, 0, 1, 2, Qt::AlignHCenter);
+    // ui->operationGrid->addWidget(shipGrid, 0, 1, Qt::AlignLeft);
+    // ui->operationGrid->addWidget(bufferGrid, 1, 0, 1, 2, Qt::AlignHCenter);
     qInfo() << "RENDERED SHIP AND BUFFER";
     // set minutes left
     QString minutesLeftString;
@@ -371,7 +373,7 @@ void MainWindow::updateOperationsScreen(int index)
 }
 void MainWindow::on_buttonNextMove_clicked()
 {
-    currOperationIndex++;
+    // currOperationIndex++;
     if (currOperationIndex == currOperationsList.size())
     {
         // TODO: JOB FINISHED HANDLER

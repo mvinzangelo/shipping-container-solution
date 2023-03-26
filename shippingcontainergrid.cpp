@@ -11,6 +11,8 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, in
     grid->setContentsMargins(0, 0, 0, 0);
     grid->setSizeConstraint(QLayout::SetFixedSize);
     this->colorMap = argColorMap;
+    this->columns = columns;
+    this->rows = rows;
     if (columns == 24 && rows == 4)
     {
         currSubject = BUFFER;
@@ -126,17 +128,18 @@ void ShippingContainerGrid::renderNewShip(Ship *newShip)
             // render new buffer
             if (currSubject == BUFFER)
             {
-                qInfo() << "RENDERING BUFFER";
+                qInfo() << "RENDERING BUFFER AT" << QString::number(rows - j - 1) << QString::number(i);
+                qInfo() << "CONTAINER NAME: " << QString::fromStdString(newShip->bay[rows - j - 1][i].name);
                 // TODO: FIXME
-                // bufCellWidgets[i][j]->renderNewContainer(&(newShip->buffer[i][j]));
+                bufCellWidgets[rows - j - 1][i]->renderNewContainer(&(newShip->buffer[rows - j - 1][i]));
             }
             // render new ship
             else if (currSubject == SHIP)
             {
                 qInfo() << "RENDERING SHIP AT" << QString::number(rows - j - 1) << QString::number(i);
                 // TODO: FIXME
-                // qInfo() << "SHIP NAME: " << QString::fromStdString(newShip->bay[rows - j - 1][i].name);
-                // cellWidgets[rows - j][i]->renderNewContainer(&(newShip->bay[rows - j - 1][i]));
+                qInfo() << "CONTAINER NAME: " << QString::fromStdString(newShip->bay[rows - j - 1][i].name);
+                cellWidgets[rows - j - 1][i]->renderNewContainer(&(newShip->bay[rows - j - 1][i]));
             }
         }
     }

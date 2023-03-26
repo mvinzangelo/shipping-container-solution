@@ -115,8 +115,8 @@ void ContainerCell::renderNewContainer(Container *newContainer)
         }
     }
     cellColor = (*currColorMap)[currContainer->name];
-    // qInfo() << QString::fromStdString(currContainer->name);
-    // qInfo() << cellColor.name();
+    qInfo() << QString::fromStdString(currContainer->name);
+    qInfo() << cellColor.name();
     currStyleSheet = QString("QPushButton {"
                              "background-color: %1;"
                              "}"
