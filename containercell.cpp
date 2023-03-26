@@ -100,8 +100,8 @@ void ContainerCell::toggleIsBeingUnloaded()
 void ContainerCell::renderNewContainer(Container *newContainer)
 {
     qInfo() << "RENDERING CONTAINER";
-    this->currContainer = newContainer;
-    if (currContainer != nullptr)
+    currContainer = newContainer;
+    if (currContainer)
     {
         if (currContainer->isContainer())
         {
@@ -115,6 +115,8 @@ void ContainerCell::renderNewContainer(Container *newContainer)
         }
     }
     cellColor = (*currColorMap)[currContainer->name];
+    // qInfo() << QString::fromStdString(currContainer->name);
+    // qInfo() << cellColor.name();
     currStyleSheet = QString("QPushButton {"
                              "background-color: %1;"
                              "}"

@@ -100,6 +100,7 @@ void ShippingContainerGrid::onCellPressed(int i, int j)
         }
         // toggle cell to be unloaded
         cellWidgets[i - 1][j - 1]->toggleIsBeingUnloaded();
+        qInfo() << QString::number(i - 1) << QString::number(j - 1);
     }
 }
 
@@ -117,7 +118,7 @@ void ShippingContainerGrid::updateInputMode(int newMode)
 
 void ShippingContainerGrid::renderNewShip(Ship *newShip)
 {
-    qInfo() << "RENDERING SHIP";
+    qInfo() << "SHIP NAME" << QString::fromStdString(newShip->manifestName);
     for (unsigned i = 0; i < columns; i++)
     {
         for (unsigned j = 0; j < rows; j++)
@@ -126,14 +127,16 @@ void ShippingContainerGrid::renderNewShip(Ship *newShip)
             if (currSubject == BUFFER)
             {
                 qInfo() << "RENDERING BUFFER";
-                // bufCellWidgets[rows - j][i]->renderNewContainer(&(newShip->buffer[rows - j][i]));
+                // TODO: FIXME
+                // bufCellWidgets[i][j]->renderNewContainer(&(newShip->buffer[i][j]));
             }
             // render new ship
             else if (currSubject == SHIP)
             {
-                qInfo() << "RENDERING SHIP";
-                // qInfo() << "RENDER SHIP AT" << QString::number(rows - j) << QString::number(i);
-                // cellWidgets[rows - j][i]->renderNewContainer(&(newShip->bay[rows - j][i]));
+                qInfo() << "RENDERING SHIP AT" << QString::number(rows - j - 1) << QString::number(i);
+                // TODO: FIXME
+                // qInfo() << "SHIP NAME: " << QString::fromStdString(newShip->bay[rows - j - 1][i].name);
+                // cellWidgets[rows - j][i]->renderNewContainer(&(newShip->bay[rows - j - 1][i]));
             }
         }
     }
