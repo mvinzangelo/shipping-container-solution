@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -11,6 +12,27 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->setCurrentWidget(ui->screenLogFile);
     ui->cbProblemType->addItems({"Loading / Unloading", "Balancing"});
     currLogFile = new LogFile();
+    // initialize clocks
+    QTimer *t = new QTimer(this);
+    t->setInterval(1000);
+    connect(t, &QTimer::timeout, [&]()
+            {
+   QString time1 = QDateTime::currentDateTime().toString();
+   ui->logInClock->setText(time1); });
+    connect(t, &QTimer::timeout, [&]()
+            {
+   QString time1 = QDateTime::currentDateTime().toString();
+   ui->PSClock->setText(time1); });
+    connect(t, &QTimer::timeout, [&]()
+            {
+   QString time1 = QDateTime::currentDateTime().toString();
+   ui->jobClock->setText(time1); });
+    connect(t, &QTimer::timeout, [&]()
+            {
+   QString time1 = QDateTime::currentDateTime().toString();
+   ui->loadUnloadClock->setText(time1); });
+    t->start();
+    // ui->headerLogIn->addWidget(t);
 }
 
 MainWindow::~MainWindow()
@@ -81,11 +103,11 @@ void MainWindow::on_buttonStartProblem_clicked()
     else
     {
         // initialize input grid
-        if (currShipGrid && currBufferGrid)
-        {
-            delete currShipGrid;
-            delete currBufferGrid;
-        }
+        // if (currShipGrid && currBufferGrid)
+        // {
+        //     delete currShipGrid;
+        //     delete currBufferGrid;
+        // }
         ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currShip);
         ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currShip, 24, 4, shipGrid->colorMap);
         currShipGrid = shipGrid;
@@ -99,6 +121,7 @@ void MainWindow::on_buttonStartProblem_clicked()
         msgbox->setText("Generating operations list...");
         msgbox->open();
         // TODO: CALL AI
+        qInfo() << "CALLING SKYLER";
         generateBalanceOperationsList();
         ui->stackedWidget->setCurrentWidget(ui->screenOperation);
         // alert user done generating
@@ -281,11 +304,16 @@ void MainWindow::generateBalanceOperationsList()
     // calculate time to completion
     qInfo() << "FINISHED SEARCH";
     qInfo() << currOperationsList.size();
-    for (unsigned i = 0; i < currOperationsList.size() - 1; i++)
+    minToCompleteCurrJob = 0;
+    for (unsigned i = 0; i < currOperationsList.size(); i++)
     {
-        qInfo() << "opeartion: " << i;
+        qInfo() << "operation: " << i;
+        qInfo() << "time: " << QString::number(currOperationsList.at(i)->timeToMove);
+        qInfo() << "container to move: " << QString::fromStdString(currOperationsList.at(i)->containerToMove);
+        qInfo() << "location to move to: " << QString::fromStdString(currOperationsList.at(i)->locationToMove);
         minToCompleteCurrJob += currOperationsList.at(i)->timeToMove;
     }
+    qInfo() << "Finish iterating though the list once";
     currOperationIndex = 0;
     updateOperationsScreen(currOperationIndex);
 }
@@ -299,8 +327,29 @@ void MainWindow::generateLoadingUnloadingOperationsList()
 void MainWindow::updateOperationsScreen(int index)
 {
     AtomicMove *currMove = currOperationsList.at(index);
-    currBufferGrid->renderNewShip(currMove->shipState);
-    currShipGrid->renderNewShip(currMove->shipState);
+    qInfo() << "GOT CURR MOVE";
+    if (currMove->shipState)
+    {
+        qInfo() << "HAS SHIP STATE";
+    }
+    // TODO : FIXME
+    // qInfo() << QString::fromStdString(currMove->shipState->bay[0][4].name);
+    // currShipGrid->renderNewShip(currMove->shipState);
+    // currBufferGrid->renderNewShip(currMove->shipState);
+
+    // ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currShip, 12, 8, currInputGrid->colorMap);
+    // ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currShip, 24, 4, shipGrid->colorMap);
+
+    //    ui->operationGrid->replaceWidget(currShipGrid, shipGrid);
+    //    ui->operationGrid->replaceWidget(currBufferGrid, bufferGrid);
+
+    //     currShipGrid = shipGrid;
+    // currBufferGrid = bufferGrid;
+
+    // add grid to the input screen
+    //    ui->operationGrid->addWidget(shipGrid, 0, 1, Qt::AlignLeft);
+    //    ui->operationGrid->addWidget(bufferGrid, 1, 0, 1, 2, Qt::AlignHCenter);
+    qInfo() << "RENDERED SHIP AND BUFFER";
     // set minutes left
     QString minutesLeftString;
     if (index == 0)
@@ -333,7 +382,7 @@ void MainWindow::on_buttonNextMove_clicked()
         msgBox.exec();
         if (msgBox.clickedButton() == pButtonYes)
         {
-            ui->stackedWidget->setCurrentWidget(ui->screenInput);
+            ui->stackedWidget->setCurrentWidget(ui->screenSetUp);
         }
         currLogFile->logManifestFinish(*(currOperationsList.back()->shipState));
         currOperationIndex = 0;
