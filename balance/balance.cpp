@@ -132,6 +132,7 @@ vector<int> isolateContainerWeights(Ship &currShip)
 vector<AtomicMove *> SIFT(Ship &currShip)
 {
     // vector<Ship>atomicMove;
+    
     vector<AtomicMove *> moves;
     vector<int> weights = isolateContainerWeights(currShip); // vector to hold container weights so we can sort prior to putting back on the ship
     sort(weights.begin(), weights.end(), greater<int>());    // sort vector from largest to smallest
@@ -146,12 +147,13 @@ vector<AtomicMove *> SIFT(Ship &currShip)
         {
             if (currShip.bay[i][j].name != "UNUSED" && currShip.bay[i][j].name != "NAN")
             {
-
+                int totalCost = 0;
                 AtomicMove *currAtomicMove = new AtomicMove();
                 Ship *tempShip = new Ship(currShip);
                 printShip(*tempShip);
                 std::cout << endl;
                 currAtomicMove->shipState = tempShip;
+                totalCost += std::abs(i - 8) + std::abs(j - 12) + 4; // Go to virtual cell + 4 for buffer tax
 
                 //current location
                 currAtomicMove->curr_i = i;
@@ -165,7 +167,10 @@ vector<AtomicMove *> SIFT(Ship &currShip)
 
                 removeContainer(currShip, i, j, 1);
                 dropOff(currShip, currShip.onCrane, bufferRow, bufferCol, 0); // 0 means dropping off container in buffer
+                totalCost += std::abs(4 - bufferRow) + std::abs(24 - bufferCol); // From virtual cell to slot in buffer
                 bufferCol--;
+                currAtomicMove->timeToMove = totalCost;
+                
 
                 
                 //target location
@@ -174,6 +179,7 @@ vector<AtomicMove *> SIFT(Ship &currShip)
 
                 string newLocation = "{" + to_string(bufferRow) + "," + to_string(bufferCol) + "}";
                 currAtomicMove->locationToMove = newLocation;
+                
 
 
                 // keep track of each atomic move through vector of Ships
@@ -196,6 +202,7 @@ vector<AtomicMove *> SIFT(Ship &currShip)
         {
             if (currShip.buffer[0][j].weight == weights.front())
             {
+                int totalCost = 0;
                 std::cout<<"currShip.buffer[0][j] is: " << currShip.buffer[0][j].weight << " and is being compared to " << weights.front() << endl;
                 AtomicMove *currAtomicMove = new AtomicMove();
 
@@ -218,6 +225,9 @@ vector<AtomicMove *> SIFT(Ship &currShip)
                 currAtomicMove->target_j = j-1;
                 string newLocation = "{" + to_string(0) + "," + to_string(insertSeq.front()) + "}";
                 currAtomicMove->locationToMove = newLocation;
+                totalCost += 8 + std::abs(24 - j) + insertSeq.front(); // 8 comes from bottom row of buffer + buffer tax 
+                currAtomicMove->timeToMove = totalCost;
+
 
                 std::cout<<"Creating new atomicMove to: " << newLocation << endl;
                 std::cout<<"Current atomicMove has this on the crane: " << currAtomicMove->containerToMove<<endl;
@@ -231,6 +241,8 @@ vector<AtomicMove *> SIFT(Ship &currShip)
                 insertSeq.erase(insertSeq.begin());
                 weights.erase(weights.begin());
             }
+
+
         }
         
     
@@ -571,7 +583,6 @@ int balanceH(Ship currShip)
             moveCount++;
         }
     }
-
     return moveCount; // moveCount represents minutes
 
 } // end heuristic func
