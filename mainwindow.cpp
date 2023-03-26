@@ -84,10 +84,10 @@ void MainWindow::on_buttonStartProblem_clicked()
     // change screen based off of problem type
     if (ui->cbProblemType->currentIndex() == 0)
     {
-        if (currInputGrid)
-        {
-            delete currInputGrid;
-        }
+//        if (currInputGrid)
+//        {
+//            delete currInputGrid;
+//        }
         // initialize input grid
         ShippingContainerGrid *inputGrid = new ShippingContainerGrid(nullptr, currShip);
         currInputGrid = inputGrid;
@@ -332,7 +332,7 @@ void MainWindow::generateLoadingUnloadingOperationsList()
     qInfo() << "Unload containers: ";
     for (unsigned i = 0; i < currInputGrid->unloadContainers.size(); i++)
     {
-        qInfo() << QString::fromStdString(currInputGrid->loadContainers.at(i)->name);
+        qInfo() << QString::fromStdString(currInputGrid->unloadContainers.at(i)->name);
     }
     qInfo()
         << "START SEARCH";
