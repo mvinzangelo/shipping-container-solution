@@ -32,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
    QString time1 = QDateTime::currentDateTime().toString();
    ui->loadUnloadClock->setText(time1); });
     t->start();
-    // ui->headerLogIn->addWidget(t);
 }
 
 MainWindow::~MainWindow()
@@ -343,19 +342,6 @@ void MainWindow::updateOperationsScreen(int index)
     // qInfo() << QString::fromStdString(currMove->shipState->bay[0][4].name);
     currShipGrid->renderNewShip(currMove->shipState);
     currBufferGrid->renderNewShip(currMove->shipState);
-
-    // ShippingContainerGrid *shipGrid = new ShippingContainerGrid(nullptr, currMove->shipState, 12, 8, currInputGrid->colorMap);
-    // ShippingContainerGrid *bufferGrid = new ShippingContainerGrid(nullptr, currMove->shipState, 24, 4, shipGrid->colorMap);
-
-    // ui->operationGrid->replaceWidget(currShipGrid, shipGrid);
-    // ui->operationGrid->replaceWidget(currBufferGrid, bufferGrid);
-
-    // currShipGrid = shipGrid;
-    // currBufferGrid = bufferGrid;
-
-    // add grid to the input screen
-    // ui->operationGrid->addWidget(shipGrid, 0, 1, Qt::AlignLeft);
-    // ui->operationGrid->addWidget(bufferGrid, 1, 0, 1, 2, Qt::AlignHCenter);
     qInfo() << "RENDERED SHIP AND BUFFER";
     // set minutes left
     QString minutesLeftString;
