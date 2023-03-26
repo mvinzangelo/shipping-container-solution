@@ -313,10 +313,6 @@ void MainWindow::generateBalanceOperationsList()
         qInfo() << "container to move: " << QString::fromStdString(currOperationsList.at(i)->containerToMove);
         qInfo() << "location to move to: " << QString::fromStdString(currOperationsList.at(i)->locationToMove);
         qInfo() << "first row: ";
-        for (unsigned x = 0; x < 12; x++)
-        {
-            qInfo() << QString::fromStdString(currOperationsList.at(i)->shipState->bay[0][x].name);
-        }
         minToCompleteCurrJob += currOperationsList.at(i)->timeToMove;
     }
     qInfo() << "Finish iterating though the list once";
@@ -345,15 +341,8 @@ void MainWindow::updateOperationsScreen(int index)
     qInfo() << "RENDERED SHIP AND BUFFER";
     // set minutes left
     QString minutesLeftString;
-    if (index == 0)
-    {
-        minutesLeftString = QString("%1 minutes left").arg(QString::number(minToCompleteCurrJob));
-    }
-    else
-    {
-        minToCompleteCurrJob -= currOperationsList.at(index - 1)->timeToMove;
-        minutesLeftString = QString("%1 minutes left").arg(QString::number(minToCompleteCurrJob));
-    }
+    minToCompleteCurrJob -= currOperationsList.at(index)->timeToMove;
+    minutesLeftString = QString("%1 minutes left").arg(QString::number(minToCompleteCurrJob));
     ui->labelMinutesLeft->setText(minutesLeftString);
     // set current move
     QString currentMove = QString("Current move: %1 to %2").arg(QString::fromStdString(currOperationsList.at(index)->containerToMove), QString::fromStdString(currOperationsList.at(index)->locationToMove));
