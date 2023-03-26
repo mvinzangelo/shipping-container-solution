@@ -7,7 +7,7 @@ class AtomicMove
 {
 public:
     AtomicMove();
-    AtomicMove::AtomicMove(Ship* ship, std::string containerToMove, int curr_i, int curr_j, int target_i, int target_j);
+    AtomicMove(Ship* ship, std::string containerToMove, int curr_i, int curr_j, int target_i, int target_j);
     Ship *shipState;
     int timeToMove;
     std::string containerToMove; //name of container
