@@ -27,6 +27,7 @@ class Node
         orderedPair pinkBox;
         bool inBuffer;
         bool inShip;
+        bool inTruck;
         int Fx; //
         int Gx;
         Node* parent;

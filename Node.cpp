@@ -14,6 +14,7 @@ Node::Node(Ship ship)
     pinkBox.second = 0;
     inShip = true;
     inBuffer = false;
+    inTruck = false;
     Fx = 0;
     Gx = 0;
     containersON.clear();
@@ -30,6 +31,7 @@ Node::Node(Ship ship, std::vector<Container*> ON, std::vector<Container*> OFF)
     pinkBox.second = 0;
     inShip = true;
     inBuffer = false;
+    inTruck = false;
     Fx = 0;
     Gx = 0;
     containersON = ON;
@@ -41,12 +43,18 @@ Node::Node(Node& curNode){
     this->ship = curNode.ship;
     this->crain = curNode.crain;
     this->pinkBox = curNode.pinkBox;
-    inBuffer = curNode.inBuffer;
-    Fx = curNode.Fx;
-    Gx = curNode.Gx;
-    parent = &curNode;
-    containersOFF = curNode.containersOFF;
-    containersON = curNode.containersON;
+    this->Fx = curNode.Fx;
+    this->Gx = curNode.Gx;
+    this->parent = &curNode;
+
+    for(int i = 0 ; i <curNode.containersOFF.size(); i++)
+    {
+        this->containersOFF.push_back(curNode.containersOFF[i]);
+    }
+    for(int i = 0 ; i <curNode.containersON.size(); i++)
+    {
+        this->containersON.push_back(curNode.containersON[i]);
+    }
 }
 
 bool Node::GoalTest()
@@ -178,6 +186,8 @@ void Node::moveContainer(orderedPair Loc)
         Fx += calculateDistance(crain, Loc) + minDist;
         crain.first = closestSpot->row-1;
         crain.second = closestSpot->column-1;
+        //inShip = true;
+        //inBuffer = false;
     }
 }
 
@@ -224,18 +234,12 @@ void Node::onboard(Container* container)
             std::cout << '\n';
         }
         Fx += minDist; //update cost;
-        if(inBuffer)
-        { 
-            Fx += 4;
-            inBuffer = false;
-            inShip = true;
-        }
-        else
-        {
-            Fx += 8;
-            inShip = true;
-        }
-        crain.first = closestSpot.first;//update crain
+        if(!inTruck){ Fx += 4;}
+        inBuffer = false;
+        inTruck = false;
+        inShip = true;
+        
+        crain.first = closestSpot.first +1;//update crain
         crain.second = closestSpot.second;
         ship.bay[closestSpot.first][closestSpot.second].name = container->name; //update container
         ship.bay[closestSpot.first][closestSpot.second].weight = container->weight;
@@ -263,14 +267,17 @@ void Node::offLoad(orderedPair container)
    ship.bay[container.first][container.second].name = "UNUSED";
    ship.bay[container.first][container.second].weight = 0;
    inShip = false;
-   inBuffer = true;
+   inBuffer = false;
+   inTruck = true;
 }
 
 int Node::offloadCost(orderedPair container)
 {
     int cost = 0;
-    if(inBuffer){ cost = 4;}
-    cost += calculateDistance(crain, container) + calculateDistance(container, pinkBox) + 4;
+    // moving to ship
+    if(inBuffer){ cost = 4;} 
+    else if(inTruck){ cost = 2; }
+    cost += calculateDistance(crain, container) + calculateDistance(container, pinkBox) + 2;
     std::cout << "off load cost: " << cost << std::endl;
     return cost;
 }

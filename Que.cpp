@@ -20,9 +20,10 @@ void Que::push(Node* newNode)
 
 
 void Que::expand()
-{
+{   bool match = false;
     Node* currentNode, *tempNode;
     currentNode = heap.top();
+    //if the current Node has containers to still come off
     if(!currentNode->containersOFF.empty()){
         //finds the top of columns that have containers to be offboarded
         std::vector<Container*> targetTops = currentNode->findTop(currentNode->findTargetColumns()); 
@@ -30,36 +31,50 @@ void Que::expand()
         {
             for(int j = 0; j < currentNode->containersOFF.size(); j++)
             {
-                // if container on the top matches a one to be offboared 
+                // if container on the top matches a one to be offboared
+                // take if off
                 if(targetTops[i]->name == currentNode->containersOFF[j]->name) 
                 {
                     tempNode = new Node(*currentNode); //copy current node
+                    tempNode->inBuffer = currentNode->inBuffer;
+                    tempNode->inShip = currentNode->inShip;
+                    tempNode->inTruck = currentNode->inTruck;
                     std::cout << "\nOffLoading [" << targetTops[i]->row - 1<< ", " << targetTops[i]->column - 1<< "]\n";
                     tempNode->offLoad(orderedPair(targetTops[i]->row -1,targetTops[i]->column-1)); //offload target container
                     tempNode->containersOFF.erase(tempNode->containersOFF.begin()+j); //Remove target from offboarding list
                     heap.push(tempNode);
                     tempNode->print();
-                }
-                else
-                {
-                    tempNode = new Node(*currentNode);
-                    std::cout << "\nMoving container [" <<targetTops[i]->row -1 << ", " << targetTops[i]->column - 1 << "]\n";
-                    tempNode->moveContainer(orderedPair(targetTops[i]->row -1,targetTops[i]->column-1));
-                    heap.push(tempNode);
-                    tempNode->print();
+                    match = true; //signals the container matched with one in OFF
                 }
                 
             }
-        }
+            //if the container at the top of a column didn't match any of the names in offboard
+            if(!match)
+            {
+                tempNode = new Node(*currentNode);
+                tempNode->inBuffer = currentNode->inBuffer;
+                tempNode->inShip = currentNode->inShip;
+                tempNode->inTruck = currentNode->inTruck;
+                std::cout << "\nMoving container [" <<targetTops[i]->row -1 << ", " << targetTops[i]->column - 1 << "]\n";
+                tempNode->moveContainer(orderedPair(targetTops[i]->row -1,targetTops[i]->column-1));
+                heap.push(tempNode);
+                tempNode->print();
+            }
+            else
+            {
+                match = false;
+            }
+        } 
         heap.pop();
     }
-    if(!heap.top()->containersON.empty())
-    {
-        tempNode->onboard(tempNode->containersON.back());
-        tempNode->containersON.pop_back();
-        heap.push(tempNode);
-    }
-
+     if(!(heap.top()->containersON.empty()))
+     {
+         tempNode = new Node(*currentNode);
+         tempNode->onboard(tempNode->containersON.back());
+         tempNode->print();
+         tempNode->containersON.pop_back();
+         heap.push(tempNode);
+     }
     
 }
 
