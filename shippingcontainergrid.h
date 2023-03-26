@@ -35,9 +35,11 @@ public:
     std::map<std::string, QColor> *colorMap;
     ContainerCell *cellWidgets[8][12];
     ContainerCell *bufCellWidgets[8][12];
+    QTimer *animationTimer;
     void updateInputMode(int newMode);
     void updateManifestGUI();
     void renderNewShip(Ship *newShip);
+    void animateMovement();
 
 signals:
 

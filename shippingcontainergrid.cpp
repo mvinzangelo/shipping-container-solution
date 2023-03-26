@@ -2,6 +2,7 @@
 #include "qgridlayout.h"
 #include "qpushbutton.h"
 #include <QLabel>
+#include <QTimer>
 
 ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, int columns, int rows, std::map<std::string, QColor> *argColorMap)
     : QWidget{parent}
@@ -13,6 +14,10 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, in
     this->colorMap = argColorMap;
     this->columns = columns;
     this->rows = rows;
+    animationTimer = new QTimer(this);
+    animationTimer->setInterval(5000);
+    connect(animationTimer, &QTimer::timeout, [=]()
+            { animateMovement(); });
     if (columns == 24 && rows == 4)
     {
         currSubject = BUFFER;
@@ -143,4 +148,8 @@ void ShippingContainerGrid::renderNewShip(Ship *newShip)
             }
         }
     }
+}
+
+void ShippingContainerGrid::animateMovement()
+{
 }
