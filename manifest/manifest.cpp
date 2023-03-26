@@ -191,6 +191,18 @@ Ship& Ship::operator=(const Ship& other) {
    return *this;
 }
 
+Container& Container::operator=(const Container& other) 
+{
+   if (this != &other) 
+   {
+      row = other.row;
+      column = other.column;
+      weight = other.weight;
+      name = other.name;
+   }
+   return *this;
+}
+
 /*
 int main(int argc, char *argv[])
 {
