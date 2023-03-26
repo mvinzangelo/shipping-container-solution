@@ -15,7 +15,7 @@ ShippingContainerGrid::ShippingContainerGrid(QWidget *parent, Ship *currShip, in
     this->columns = columns;
     this->rows = rows;
     animationTimer = new QTimer(this);
-    animationTimer->setInterval(5000);
+    animationTimer->setInterval(1000);
     connect(animationTimer, &QTimer::timeout, [=]()
             { animateMovement(); });
     if (columns == 24 && rows == 4)
@@ -152,4 +152,39 @@ void ShippingContainerGrid::renderNewShip(Ship *newShip)
 
 void ShippingContainerGrid::animateMovement()
 {
+    if (curr_i != target_i)
+    {
+        if (currSubject == SHIP)
+        {
+            cellWidgets[curr_i][curr_j]->flashColor(cellWidgets[start_i][start_j]->cellColor);
+            if (curr_i < target_i)
+            {
+                curr_i++;
+            }
+            else
+            {
+                curr_i--;
+            }
+        }
+    }
+    else if (curr_j != target_j)
+    {
+        if (currSubject == SHIP)
+        {
+            cellWidgets[curr_i][curr_j]->flashColor(cellWidgets[start_i][start_j]->cellColor);
+            if (curr_j < target_j)
+            {
+                curr_j++;
+            }
+            else
+            {
+                curr_j--;
+            }
+        }
+    }
+    else if (curr_i == target_i && curr_j == target_j)
+    {
+        curr_i = start_i;
+        curr_j = start_j;
+    }
 }
