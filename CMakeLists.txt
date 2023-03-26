@@ -17,7 +17,18 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        currentemployee.h
+        currentemployee.cpp
+        shippingcontainergrid.h
+        shippingcontainergrid.cpp
+        containercell.h
+        containercell.cpp
+        loadingunloadinginput.h
+        loadingunloadinginput.cpp
+        atomicmove.h
+        atomicmove.cpp
 )
+
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(shipping-container-solution
@@ -51,6 +62,11 @@ set_target_properties(shipping-container-solution PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
+
+# subdirectories
+add_subdirectory(logfile)
+add_subdirectory(manifest)
+add_subdirectory(balance)
 
 install(TARGETS shipping-container-solution
     BUNDLE DESTINATION .

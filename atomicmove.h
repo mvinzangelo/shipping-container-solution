@@ -1,7 +1,7 @@
 #ifndef ATOMICMOVE_H
 #define ATOMICMOVE_H
 #include "manifest/manifest.h"
-//#include "logfile/logfile.h"
+#include "logfile/logfile.h"
 
 class AtomicMove
 {

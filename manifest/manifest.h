@@ -1,11 +1,13 @@
-#ifndef __Container_Ship__
-#define __Container_Ship__
+#ifndef MANIFEST_H
+#define MANIFEST_H
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include <string>
 #include <queue>
 #include <list>
+#include <vector> 
+#include <algorithm> 
 
 
 /*
@@ -22,19 +24,21 @@ Struct defining a container with it's characteristics, with default and paramete
 PLEASE NOTE: This struct SHOULD be moved to another file! It is only here for testing purposes.
 */
 
-
 struct Ship;
 
 // TODO: Move Container and Ship structs to a different file.
-struct Container {
+struct Container
+{
    short row;
    short column;
    int weight;
    std::string name;
-   Container() : row(-1), column(-1), weight(0), name("NAN") {}
-   Container(int row, int column, int weight, std::string& name) : 
-   row(row), column(column), weight(weight), name(name) {}
-   short getDepth(Ship&);
+   Container() : row(-1), column(-1), weight(0), name("UNUSED") {}
+   Container(int row, int column, int weight, std::string &name) : row(row), column(column), weight(weight), name(name) {}
+   Container(const Container& other) : row(other.row), column(other.column), weight(other.weight), name(other.name) {}
+   short getDepth(Ship &);
+   bool isContainer();
+   Container& operator=(const Container& other);
 };
 
 /*
@@ -46,20 +50,46 @@ struct Container {
       - Note: might be better to protect the fields of the Container struct to avoid accidental modification, since we do NOT modify the containers.
 */
 
-struct Ship {
+struct Ship
+{
    Container bay[8][12];
    Container buffer[4][24];
    std::string manifestName;
-   int numContainers;
+   std::string manifestPath;
    int crainX;
    int crainY;
-   Ship() : numContainers(0) {}
-   Ship(std::string& name);
+   // int numContainers;
+   Ship() {}
+   Ship(std::string &name);
+   Ship(const Ship&);
    int getPortWeight();
    int getStarbordWeight();
+   int getNumContainers();
    void printShip();
    void printDepths();
+
+   //array to hold children that can be expanded for balancing
+   std::vector<Ship> balanceChild;  
+
+   //variable to hold the container currently being held by the crane
+   //when picking up for balancing 
+   Container onCrane; 
+
+   //keeps track of what column the crane was on
+   //to help avoid repeated staes 
+   int craneLocation = -1; 
+   //variables that hold values for heuristic,depth,and best cost 
+   int h = 0; 
+   int depth = 0;
+   int fn = 0; 
    
+   //comparison operator for ships (used for inserting into priority queue)
+   bool operator< (const Ship& rhs)const {
+
+      return(this->fn < rhs.fn);
+
+   }
+   Ship& operator=(const Ship&);
 };
 
 #endif
