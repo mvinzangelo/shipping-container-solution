@@ -273,6 +273,7 @@ void operators(Ship &currShip, unordered_set<std::size_t> &visited, std::size_t 
 
                 if (currShip.bay[i][j].name != "UNUSED" && currShip.bay[i][j].name != "NAN")
                 {
+                    std::cout << "Size of steps vector: " << currShip.steps.size() << endl;
                     Ship newShip(currShip);
                     newShip.balanceChild.clear(); // clear children for newly created Ship
 
@@ -355,8 +356,10 @@ void operators(Ship &currShip, unordered_set<std::size_t> &visited, std::size_t 
                             visited.insert(stringHash);
                             newShip.depth = newShip.depth + 1;
                             newShip.fn = newShip.h + newShip.depth;
+                            newShip.steps.push_back(currAtomicMove);
                             currShip.balanceChild.push_back(newShip);
-                            currShip.steps.push_back(currAtomicMove);
+                            //currShip.steps.push_back(currAtomicMove);
+                            std::cout << "Size of steps vector: " << currShip.steps.size() << endl;
                         }
 
                         break; // don't need to check remaining rows above
