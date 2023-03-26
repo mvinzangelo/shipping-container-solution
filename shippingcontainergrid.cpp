@@ -154,7 +154,7 @@ void ShippingContainerGrid::renderNewShip(Ship *newShip)
 void ShippingContainerGrid::animateMovement()
 {
     // do nothing if not set to animate
-    if (curr_i < -2 && curr_j < -2)
+    if ((curr_i < -2 && curr_j < -2) || (target_i > 7 || target_j > 11))
     {
         return;
     }

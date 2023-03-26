@@ -84,10 +84,10 @@ void MainWindow::on_buttonStartProblem_clicked()
     // change screen based off of problem type
     if (ui->cbProblemType->currentIndex() == 0)
     {
-//        if (currInputGrid)
-//        {
-//            delete currInputGrid;
-//        }
+        //        if (currInputGrid)
+        //        {
+        //            delete currInputGrid;
+        //        }
         // initialize input grid
         ShippingContainerGrid *inputGrid = new ShippingContainerGrid(nullptr, currShip);
         currInputGrid = inputGrid;
@@ -335,7 +335,7 @@ void MainWindow::generateLoadingUnloadingOperationsList()
         qInfo() << QString::fromStdString(currInputGrid->unloadContainers.at(i)->name);
     }
     qInfo()
-        << "START SEARCH";
+        << "STARK SEARCH";
     currOperationsList = generalSearch(*currShip, currInputGrid->loadContainers, currInputGrid->unloadContainers);
     // calculate time to completion
     qInfo()
@@ -363,6 +363,14 @@ void MainWindow::updateOperationsScreen(int index)
     if (currMove->shipState)
     {
         qInfo() << "HAS SHIP STATE";
+    }
+    if (currMove->isOffloaded)
+    {
+        currLogFile->logAtomicMove(currMove->containerToMove, 1);
+    }
+    else if (currMove->isOnloaded)
+    {
+        currLogFile->logAtomicMove(currMove->containerToMove, 0);
     }
     // TODO : FIXME
     // qInfo() << QString::fromStdString(currMove->shipState->bay[0][4].name);
